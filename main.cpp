@@ -7,7 +7,7 @@ int main()
 {
     RenderWindow window(VideoMode(200, 200), "SFML works!");
     CircleShape shape(100.f);
-    shape.setFillColor(Color::Blue);
+    shape.setFillColor(Color::Red);
 
     while (window.isOpen())
     {
