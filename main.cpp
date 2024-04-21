@@ -10,6 +10,7 @@ int main()
     CircleShape shape(100.f);
     shape.setFillColor(Color::Blue);
 
+
     while (window.isOpen())
     {
         Event event;
