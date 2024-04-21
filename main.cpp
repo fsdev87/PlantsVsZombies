@@ -5,10 +5,10 @@ using namespace sf;
 
 int main()
 {
-    // ABD BRANCH mus changed color to white
+    // Mus Branch with blue color circle
     RenderWindow window(VideoMode(200, 200), "SFML works!");
     CircleShape shape(100.f);
-    shape.setFillColor(Color::Color(255, 255, 255));
+    shape.setFillColor(Color::Blue);
 
     while (window.isOpen())
     {
