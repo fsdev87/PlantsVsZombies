@@ -2,16 +2,13 @@
 #include <iostream>
 using namespace std;
 using namespace sf;
-// cout << "hellow";
+
 int main()
 {
-    // Mus Branch
-    // change
     RenderWindow window(VideoMode(200, 200), "SFML works!");
     RectangleShape shape({ 100.0f,100.0f });
     shape.setFillColor(Color::Blue);
-    // abd -> main
-    // abd -> pull main with you
+
     while (window.isOpen())
     {
         Event event;
