@@ -9,7 +9,8 @@ int main()
     RenderWindow window(VideoMode(200, 200), "SFML works!");
     CircleShape shape(100.f);
     shape.setFillColor(Color::Blue);
-
+    // just checking to see if git status works
+    // git branch --set-upstream-to origin/main
 
     while (window.isOpen())
     {
