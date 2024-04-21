@@ -8,9 +8,9 @@ int main()
     // Mus Branch
     // change
     RenderWindow window(VideoMode(200, 200), "SFML works!");
-    CircleShape shape(100.f);
+    RectangleShape shape({ 100.0f,100.0f });
     shape.setFillColor(Color::Blue);
-
+    // abd -> main
     while (window.isOpen())
     {
         Event event;
