@@ -14,6 +14,8 @@ int main()
 
     // this is abd branch shouldn't be in main
 
+    // added to abd branch main.cpp from github.com
+
     while (window.isOpen())
     {
         Event event;
