@@ -5,16 +5,11 @@ using namespace sf;
 
 int main()
 {
-    // Mus Branch with blue color circle
+    // Mus Branch
     RenderWindow window(VideoMode(200, 200), "SFML works!");
     CircleShape shape(100.f);
     shape.setFillColor(Color::Blue);
-    // just checking to see if git status works
-    // git branch --set-upstream-to origin/main
-
-    // this is abd branch shouldn't be in main
-
-    // added to abd branch main.cpp from github.com
+    cout << "what the hell is going on?" << endl;
 
     while (window.isOpen())
     {
