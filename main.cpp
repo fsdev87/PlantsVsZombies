@@ -12,6 +12,8 @@ int main()
     // just checking to see if git status works
     // git branch --set-upstream-to origin/main
 
+    // this is abd branch shouldn't be in main
+
     while (window.isOpen())
     {
         Event event;
