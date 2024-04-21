@@ -1,10 +1,12 @@
 #include <SFML/Graphics.hpp>
+#include "abd.h"
 #include <iostream>
 using namespace std;
 using namespace sf;
 
 int main()
 {
+    cout << prints() << endl;
     RenderWindow window(VideoMode(200, 200), "SFML works!");
     CircleShape shape(100.f);
     shape.setFillColor(Color::Red);
