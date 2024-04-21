@@ -49,10 +49,14 @@ public:
         names = new string[capacity];
     };
 
-    void addTexture(Texture& t, string n) {
+    void addTexture(string source, string n) {
         cout << "Added texture " << n << endl;
         if (idx >= capacity) resize(2);
-        textures[idx] = t;
+        Texture temp;
+        if (!temp.loadFromFile(source)) {
+            cout << "Couldn't load " << n << " texture from " << source << endl;
+        }
+        textures[idx] = temp;
         names[idx] = n;
         idx++;
     }
