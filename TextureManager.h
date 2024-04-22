@@ -61,6 +61,12 @@ public:
         idx++;
     }
 
+    Texture& operator[](string n){
+         int index = getIndexFromName(n);
+         if(index != -1) return textures[index];
+         return dummyTexture;
+     }
+
     Texture& getTexture(int n) {
         if (n < idx)
             return textures[n];
