@@ -6,9 +6,11 @@ using namespace sf;
 using namespace std;
 
 class Card {
+private:
     Sprite spr;
     Color darkerShade{ 220, 50, 19 };
     RectangleShape rect;
+
 public:
     Card() {
         rect.setSize({ 100, 85 });
@@ -32,41 +34,26 @@ public:
 };
 
 class Inventory {
-    RectangleShape inventoryPeche;
+private:
+    RectangleShape inventoryBack;
     Color darkerShade{ 110, 50, 19, 220 };
     float inventoryHeight = 100;
     float inventoryWidth = 800;
-    Card* cards;
+    Card cards[8];
     int index = 0;
-    const int maxCards = 7;
-
-private:
-    void fixCards() {
-        Card* tempC = new Card[index];
-        for (int i = 0; i < index; i++) {
-            tempC[i] = cards[i];
-        }
-        delete[] cards;
-        cards = new Card[index + 3];
-        for (int i = 0; i < index; i++) {
-            cards[i] = tempC[i];
-        }
-        delete[] tempC;
-    }
+    const int maxCards = 8;
 
 public:
-    Inventory() : inventoryPeche({ 800, 100}) {
-        inventoryPeche.setFillColor(darkerShade);
-        inventoryPeche.setPosition(150, 0);
-        cards = nullptr;
-    }
-
-    ~Inventory() {
-        delete[] cards;
+    Inventory() : inventoryBack({ 800, 100}) {
+        inventoryBack.setFillColor(darkerShade);
+        inventoryBack.setPosition(150, 0);
+        /* no need to initialize all 8 cards as default constructor automatically calls
+        for all cards object in the array */
     }
 
     void drawInventory(RenderWindow& window) const {
-        window.draw(inventoryPeche);
+        
+        window.draw(inventoryBack);
         for (int i = 0; i < index; i++) {
             cards[i].drawCard(window);
         }
@@ -74,10 +61,6 @@ public:
 
     void addCard(Texture& t) {
         if (index >= maxCards) return;
-        if (cards != nullptr) fixCards();
-        else {
-            cards = new Card[index + 1];
-        }
         cards[index].setCardTexture(t);
         cards[index].setCardPosition((index * 110) + 180, 5);  // Corrected line
         index++;

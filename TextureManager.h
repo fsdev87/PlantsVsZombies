@@ -13,6 +13,7 @@ private:
     int capacity;
     int idx;
     Texture dummyTexture;
+
 private:
     // For functions
     int getIndexFromName(string n) {
@@ -21,28 +22,19 @@ private:
         }
         return -1;
     }
+
     void resize(int resizeBy) {
-        Texture* temp = new Texture[capacity];
-        string* temp_s = new string[capacity];
-        int oldcapacity = capacity;
-        for (int i = 0; i < capacity; i++) {
-            temp[i] = textures[i];
-            temp_s[i] = names[i];
+        Texture* temp = new Texture[capacity + resizeBy];
+        string* tempS = new string[capacity + resizeBy];
+        for (int i = 0; i < this->capacity; i++) {
+            temp[i] = this->textures[i];
+            tempS[i] = this->names[i];
         }
-        delete textures;
-        delete names;
-        capacity += resizeBy;
-        textures = new Texture[capacity];
-        names = new string[capacity];
-        idx = 0;
-        for (int i = 0; i < oldcapacity; i++) {
-            textures[i] = temp[i];
-            names[i] = temp_s[i];
-            idx++;
-        }
-        delete[] temp_s;
-        delete[] temp;
+        delete[] this->textures, delete[] this->names;
+        this->textures = temp;
+        this->names = tempS;
     }
+
 public:
     TextureManager(int t = 10) : capacity(t), idx(0) {
         textures = new Texture[capacity];
@@ -86,6 +78,3 @@ public:
         textures = nullptr;
     }
 };
-
-
-
