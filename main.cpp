@@ -8,6 +8,20 @@ using namespace sf;
 #include "Background.h"
 #include "Inventory.h"
 
+struct {
+    int leftX = 255;
+    int rightX = 995;
+    int topY = 80;
+    int bottomY = 574;
+
+    bool valid(int x, int y) const {
+        if (x >= leftX && x <= rightX && y >= topY && y <= bottomY) {
+			return true;
+		}
+		return false;
+    }
+} gardenCords;
+
 int main()
 {
     RenderWindow window(VideoMode(1400, 600), "game");
@@ -31,6 +45,17 @@ int main()
     Inv.addCard(TM.getTexture("mine"));
     Inv.addCard(TM.getTexture("peashooter"));
 
+
+
+    RectangleShape garden[6][9];
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 9; j++) {
+			garden[i][j].setSize(Vector2f(80, 80));
+            garden[i][j].setFillColor(((i + j) % 2) == 0 ? Color(255, 255, 255, 100) : Color(255, 255, 255, 200));
+			garden[i][j].setPosition(255 + j * 80, 80 + i * 80);
+		}
+    }
+
     while (window.isOpen())
     {
         Event event;
@@ -45,7 +70,12 @@ int main()
             }
             if (event.type == Event::MouseButtonPressed) {
                 if (event.mouseButton.button == Mouse::Left) {
-					cout << "Mouse X: " << event.mouseButton.x << " Mouse Y: " << event.mouseButton.y << endl;
+                    int mouseX = event.mouseButton.x;
+                    int mouseY = event.mouseButton.y;
+					cout << "Mouse X: " << mouseY << " Mouse Y: " << mouseY << endl;
+                    if (gardenCords.valid(mouseX, mouseY)) {
+                        cout << mouseX / 80 << " " << mouseY / 80 << endl;
+                    }
 				}
 			}
         }
@@ -55,6 +85,11 @@ int main()
         window.clear(Color::Red);
 
         window.draw(background.getSprite());
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 9; j++) {
+				window.draw(garden[i][j]);
+			}
+		}
         // Inv.drawInventory(window);
         window.display();
     }
@@ -62,3 +97,5 @@ int main()
     return 0;
 }
 
+// Top Left of Garden : 255, 80
+// Bottom Right of Garden : 995, 574
