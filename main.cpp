@@ -29,6 +29,7 @@ int main()
     Inv.addCard(TM.getTexture("walnut"));
     Inv.addCard(TM.getTexture("sunflower"));
     Inv.addCard(TM.getTexture("mine"));
+    Inv.addCard(TM.getTexture("peashooter"));
 
     while (window.isOpen())
     {
