@@ -2,7 +2,3 @@ x64/
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters
-
-assets/
-images/
-fonts/
