@@ -29,6 +29,7 @@ int main()
     Inv.addCard(TM.getTexture("walnut"));
     Inv.addCard(TM.getTexture("sunflower"));
     Inv.addCard(TM.getTexture("mine"));
+    Inv.addCard(TM.getTexture("peashooter"));
 
     while (window.isOpen())
     {
@@ -48,13 +49,16 @@ int main()
 				}
 			}
         }
+        /*Vector2i localPosition = sf::Mouse::getPosition(window);
+        cout << "Mouse X: " << localPosition.x << " Mouse Y: " << localPosition.y << endl;*/
 
         window.clear(Color::Red);
 
         window.draw(background.getSprite());
-        Inv.drawInventory(window);
+        // Inv.drawInventory(window);
         window.display();
     }
 
     return 0;
 }
+

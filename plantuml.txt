@@ -1,0 +1,58 @@
+@startuml
+class TextureManager {
+    - textures: Texture*
+    - names: string*
+    - capacity: int
+    - idx: int
+    - dummyTexture: Texture
+    + TextureManager(t: int = 10)
+    + addTexture(source: string, n: string): void
+    + operator[](n: string): Texture&
+    + getTexture(n: int): Texture&
+    + getTexture(name: string): Texture&
+    + ~TextureManager(): void
+    - getIndexFromName(n: string): int
+    - resize(resizeBy: int): void
+}
+
+class Card {
+    - spr: Sprite
+    - darkerShade: Color
+    - rect: RectangleShape
+    + Card()
+    + setCardTexture(t: Texture&): void
+    + setCardPosition(x: int, y: int): void
+    + drawCard(window: RenderWindow&): void
+}
+
+class Inventory {
+    - inventoryPeche: RectangleShape
+    - darkerShade: Color
+    - inventoryHeight: float
+    - inventoryWidth: float
+    - cards: Card*
+    - index: int
+    - maxCards: const int
+    + Inventory()
+    + ~Inventory(): void
+    + drawInventory(window: RenderWindow&): void
+    + addCard(t: Texture&): void
+    - fixCards(): void
+}
+
+class FontManager {
+    - fonts: Font[4]
+    + FontManager()
+    + get(n: int): Font&
+    + operator[](n: int): Font&
+}
+
+class Background {
+    - backgroundTexture: Texture
+    - backgroundSprite: Sprite
+    + Background()
+    + getSprite(): Sprite&
+}
+
+Inventory *-- Card
+@enduml
