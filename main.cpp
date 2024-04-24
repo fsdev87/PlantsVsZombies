@@ -56,10 +56,7 @@ int main()
 			garden[i][j].setPosition(255 + j * 80, 80 + i * 96);
 		}
     }
-    // The entity grid should be mapped to the garden grid
-    Entity* entityGrid[5][9]{ nullptr };
-    //entityGrid[0][0] = new Plant{0,0, TM["peashooter"]};
-    entityGrid[0][8] = new Zombie{8,0, TM["walnut"]};
+   
 
     Clock timer;
 
