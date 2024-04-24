@@ -22,6 +22,7 @@ struct {
     }
 } gardenCords;
 
+
 int main()
 {
     RenderWindow window(VideoMode(1400, 600), "game");
@@ -55,6 +56,12 @@ int main()
 			garden[i][j].setPosition(255 + j * 80, 80 + i * 96);
 		}
     }
+    // The entity grid should be mapped to the garden grid
+    Entity* entityGrid[5][9]{ nullptr };
+    //entityGrid[0][0] = new Plant{0,0, TM["peashooter"]};
+    entityGrid[0][8] = new Zombie{8,0, TM["walnut"]};
+
+    Clock timer;
 
     while (window.isOpen())
     {
@@ -74,7 +81,7 @@ int main()
                     int mouseY = event.mouseButton.y;
 					cout << "Mouse X: " << mouseY << " Mouse Y: " << mouseY << endl;
                     if (gardenCords.valid(mouseX, mouseY)) {
-                        cout << mouseX / 80 << " " << mouseY / 80 << endl;
+                        cout << (mouseX + 255) / 80 << " " << (mouseY + 80) / 96 << endl;
                     }
 				}
 			}
