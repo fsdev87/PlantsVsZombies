@@ -1,0 +1,2 @@
+- Grid Size : 5x9
+- Block Size : 96x80

@@ -47,12 +47,12 @@ int main()
 
 
 
-    RectangleShape garden[6][9];
-    for (int i = 0; i < 6; i++) {
+    RectangleShape garden[5][9];
+    for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 9; j++) {
-			garden[i][j].setSize(Vector2f(80, 80));
-            garden[i][j].setFillColor(((i + j) % 2) == 0 ? Color(255, 255, 255, 100) : Color(255, 255, 255, 200));
-			garden[i][j].setPosition(255 + j * 80, 80 + i * 80);
+			garden[i][j].setSize(Vector2f(80, 96));
+            garden[i][j].setFillColor(((i + j) % 2) == 0 ? Color(255, 255, 255, 50) : Color(255, 255, 255, 100));
+			garden[i][j].setPosition(255 + j * 80, 80 + i * 96);
 		}
     }
 
@@ -85,12 +85,12 @@ int main()
         window.clear(Color::Red);
 
         window.draw(background.getSprite());
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 9; j++) {
 				window.draw(garden[i][j]);
 			}
 		}
-        // Inv.drawInventory(window);
+         //Inv.drawInventory(window);
         window.display();
     }
 
