@@ -9,10 +9,10 @@ using namespace sf;
 #include "Inventory.h"
 
 struct {
-    int leftX = 255;
-    int rightX = 995;
-    int topY = 80;
-    int bottomY = 574;
+    const int leftX = 255;
+    const int rightX = 975;
+    const int topY = 80;
+    const int bottomY = 560;
 
     bool valid(int x, int y) const {
         if (x >= leftX && x <= rightX && y >= topY && y <= bottomY) {
@@ -52,7 +52,7 @@ int main()
         for (int j = 0; j < 9; j++) {
 			garden[i][j].setSize(Vector2f(80, 96));
             garden[i][j].setFillColor(((i + j) % 2) == 0 ? Color(255, 255, 255, 50) : Color(255, 255, 255, 100));
-			garden[i][j].setPosition(255 + j * 80, 80 + i * 96);
+			garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 		}
     }
 
@@ -64,17 +64,19 @@ int main()
             if (event.type == Event::Closed)
                 window.close();
             if (event.type == Event::KeyPressed) {
-                if (event.key.code == Keyboard::E) {
+                if (event.key.code == Keyboard::Escape) {
                     window.close();
                 }
             }
             if (event.type == Event::MouseButtonPressed) {
                 if (event.mouseButton.button == Mouse::Left) {
+                    
                     int mouseX = event.mouseButton.x;
                     int mouseY = event.mouseButton.y;
-					cout << "Mouse X: " << mouseY << " Mouse Y: " << mouseY << endl;
+					cout << "Mouse X: " << mouseX << " Mouse Y: " << mouseY << endl;
                     if (gardenCords.valid(mouseX, mouseY)) {
-                        cout << mouseX / 80 << " " << mouseY / 80 << endl;
+                        cout << mouseX << " " << mouseY << endl;
+                        cout << "Position on Grid: " << (mouseY - gardenCords.topY) / 96 << ", " << (mouseX - gardenCords.leftX) / 80 << endl;
                     }
 				}
 			}
@@ -98,4 +100,4 @@ int main()
 }
 
 // Top Left of Garden : 255, 80
-// Bottom Right of Garden : 995, 574
+// Bottom Right of Garden : 975, 560
