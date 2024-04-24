@@ -22,6 +22,7 @@ struct {
     }
 } gardenCords;
 
+
 int main()
 {
     RenderWindow window(VideoMode(1400, 600), "game");
@@ -55,6 +56,9 @@ int main()
 			garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 		}
     }
+   
+
+    Clock timer;
 
     while (window.isOpen())
     {
