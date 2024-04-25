@@ -31,10 +31,11 @@ int main()
 	TextureManager TM;
 	TM.addTexture("assets/Inventory-GameScreen/ChooserBackground.png", "inventory");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_cherrybomb.png", "card_cherrybomb");
-
+	TM.addTexture("assets/Inventory-GameScreen/Cards/card_chomper.png", "card_chomper");
 
 	Inventory Inv(TM["inventory"]);
 	Inv.addCard(TM["card_cherrybomb"]);
+	Inv.addCard(TM["card_chomper"]);
 
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
