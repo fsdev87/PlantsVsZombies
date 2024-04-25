@@ -14,16 +14,16 @@ protected:
 	Sprite sprite;
 	Clock animClock;
 	int xCord, yCord;
-	const float xfactor = 185, const yfactor = 32;
+
 public:
-	Animation(string source, int boxX, int boxY, int col, int x, int y) : xCord(x), yCord(y), boxX(boxX), boxY(boxY), columns(col), frame(0) {
+	Animation(string source, int boxX, int boxY, int col, int x, int y, float xFactor, float yFactor) : xCord(x), yCord(y), boxX(boxX), boxY(boxY), columns(col), frame(0) {
 		if (!tex.loadFromFile(source)) {
 			cout << "Error loading texture" << endl;
 		}
 		sprite.setTexture(tex);
 		sprite.setTextureRect(IntRect(0, 0, boxX, boxY));
 
-		sprite.setPosition(xfactor + xCord * 80, yfactor + yCord * 96);
+		sprite.setPosition(xFactor + xCord * 80, yFactor + yCord * 96);
 		animClock.restart();
 	}
 

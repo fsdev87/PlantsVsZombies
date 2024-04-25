@@ -52,11 +52,12 @@ int main()
 	}
 
 
-	Level level;
+	//Level level;
 
-	Animation zomb("assets/Spritesheets/bucHeadZombWalk.png", 166, 144, 15, 8, 4);
-	Animation zomb2("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 0, 4);
-	Bullet bullet(0, 3);
+	Animation zomb("assets/Spritesheets/bucHeadZombWalk.png", 166, 144, 15, 8, 1, 185, 32);
+	Animation zomb2("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 5, 1, 185, 32);
+	Animation pea("assets/Spritesheets/peashooter71px.png", 71, 71, 12, 0, 1, 260, 90);
+	Bullet bullet(0, 1);
 
 	while (window.isOpen())
 	{
@@ -69,10 +70,10 @@ int main()
 				if (event.key.code == Keyboard::Escape) {
 					window.close();
 				}
-				else if (event.key.code == Keyboard::R) {
+				/*else if (event.key.code == Keyboard::R) {
 					level.reset();
 					level.increaseLevel();
-				}
+				}*/
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {
@@ -91,6 +92,7 @@ int main()
 		window.clear(Color::Red);
 		zomb.animate();
 		zomb2.animate();
+		pea.animate();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -100,7 +102,7 @@ int main()
 			}
 		}
 		Inv.drawInventory(window);
-		level.move_draw(window);
+		//level.move_draw(window);
 
 
 
@@ -111,6 +113,8 @@ int main()
 
 		zomb.draw(window);
 		zomb2.draw(window);
+
+		pea.draw(window);
 
 		window.display();
 
