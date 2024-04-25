@@ -40,7 +40,7 @@ private:
 public:
 	Inventory(Texture& tex) {
 		inventorySprite.setTexture(tex);
-		inventorySprite.setPosition(60, 0);
+		inventorySprite.setPosition(60, 2);
 		inventorySprite.setScale(1.15, 1.15);
 	}
 
