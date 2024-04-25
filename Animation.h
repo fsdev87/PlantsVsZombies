@@ -14,6 +14,7 @@ protected:
 	Sprite sprite;
 	Clock animClock;
 	int xCord, yCord;
+
 public:
 	Animation(string source, int boxX, int boxY, int col, int x, int y, float xFactor, float yFactor) : xCord(x), yCord(y), boxX(boxX), boxY(boxY), columns(col), frame(0) {
 		if (!tex.loadFromFile(source)) {

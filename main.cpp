@@ -55,13 +55,13 @@ int main()
 
 	//Level level;
 
-	Peashooter pea("assets/Spritesheets/peashooter71px.png", 71, 71, 13, 1, 2);
+	Peashooter pea("assets/Spritesheets/repeater.png", 71, 71, 15, 0, 2);
+	Animation wallnut("assets/Spritesheets/wallnut.png", 71, 71, 16, 1, 2, 260, 90);
 
+	Animation zomb("assets/Spritesheets/zombdie.png", 166, 144, 10, 8, 4, 185, 32);
+	Animation zomb2("assets/Spritesheets/nZombEat.png", 166, 144, 21, 2, 2, 185, 32);
 
-	Animation zomb("assets/Spritesheets/bucHeadZombWalk.png", 166, 144, 15, 8, 4, 185, 32);
-	Animation zomb2("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 0, 4, 185, 32);
-
-
+	Animation sunFlower("assets/Spritesheets/sunflower.png", 71, 71, 18, 0, 3, 260, 90);
 
 	while (window.isOpen())
 	{
@@ -93,11 +93,13 @@ int main()
 			}
 		}
 
-		window.clear(Color::Red);
+		window.clear();
 
 		// Do all updating and animation here...
 		pea.animate();
 		pea.shoot();
+		wallnut.animate();
+		sunFlower.animate();
 
 		zomb.animate();
 		zomb2.animate();
@@ -117,6 +119,8 @@ int main()
 		zomb.draw(window);
 		zomb2.draw(window);
 
+		sunFlower.draw(window);
+		wallnut.draw(window);
 		pea.draw(window);
 
 

@@ -7,8 +7,6 @@ using namespace sf;
 class Peashooter : public Plant {
 	Bullet bullet;
 
-
-
 public:
 	Peashooter(string source, int boxX, int boxY, int col, int x, int y) : bullet(x, y), Plant(source, boxX, boxY, col, x, y) {
 		this->health = 100;
@@ -18,6 +16,10 @@ public:
 
 	void shoot() {
 		bullet.move();
+		if (bullet.getExist() == false) {
+			bullet.setPosition(position);
+			bullet.getExist() = true;
+		}
 	}
 
 	void draw(RenderWindow& window) {
