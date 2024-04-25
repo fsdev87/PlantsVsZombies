@@ -53,7 +53,7 @@ int main()
 	}
 
 
-	Level level;
+	//Level level;
 
 	Peashooter pea("assets/Spritesheets/peashooter71px.png", 71, 71, 13, 1, 2, 100, 100);
 	pea.setFactor(255, 90);
@@ -74,10 +74,10 @@ int main()
 				if (event.key.code == Keyboard::Escape) {
 					window.close();
 				}
-				else if (event.key.code == Keyboard::R) {
+				/*else if (event.key.code == Keyboard::R) {
 					level.reset();
 					level.increaseLevel();
-				}
+				}*/
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {
@@ -101,6 +101,7 @@ int main()
 
 		zomb.animate();
 		zomb2.animate();
+		pea.animate();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -110,7 +111,7 @@ int main()
 			}
 		}
 		Inv.drawInventory(window);
-		level.move_draw(window);
+		//level.move_draw(window);
 
 
 
