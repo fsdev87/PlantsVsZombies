@@ -27,6 +27,7 @@ int main()
 {
 	RenderWindow window(VideoMode(1400, 600), "game");
 	Background background;
+	FontManager FM;
 
 	TextureManager TM;
 	TM.addTexture("assets/Inventory-GameScreen/ChooserBackground.png", "inventory");
@@ -61,6 +62,17 @@ int main()
 		}
 	}
 
+
+	Text levelText;
+	levelText.setFont(FM[0]);
+	levelText.setString("Level 1");
+	levelText.setCharacterSize(100);
+	levelText.setFillColor(Color::Red);
+	levelText.setPosition(-250, 100);
+	// Text.Move( 0 ,App.GetFrameTime() * SCROLL_SPEED) ;
+	int scrollspeed = 20;
+
+	Clock mainClock;
 	while (window.isOpen())
 	{
 		Event event;
@@ -86,6 +98,20 @@ int main()
 				}
 			}
 		}
+		Time dt = mainClock.restart();
+		if (levelText.getPosition().x < 1400) {
+			if (levelText.getPosition().x < 550) {
+				scrollspeed += 5;
+			}
+			else if (levelText.getPosition().x > 600) {
+				scrollspeed += 5;
+			}
+			else {
+				scrollspeed = 18;
+			}
+			levelText.move(dt.asSeconds() * scrollspeed, 0);
+		}
+
 		/*Vector2i localPosition = sf::Mouse::getPosition(window);
 		cout << "Mouse X: " << localPosition.x << " Mouse Y: " << localPosition.y << endl;*/
 
@@ -97,7 +123,7 @@ int main()
 				window.draw(garden[i][j]);
 			}
 		}
-
+		window.draw(levelText);
 		Inv.drawInventory(window);
 		window.display();
 	}
