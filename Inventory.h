@@ -55,7 +55,7 @@ public:
 		cout << "Added card\n";
 		if (index >= maxCards) return;
 		cards[index].setCardTexture(t);
-		cards[index].setCardPosition(130 + (index * 64) + 5, 2);  // Corrected line
+		cards[index].setCardPosition(130 + (index * 64) + 5, 2);
 		index++;
 	}
 };
