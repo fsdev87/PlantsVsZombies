@@ -51,9 +51,13 @@ public:
 
 	void addCard(Texture& t) {
 		cout << "Added card\n";
-		if (index >= maxCards) return;
+		if (index >= maxCards) {
+			cout << "Inventory is full\n";
+			return;
+		}
 		cards[index].setCardTexture(t);
-		cards[index].setCardPosition(142 + (index * 64) + 3, 8);
+		cards[index].setCardPosition(150 + (index * 59), 9);
+
 		index++;
 	}
 };

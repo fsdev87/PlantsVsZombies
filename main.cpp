@@ -27,15 +27,31 @@ int main()
 {
 	RenderWindow window(VideoMode(1400, 600), "game");
 	Background background;
+	FontManager FM;
 
 	TextureManager TM;
 	TM.addTexture("assets/Inventory-GameScreen/ChooserBackground.png", "inventory");
+	TM.addTexture("assets/Inventory-GameScreen/Cards/card_sunflower.png", "card_sunflower");
+	TM.addTexture("assets/Inventory-GameScreen/Cards/card_peashooter.png", "card_peashooter");
+	TM.addTexture("assets/Inventory-GameScreen/Cards/card_repeaterpea.png", "card_repeater");
+	TM.addTexture("assets/Inventory-GameScreen/Cards/card_wallnut.png", "card_wallnut");
+	TM.addTexture("assets/Inventory-GameScreen/Cards/card_snowpea.png", "card_snowpea");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_cherrybomb.png", "card_cherrybomb");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_chomper.png", "card_chomper");
 
+
 	Inventory Inv(TM["inventory"]);
+	Inv.addCard(TM["card_sunflower"]);
+	Inv.addCard(TM["card_peashooter"]);
+	Inv.addCard(TM["card_repeater"]);
+	Inv.addCard(TM["card_wallnut"]);
+	Inv.addCard(TM["card_snowpea"]);
 	Inv.addCard(TM["card_cherrybomb"]);
 	Inv.addCard(TM["card_chomper"]);
+	Inv.addCard(TM["card_sunflower"]);
+	Inv.addCard(TM["card_peashooter"]);
+
+
 
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
@@ -71,9 +87,6 @@ int main()
 				}
 			}
 		}
-		/*Vector2i localPosition = sf::Mouse::getPosition(window);
-		cout << "Mouse X: " << localPosition.x << " Mouse Y: " << localPosition.y << endl;*/
-
 		window.clear(Color::Red);
 
 		window.draw(background.getSprite());
@@ -82,7 +95,6 @@ int main()
 				window.draw(garden[i][j]);
 			}
 		}
-
 		Inv.drawInventory(window);
 		window.display();
 	}
