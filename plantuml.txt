@@ -1,58 +1,161 @@
 @startuml
-class TextureManager {
-    - textures: Texture*
-    - names: string*
-    - capacity: int
-    - idx: int
-    - dummyTexture: Texture
-    + TextureManager(t: int = 10)
-    + addTexture(source: string, n: string): void
-    + operator[](n: string): Texture&
-    + getTexture(n: int): Texture&
-    + getTexture(name: string): Texture&
-    + ~TextureManager(): void
-    - getIndexFromName(n: string): int
-    - resize(resizeBy: int): void
+class Game {
+- Screen Menu[5]
+- int lives
+- int level
+- int sunCount
++ void run()
 }
 
+class Screen {
+- string title
+- string category
++ void draw(RenderWindow& window)
+}
+
+class Player {
+- string name
+- int score
++ void setName(string n)
++ void setScore(int s)
++ void writeScoreToFile()
+}
+
+Game *-- Screen
+Game *-- Plant
+Game *-- Zombie
+Game *-- Player
+
+class Plant {
+- int cost
+- int placeInterval
+- string type
++ virtual void shoot()
+}
+Plant <-- Shooter
+Peashooter --> Shooter
+SnowPea --> Shooter
+Repeater --> Shooter
+
+class Shooter {
++ void shoot() // once
+}
+class Peashooter{
++ void shoot()
+}
+class Repeater {
++ void shoot() override
+}
+class SnowPea {
++ void freeze()
+}
+
+Sunflower --> Plant
+WallNut --> Plant
+CherryBomb --> Plant
+
+class Sunflower {
+  + generateSun(): void
+}
+
+
+class WallNut {
+  - cost: int = 50
+  + blockZombies(): void
+}
+
+
+class CherryBomb {
+  - cost: int = 150
+  + explode(): void
+}
+
+
+
+class Zombie {
+  - speed: String
+  - damageTolerance: int
+  - abilities: String
+}
+
+class SimpleZombie {
+  + void move()
+}
+
+class FootballZombie {
+  + void moveLeft()
+  + void moveRight()
+}
+
+class FlyingZombie {
+  + void fly()
+}
+
+class DancingZombie {
+  + void summonZombies()
+  + void moveDiagonally()
+}
+
+class DolphinRiderZombie {
+  + void jumpOverPlant()
+}
+
+Zombie <-- SimpleZombie
+Zombie <-- FootballZombie
+Zombie <-- FlyingZombie
+Zombie <-- DancingZombie
+Zombie <-- DolphinRiderZombie
+
+
 class Card {
-    - spr: Sprite
-    - darkerShade: Color
-    - rect: RectangleShape
-    + Card()
-    + setCardTexture(t: Texture&): void
-    + setCardPosition(x: int, y: int): void
-    + drawCard(window: RenderWindow&): void
+  - spr: Sprite
+
+  + Card()
+  + void setCardTexture(Texture& t)
+  + void setCardPosition(int x, int y)
+  + void drawCard(RenderWindow& window) const
 }
 
 class Inventory {
-    - inventoryPeche: RectangleShape
-    - darkerShade: Color
-    - inventoryHeight: float
-    - inventoryWidth: float
-    - cards: Card*
-    - index: int
-    - maxCards: const int
-    + Inventory()
-    + ~Inventory(): void
-    + drawInventory(window: RenderWindow&): void
-    + addCard(t: Texture&): void
-    - fixCards(): void
-}
+  - inventoryHeight: float
+  - inventoryWidth: float
+  - cards: Card[8]
+  - index: int
+  - maxCards: const int
+  - inventorySprite: Sprite
 
-class FontManager {
-    - fonts: Font[4]
-    + FontManager()
-    + get(n: int): Font&
-    + operator[](n: int): Font&
-}
-
-class Background {
-    - backgroundTexture: Texture
-    - backgroundSprite: Sprite
-    + Background()
-    + getSprite(): Sprite&
+  + Inventory(Texture& tex)
+  + void drawInventory(RenderWindow& window) const
+  + void addCard(Texture& t)
 }
 
 Inventory *-- Card
+
+class FontManager {
+  - fonts: Font[4]
+
+  + FontManager()
+  + Font& get(int n)
+  + Font& operator[](int n)
+}
+
+class TextureManager {
+  - textures: Texture*
+  - names: string*
+  - capacity: int
+
+  - int getIndexFromName(string n)
+  - void resize(int resizeBy)
+
+  + TextureManager(int t)
+  + void addTexture(string source, string n)
+  + Texture& operator[](string n)
+  + Texture& getTexture(int n)
+  + Texture& getTexture(string name)
+  + ~TextureManager()
+}
+
+Game *-- TextureManager
+Game *-- FontManager
+Game *-- Inventory
 @enduml
