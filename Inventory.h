@@ -10,12 +10,11 @@ private:
 	Sprite spr;
 
 public:
-	Card() {
-
-	}
+	Card() {}
 
 	void setCardTexture(Texture& t) {
 		spr.setTexture(t);
+		spr.setScale(0.86, 0.86);
 	}
 
 	void setCardPosition(int x, int y) {
@@ -36,12 +35,11 @@ private:
 	const int maxCards = 8;
 	Sprite inventorySprite;
 
-
 public:
 	Inventory(Texture& tex) {
 		inventorySprite.setTexture(tex);
-		inventorySprite.setPosition(60, 2);
-		inventorySprite.setScale(1.15, 1.15);
+		inventorySprite.setPosition(60, 0);
+		inventorySprite.setScale(1.1, 1.1);
 	}
 
 	void drawInventory(RenderWindow& window) const {
@@ -55,7 +53,7 @@ public:
 		cout << "Added card\n";
 		if (index >= maxCards) return;
 		cards[index].setCardTexture(t);
-		cards[index].setCardPosition(130 + (index * 64) + 5, 2);
+		cards[index].setCardPosition(142 + (index * 64) + 3, 8);
 		index++;
 	}
 };
