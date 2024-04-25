@@ -1,6 +1,8 @@
 #pragma once
 
 struct {
+	const int boxLeft = 185;
+	const int boxTop = 30;
 	const int leftX = 255;
 	const int rightX = 975;
 	const int topY = 80;

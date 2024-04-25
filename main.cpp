@@ -10,6 +10,7 @@ using namespace sf;
 #include "Level.h"
 #include "Garden.h"
 #include "Animation.h"
+#include "Bullet.h"
 
 
 
@@ -28,7 +29,6 @@ int main()
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_snowpea.png", "card_snowpea");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_cherrybomb.png", "card_cherrybomb");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_chomper.png", "card_chomper");
-	TM.addTexture("assets/Spritesheets/peashooter.png", "peashooter");
 
 
 	Inventory Inv(TM["inventory"]);
@@ -56,11 +56,11 @@ int main()
 
 	Level level;
 
-	Animation pea("assets/Spritesheets/peashooter.png", 128, 15, 4, 5);
+	Animation pea("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 1, 2);
 
+	Bullet bullet(1, 2);
 
-
-
+	bool moveBullet = false;
 	while (window.isOpen())
 	{
 		Event event;
@@ -76,6 +76,9 @@ int main()
 					level.reset();
 					level.increaseLevel();
 				}
+				else if (event.key.code == Keyboard::Space) {
+					moveBullet = !moveBullet;
+				}
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {
@@ -90,6 +93,7 @@ int main()
 				}
 			}
 		}
+		if (moveBullet) bullet.move();
 
 		window.clear(Color::Red);
 		pea.animate();
@@ -106,6 +110,7 @@ int main()
 		level.move_draw(window);
 
 		pea.draw(window);
+		bullet.draw(window);
 		window.display();
 	}
 
