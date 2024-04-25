@@ -7,6 +7,7 @@ using namespace sf;
 #include "TextureManager.h"
 #include "Background.h"
 #include "Inventory.h"
+#include "Level.h"
 
 struct {
 	const int leftX = 255;
@@ -46,6 +47,11 @@ int main()
 		}
 	}
 
+
+
+	Level level;
+
+
 	while (window.isOpen())
 	{
 		Event event;
@@ -82,8 +88,11 @@ int main()
 				window.draw(garden[i][j]);
 			}
 		}
-
 		Inv.drawInventory(window);
+		level.move(window);
+
+
+
 		window.display();
 	}
 
