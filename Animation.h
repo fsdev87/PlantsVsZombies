@@ -5,8 +5,10 @@ using namespace sf;
 using namespace std;
 
 class Animation {
+protected:
 	int columns;
-	int boxSize;
+	int boxX;
+	int boxY;
 	int frame;
 	Texture tex;
 	Sprite sprite;
@@ -14,20 +16,20 @@ class Animation {
 	int xCord, yCord;
 
 public:
-	Animation(string source, int boxsize, int col, int x, int y) : xCord(x), yCord(y), boxSize(boxsize), columns(col), frame(0) {
+	Animation(string source, int boxX, int boxY, int col, int x, int y) : xCord(x), yCord(y), boxX(boxX), boxY(boxY), columns(col), frame(0) {
 		if (!tex.loadFromFile(source)) {
 			cout << "Error loading texture" << endl;
 		}
 		sprite.setTexture(tex);
-		sprite.setTextureRect(IntRect(0, 0, boxSize, boxSize));
-		sprite.setPosition(255 + yCord * 80, 80 + xCord * 96);
+		sprite.setTextureRect(IntRect(0, 0, boxX, boxY));
+		sprite.setPosition(185 + yCord * 80, 30 + xCord * 96);
 		animClock.restart();
 	}
 
 	void animate() {
-		float time = animClock.getElapsedTime().asSeconds();
-		if (time > 0.05) {
-			sprite.setTextureRect(IntRect(frame * boxSize, 0, boxSize, boxSize));
+		float time = animClock.getElapsedTime().asMilliseconds();
+		if (time > 100) {
+			sprite.setTextureRect(IntRect(frame * boxX, 0, boxX, boxY));
 			frame += 1;
 			animClock.restart();
 		}
