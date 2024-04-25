@@ -29,24 +29,7 @@ int main()
 	Background background;
 
 	TextureManager TM;
-	TM.addTexture("assets/images/i_cherry.png", "cherrybomb");
-	TM.addTexture("assets/images/i_chomper.png", "chomper");
-	TM.addTexture("assets/images/i_freeze.png", "freezer");
-	TM.addTexture("assets/images/i_mine.png", "mine");
-	TM.addTexture("assets/images/i_sunflower.png", "sunflower");
-	TM.addTexture("assets/images/i_walnut.png", "walnut");
-	TM.addTexture("assets/images/sun.png", "sun");
-	TM.addTexture("assets/images/i_pea.png", "peashooter");
-
-
 	Inventory Inv;
-	Inv.addCard(TM.getTexture("cherrybomb"));
-	Inv.addCard(TM.getTexture("walnut"));
-	Inv.addCard(TM.getTexture("sunflower"));
-	Inv.addCard(TM.getTexture("mine"));
-	Inv.addCard(TM.getTexture("peashooter"));
-
-
 
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
