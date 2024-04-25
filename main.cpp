@@ -9,15 +9,16 @@ using namespace sf;
 #include "Inventory.h"
 #include "Level.h"
 #include "Garden.h"
+#include "Animation.h"
 
 
 
 int main()
 {
 	RenderWindow window(VideoMode(1400, 600), "game");
+
 	Background background;
 	FontManager FM;
-
 	TextureManager TM;
 	TM.addTexture("assets/Inventory-GameScreen/ChooserBackground.png", "inventory");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_sunflower.png", "card_sunflower");
@@ -27,6 +28,7 @@ int main()
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_snowpea.png", "card_snowpea");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_cherrybomb.png", "card_cherrybomb");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_chomper.png", "card_chomper");
+	TM.addTexture("assets/Spritesheets/peashooter.png", "peashooter");
 
 
 	Inventory Inv(TM["inventory"]);
@@ -52,8 +54,11 @@ int main()
 	}
 
 
-
 	Level level;
+
+	Animation pea("assets/Spritesheets/peashooter.png", 128, 15, 4, 5);
+
+
 
 
 	while (window.isOpen())
@@ -87,7 +92,7 @@ int main()
 		}
 
 		window.clear(Color::Red);
-
+		pea.animate();
 
 
 		// Draw everything here...
@@ -100,8 +105,7 @@ int main()
 		Inv.drawInventory(window);
 		level.move_draw(window);
 
-
-
+		pea.draw(window);
 		window.display();
 	}
 
