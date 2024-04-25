@@ -87,8 +87,6 @@ int main()
 				}
 			}
 		}
-
-
 		window.clear(Color::Red);
 
 		window.draw(background.getSprite());
@@ -97,7 +95,6 @@ int main()
 				window.draw(garden[i][j]);
 			}
 		}
-		window.draw(levelText);
 		Inv.drawInventory(window);
 		window.display();
 	}
