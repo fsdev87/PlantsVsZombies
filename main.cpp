@@ -29,7 +29,12 @@ int main()
 	Background background;
 
 	TextureManager TM;
-	Inventory Inv;
+	TM.addTexture("assets/Inventory-GameScreen/ChooserBackground.png", "inventory");
+	TM.addTexture("assets/Inventory-GameScreen/Cards/card_cherrybomb.png", "card_cherrybomb");
+
+
+	Inventory Inv(TM["inventory"]);
+	Inv.addCard(TM["card_cherrybomb"]);
 
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
@@ -76,7 +81,8 @@ int main()
 				window.draw(garden[i][j]);
 			}
 		}
-		//Inv.drawInventory(window);
+
+		Inv.drawInventory(window);
 		window.display();
 	}
 

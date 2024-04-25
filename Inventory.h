@@ -7,62 +7,55 @@ using namespace std;
 
 class Card {
 private:
-    Sprite spr;
-    Color darkerShade{ 220, 50, 19 };
-    RectangleShape rect;
+	Sprite spr;
 
 public:
-    Card() {
-        rect.setSize({ 100, 85 });
-        rect.setFillColor(darkerShade);
-        spr.setScale({ 0.16, 0.16 });
-    }
+	Card() {
 
-    void setCardTexture(Texture& t) {
-        spr.setTexture(t);
-    }
+	}
 
-    void setCardPosition(int x, int y) {
-        spr.setPosition(x + 5, y);
-        rect.setPosition(x, y);
-    }
+	void setCardTexture(Texture& t) {
+		spr.setTexture(t);
+	}
 
-    void drawCard(RenderWindow& window) const {
-        window.draw(rect);
-        window.draw(spr);
-    }
+	void setCardPosition(int x, int y) {
+		spr.setPosition(x, y);
+	}
+
+	void drawCard(RenderWindow& window) const {
+		window.draw(spr);
+	}
 };
 
 class Inventory {
 private:
-    RectangleShape inventoryBack;
-    Color darkerShade{ 110, 50, 19, 220 };
-    float inventoryHeight = 100;
-    float inventoryWidth = 800;
-    Card cards[8];
-    int index = 0;
-    const int maxCards = 8;
+	float inventoryHeight = 100;
+	float inventoryWidth = 800;
+	Card cards[8];
+	int index = 0;
+	const int maxCards = 8;
+	Sprite inventorySprite;
+
 
 public:
-    Inventory() : inventoryBack({ 800, 100}) {
-        inventoryBack.setFillColor(darkerShade);
-        inventoryBack.setPosition(150, 0);
-        /* no need to initialize all 8 cards as default constructor automatically calls
-        for all cards object in the array */
-    }
+	Inventory(Texture& tex) {
+		inventorySprite.setTexture(tex);
+		inventorySprite.setPosition(60, 0);
+		inventorySprite.setScale(1.15, 1.15);
+	}
 
-    void drawInventory(RenderWindow& window) const {
-        
-        window.draw(inventoryBack);
-        for (int i = 0; i < index; i++) {
-            cards[i].drawCard(window);
-        }
-    }
+	void drawInventory(RenderWindow& window) const {
+		window.draw(inventorySprite);
+		for (int i = 0; i < index; i++) {
+			cards[i].drawCard(window);
+		}
+	}
 
-    void addCard(Texture& t) {
-        if (index >= maxCards) return;
-        cards[index].setCardTexture(t);
-        cards[index].setCardPosition((index * 110) + 180, 5);  // Corrected line
-        index++;
-    }
+	void addCard(Texture& t) {
+		cout << "Added card\n";
+		if (index >= maxCards) return;
+		cards[index].setCardTexture(t);
+		cards[index].setCardPosition(130 + (index * 64) + 5, 2);  // Corrected line
+		index++;
+	}
 };
