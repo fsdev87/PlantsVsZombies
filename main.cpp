@@ -55,13 +55,13 @@ int main()
 
 	//Level level;
 
-	Peashooter pea("assets/Spritesheets/peashooter71px.png", 71, 71, 13, 1, 2, 100, 100);
-	pea.setFactor(255, 90);
-	Animation zomb("assets/Spritesheets/bucHeadZombWalk.png", 166, 144, 15, 8, 4);
-	Animation zomb2("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 0, 4);
-	Bullet bullet(0, 3);
+	Peashooter pea("assets/Spritesheets/peashooter71px.png", 71, 71, 13, 1, 2);
 
-	pea.setShoot();
+
+	Animation zomb("assets/Spritesheets/bucHeadZombWalk.png", 166, 144, 15, 8, 4, 185, 32);
+	Animation zomb2("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 0, 4, 185, 32);
+
+
 
 	while (window.isOpen())
 	{
@@ -101,7 +101,6 @@ int main()
 
 		zomb.animate();
 		zomb2.animate();
-		pea.animate();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -112,11 +111,6 @@ int main()
 		}
 		Inv.drawInventory(window);
 		//level.move_draw(window);
-
-
-
-		bullet.move();
-		bullet.draw(window);
 
 
 

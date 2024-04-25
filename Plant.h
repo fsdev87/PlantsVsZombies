@@ -10,11 +10,11 @@ protected:
 	float position[2];
 	int health;
 	int cost;
+	bool exists;
 
 public:
-	Plant(string source, int boxX, int boxY, int col, int x, int y, int h, int c) : Animation(source, boxX, boxY, col, x, y) {
-		health = h;
-		cost = c;
+	Plant(string source, int boxX, int boxY, int col, int x, int y) : Animation(source, boxX, boxY, col, x, y, 260, 90) {
+
 		position[0] = x;
 		position[1] = y;
 	}

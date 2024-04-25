@@ -6,17 +6,20 @@ using namespace sf;
 
 class Peashooter : public Plant {
 	Bullet bullet;
-	bool shootBullet = false;
+
+
+
 public:
-	Peashooter(string source, int boxX, int boxY, int col, int x, int y, int h, int c) : bullet(x, y), Plant(source, boxX, boxY, col, x, y, h, c) {}
-	void setShoot() {
-		shootBullet = true;
+	Peashooter(string source, int boxX, int boxY, int col, int x, int y) : bullet(x, y), Plant(source, boxX, boxY, col, x, y) {
+		this->health = 100;
+		this->cost = 100;
+		this->exists = true;
 	}
+
 	void shoot() {
-		if (shootBullet) {
-			bullet.move();
-		}
+		bullet.move();
 	}
+
 	void draw(RenderWindow& window) {
 		bullet.draw(window);
 		window.draw(sprite);
