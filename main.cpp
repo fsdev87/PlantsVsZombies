@@ -11,7 +11,7 @@ using namespace sf;
 #include "Garden.h"
 #include "Animation.h"
 #include "Bullet.h"
-
+#include "Peashooter.h"
 
 
 int main()
@@ -56,11 +56,9 @@ int main()
 
 	Level level;
 
-	Animation pea("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 1, 2);
+	Peashooter pea("assets/Spritesheets/peashooter71px.png", 71, 71, 13, 1, 2, 100, 100);
+	pea.setFactor(255, 90);
 
-	Bullet bullet(1, 2);
-
-	bool moveBullet = false;
 	while (window.isOpen())
 	{
 		Event event;
@@ -77,7 +75,8 @@ int main()
 					level.increaseLevel();
 				}
 				else if (event.key.code == Keyboard::Space) {
-					moveBullet = !moveBullet;
+					cout << "Space \n";
+					pea.setShoot();
 				}
 			}
 			if (event.type == Event::MouseButtonPressed) {
@@ -93,10 +92,12 @@ int main()
 				}
 			}
 		}
-		if (moveBullet) bullet.move();
 
 		window.clear(Color::Red);
+
+		// Do all updating and animation here...
 		pea.animate();
+		pea.shoot();
 
 
 		// Draw everything here...
@@ -110,7 +111,8 @@ int main()
 		level.move_draw(window);
 
 		pea.draw(window);
-		bullet.draw(window);
+
+
 		window.display();
 	}
 
@@ -120,3 +122,10 @@ int main()
 // Top Left of Garden : 255, 80
 // Bottom Right of Garden : 975, 560
 
+
+/*
+	if image size is 80x80
+	 then xfactor = 255 and yfactor = ~100
+	if image size is 166x144
+	then xfactor = 185 and yfactor = 32
+*/
