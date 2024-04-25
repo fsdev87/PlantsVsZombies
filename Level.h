@@ -11,7 +11,7 @@ private:
 	Text levelText;
 	FontManager FM;
 	float levelPosition[2];
-	const float middle1 = 450, middle2 = 600;
+	const float middle1 = 450, middle2 = 550;
 	float speed;
 	bool midWay;
 	Clock levelClock;
@@ -20,10 +20,10 @@ private:
 
 public:
 	Level() {
-		levelText.setFont(FM[0]);
-		levelText.setCharacterSize(100);
+		levelText.setFont(FM[2]);
+		levelText.setCharacterSize(120);
 		levelText.setString("LEVEL 1");
-		levelText.setFillColor(Color(153, 0, 26));
+		levelText.setFillColor(Color(16, 12, 12));
 		levelPosition[0] = -250, levelPosition[1] = 250;
 		levelText.setPosition(levelPosition[0], levelPosition[1]);
 		speed = 50;
@@ -42,7 +42,7 @@ public:
 		level++;
 		levelText.setString("LEVEL " + to_string(level));
 	}
-	void move(RenderWindow& window) {
+	void move_draw(RenderWindow& window) {
 		if (exists) {
 			if (levelClock.getElapsedTime().asMilliseconds() > 15) {
 				levelPosition[0] += speed;

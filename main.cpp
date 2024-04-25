@@ -8,20 +8,8 @@ using namespace sf;
 #include "Background.h"
 #include "Inventory.h"
 #include "Level.h"
+#include "Garden.h"
 
-struct {
-	const int leftX = 255;
-	const int rightX = 975;
-	const int topY = 80;
-	const int bottomY = 560;
-
-	bool valid(int x, int y) const {
-		if (x >= leftX && x <= rightX && y >= topY && y <= bottomY) {
-			return true;
-		}
-		return false;
-	}
-} gardenCords;
 
 
 int main()
@@ -79,6 +67,10 @@ int main()
 				if (event.key.code == Keyboard::Escape) {
 					window.close();
 				}
+				else if (event.key.code == Keyboard::R) {
+					level.reset();
+					level.increaseLevel();
+				}
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {
@@ -93,8 +85,12 @@ int main()
 				}
 			}
 		}
+
 		window.clear(Color::Red);
 
+
+
+		// Draw everything here...
 		window.draw(background.getSprite());
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -102,7 +98,7 @@ int main()
 			}
 		}
 		Inv.drawInventory(window);
-		level.move(window);
+		level.move_draw(window);
 
 
 
@@ -114,3 +110,4 @@ int main()
 
 // Top Left of Garden : 255, 80
 // Bottom Right of Garden : 975, 560
+
