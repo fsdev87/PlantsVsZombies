@@ -61,6 +61,8 @@ int main()
 	Animation zomb2("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 0, 4);
 	Bullet bullet(0, 3);
 
+	pea.setShoot();
+
 	while (window.isOpen())
 	{
 		Event event;
