@@ -10,8 +10,8 @@ using namespace sf;
 #include "Level.h"
 #include "Garden.h"
 #include "Animation.h"
+#include "Plant.h"
 #include "Bullet.h"
-
 
 
 int main()
@@ -30,7 +30,6 @@ int main()
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_cherrybomb.png", "card_cherrybomb");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_chomper.png", "card_chomper");
 
-
 	Inventory Inv(TM["inventory"]);
 	Inv.addCard(TM["card_sunflower"]);
 	Inv.addCard(TM["card_peashooter"]);
@@ -41,7 +40,6 @@ int main()
 	Inv.addCard(TM["card_chomper"]);
 	Inv.addCard(TM["card_sunflower"]);
 	Inv.addCard(TM["card_peashooter"]);
-
 
 
 	RectangleShape garden[5][9];
@@ -56,11 +54,10 @@ int main()
 
 	Level level;
 
-	Animation pea("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 1, 2);
+	Animation zomb("assets/Spritesheets/bucHeadZombWalk.png", 166, 144, 15, 8, 4);
+	Animation zomb2("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 0, 4);
+	Bullet bullet(0, 3);
 
-	Bullet bullet(1, 2);
-
-	bool moveBullet = false;
 	while (window.isOpen())
 	{
 		Event event;
@@ -76,9 +73,6 @@ int main()
 					level.reset();
 					level.increaseLevel();
 				}
-				else if (event.key.code == Keyboard::Space) {
-					moveBullet = !moveBullet;
-				}
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {
@@ -93,11 +87,10 @@ int main()
 				}
 			}
 		}
-		if (moveBullet) bullet.move();
 
 		window.clear(Color::Red);
-		pea.animate();
-
+		zomb.animate();
+		zomb2.animate();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -109,9 +102,18 @@ int main()
 		Inv.drawInventory(window);
 		level.move_draw(window);
 
-		pea.draw(window);
+
+
+		bullet.move();
 		bullet.draw(window);
+
+
+
+		zomb.draw(window);
+		zomb2.draw(window);
+
 		window.display();
+
 	}
 
 	return 0;
@@ -119,4 +121,3 @@ int main()
 
 // Top Left of Garden : 255, 80
 // Bottom Right of Garden : 975, 560
-
