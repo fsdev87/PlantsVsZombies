@@ -35,8 +35,9 @@ public:
 	}
 	void draw(RenderWindow& window) {
 		if (exists) {
-			sprite.setPosition(310 + position[0] * 80, 110 + position[1] * 96);
+			sprite.setPosition(305 + position[0] * 80, 95 + position[1] * 96);
 			window.draw(sprite);
 		}
 	}
+	Sprite& getSprite() { return sprite; }
 };

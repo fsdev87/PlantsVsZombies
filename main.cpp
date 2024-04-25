@@ -12,6 +12,7 @@ using namespace sf;
 #include "Animation.h"
 #include "Plant.h"
 #include "Bullet.h"
+#include "Peashooter.h"
 
 
 int main()
@@ -54,6 +55,8 @@ int main()
 
 	Level level;
 
+	Peashooter pea("assets/Spritesheets/peashooter71px.png", 71, 71, 13, 1, 2, 100, 100);
+	pea.setFactor(255, 90);
 	Animation zomb("assets/Spritesheets/bucHeadZombWalk.png", 166, 144, 15, 8, 4);
 	Animation zomb2("assets/Spritesheets/nZombWalk.png", 166, 144, 22, 0, 4);
 	Bullet bullet(0, 3);
@@ -89,6 +92,11 @@ int main()
 		}
 
 		window.clear(Color::Red);
+
+		// Do all updating and animation here...
+		pea.animate();
+		pea.shoot();
+
 		zomb.animate();
 		zomb2.animate();
 
@@ -112,6 +120,9 @@ int main()
 		zomb.draw(window);
 		zomb2.draw(window);
 
+		pea.draw(window);
+
+
 		window.display();
 
 	}
@@ -121,3 +132,11 @@ int main()
 
 // Top Left of Garden : 255, 80
 // Bottom Right of Garden : 975, 560
+
+
+/*
+	if image size is 80x80
+	 then xfactor = 255 and yfactor = ~100
+	if image size is 166x144
+	then xfactor = 185 and yfactor = 32
+*/
