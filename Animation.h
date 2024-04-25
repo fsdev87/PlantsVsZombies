@@ -14,7 +14,7 @@ protected:
 	Sprite sprite;
 	Clock animClock;
 	int xCord, yCord;
-	const float xfactor = 185, const yfactor = 32;
+	float xfactor = 185, yfactor = 32;
 public:
 	Animation(string source, int boxX, int boxY, int col, int x, int y) : xCord(x), yCord(y), boxX(boxX), boxY(boxY), columns(col), frame(0) {
 		if (!tex.loadFromFile(source)) {
@@ -25,6 +25,12 @@ public:
 
 		sprite.setPosition(xfactor + xCord * 80, yfactor + yCord * 96);
 		animClock.restart();
+	}
+
+	void setFactor(float x, float y) {
+		xfactor = x;
+		yfactor = y;
+		sprite.setPosition(x + xCord * 80, y + yCord * 96);
 	}
 
 	void animate() {
