@@ -1,7 +1,6 @@
 #pragma once
 #include "Animation.h"
 
-
 class Zombie {
 protected:
 	Sprite sprite;

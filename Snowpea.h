@@ -28,9 +28,6 @@ public:
 		startClock.restart();
 	}
 
-	void setDelay(float f) {
-		anim.setDelay(f);
-	}
 
 	void shoot() {
 		bullet.move();

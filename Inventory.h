@@ -35,7 +35,6 @@ private:
 
 	//
 	int plantIndex = 0;
-	int plantCords[45][2];
 
 public:
 	Inventory(TextureManager* tm) {
