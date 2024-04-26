@@ -20,7 +20,7 @@ public:
 	virtual void explode() {
 		if (this->exists) {
 			int frame = this->anim.getFrame();
-			if (frame == (this->columns - 1)) {
+			if (frame == (this->columns - 1)) { // is the last frame
 				this->exists = false; // cherrybomb exploded
 			}
 			// this is done so that when one animation is done, the bomb is exploded

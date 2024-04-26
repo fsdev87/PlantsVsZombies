@@ -17,6 +17,7 @@ using namespace sf;
 #include "NormalZombie.h"
 #include "Sunflower.h"
 #include "Wallnut.h"
+#include "Cherrybomb.h"
 
 
 int main()

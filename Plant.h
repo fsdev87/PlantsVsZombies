@@ -25,13 +25,10 @@ public:
 	bool getExist() { return this->exists; }
 
 	virtual void setDelay(float f) {}
-	virtual void animate() {}
+	virtual void animate() = 0;
 	virtual void draw(RenderWindow& window) {}
 	virtual void shoot() {}
 	virtual void generateSun() {}
 	virtual void explode() {}
-	/*virtual void shoot() = 0;
-	virtual void repeatShoot() = 0;
-	virtual void explode() = 0;
-	virtual void makeSun() = 0;*/
+	virtual ~Plant() {}
 };

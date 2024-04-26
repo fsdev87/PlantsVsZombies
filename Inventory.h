@@ -85,6 +85,10 @@ public:
 				selected = false;
 				return;
 			}
+			/*else if (plants[i]->getExist() == false) {
+				delete[] plants[i];
+				plants[i] = nullptr;
+			}*/
 		}
 		//
 		if (indexInInventory == 0)
