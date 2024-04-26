@@ -6,9 +6,11 @@
 #include "Plant.h"
 #include "Card.h"
 
+#include "Wallnut.h"
 #include "Sunflower.h"
 #include "Peashooter.h"
 #include "Repeater.h"
+#include "Snowpea.h"
 
 using namespace sf;
 using namespace std;
@@ -91,6 +93,10 @@ public:
 			plants[plantIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
 		else if (indexInInventory == 2)
 			plants[plantIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
+		else if (indexInInventory == 3)
+			plants[plantIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
+		else if (indexInInventory == 4)
+			plants[plantIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
 
 		plantIndex++;
 		selected = false;

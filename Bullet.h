@@ -23,7 +23,7 @@ public:
 	}
 
 	void changeSprite(Texture& tex) {
-		this->sprite.setTexture(tex);
+		this->sprite = Sprite(tex);
 	}
 
 	bool getExist() { return exists; }
