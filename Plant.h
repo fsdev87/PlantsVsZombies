@@ -5,18 +5,19 @@
 using namespace std;
 using namespace sf;
 
-class Plant : public Animation {
+class Plant {
 protected:
+	Sprite sprite;
 	float position[2];
 	int health;
 	int cost;
 	bool exists;
+	float xFactor, yFactor;
 
 public:
-	Plant(string source, int boxX, int boxY, int col, int x, int y) : Animation(source, boxX, boxY, col, x, y, 260, 90) {
-
-		position[0] = x;
-		position[1] = y;
+	Plant() {
+		this->xFactor = 260;
+		this->yFactor = 90;
 	}
 	/*virtual void shoot() = 0;
 	virtual void repeatShoot() = 0;

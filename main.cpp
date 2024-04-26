@@ -10,10 +10,11 @@ using namespace sf;
 #include "Level.h"
 #include "Garden.h"
 #include "Animation.h"
-//#include "Plant.h"
+#include "Plant.h"
 #include "Bullet.h"
-//#include "Peashooter.h"
+#include "Peashooter.h"
 #include "Zombie.h"
+#include "NormalZombie.h"
 
 int main()
 {
@@ -54,11 +55,13 @@ int main()
 
 
 	//Level level;
-	Texture tex;
+	Texture tex, tex2;
 	tex.loadFromFile("assets/Spritesheets/nZombWalk.png");
+	tex2.loadFromFile("assets/Spritesheets/peashooter.png");
 	float pos[2] = { 4, 3 };
+	float pos2[2] = { 0, 3 };
 	NormalZombie zomb(tex, 22, pos);
-
+	Peashooter pea(tex2, 13, pos2);
 
 
 
@@ -96,6 +99,8 @@ int main()
 
 		// Do all updating and animation here...
 		zomb.animate();
+		pea.animate();
+		pea.shoot();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -110,7 +115,7 @@ int main()
 
 
 		zomb.draw(window);
-
+		pea.draw(window);
 
 		window.display();
 

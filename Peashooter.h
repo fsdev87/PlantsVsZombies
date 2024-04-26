@@ -1,29 +1,47 @@
 #pragma once
 #include "Plant.h"
 #include "Bullet.h"
-#include <SFML/Graphics.hpp>
-using namespace sf;
 
 class Peashooter : public Plant {
+	bool shooting;
+	Animation anim;
 	Bullet bullet;
+	Clock bulletDelayClock;
+
 
 public:
-	Peashooter(string source, int boxX, int boxY, int col, int x, int y) : bullet(x, y), Plant(source, boxX, boxY, col, x, y) {
+	Peashooter(Texture& tex, int columns, float pos[2]) : bullet(pos[0], pos[1]) {
+		this->sprite.setTexture(tex);
+		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
+		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->health = 100;
 		this->cost = 100;
 		this->exists = true;
+		shooting = true;
+		this->anim = Animation(71, 71, columns);
+		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
+		bulletDelayClock.restart();
 	}
 
 	void shoot() {
 		bullet.move();
-		if (bullet.getExist() == false) {
+		if (bullet.getExist() == false && bulletDelayClock.getElapsedTime().asSeconds() > 2) {
 			bullet.setPosition(position);
 			bullet.getExist() = true;
+			bulletDelayClock.restart();
 		}
 	}
 
+	void animate() {
+		this->anim.animate(this->sprite);
+	}
+
 	void draw(RenderWindow& window) {
-		bullet.draw(window);
-		window.draw(sprite);
+		if (exists) {
+			window.draw(this->sprite);
+			if (bullet.getExist() == true) {
+				bullet.draw(window);
+			}
+		}
 	}
 };

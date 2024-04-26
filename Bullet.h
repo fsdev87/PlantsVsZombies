@@ -30,12 +30,12 @@ public:
 	}
 
 	void move() {
-		if (bulletClock.getElapsedTime().asMilliseconds() <= 8) {
+		if (bulletClock.getElapsedTime().asMilliseconds() <= 5) {
 			return;
 		}
 		if (exists) {
-			if (position[0] <= 8) {
-				position[0] += 0.125;
+			if (position[0] <= 8.5) {
+				position[0] += 0.0625;
 			}
 			else {
 				exists = false;
