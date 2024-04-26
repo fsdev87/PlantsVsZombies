@@ -15,7 +15,7 @@ using namespace sf;
 #include "Peashooter.h"
 #include "Zombie.h"
 #include "NormalZombie.h"
-
+#include "Sunflower.h"
 
 
 
@@ -55,14 +55,8 @@ int main()
 
 
 
-	Plant** plants = new Plant * [2];
-	float pos[2] = { 1, 1 };
-	plants[0] = new Peashooter(TM["spritesheet-peashooter"], 13, pos);
-	plants[0]->setDelay(50);
-	plants[1] = nullptr;
-
-
-
+	const int maxPlantsForLevelOne = 45;
+	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
 
 	while (window.isOpen())
 	{
@@ -108,12 +102,28 @@ int main()
 
 		window.clear();
 
-		for (int i = 0; i < 2; i++) {
-			if (plants[i] != nullptr) {
-				plants[i]->shoot();
-				plants[i]->animate();
+
+		// inside outside rule applied
+		// ye karta ye hai ke
+		// agar ham is plant k pointer ko sunflower main convert krte
+		// aur wo nullptr nai hota
+		// to phir ham usay access kar sakte, uske apne members 
+		// without having to override them in other classes
+
+		for (int i = 0; i < Inv.getPlantIndex(); i++) {
+			plants[i]->animate();
+			if (dynamic_cast<Sunflower*>(plants[i])) {
+				dynamic_cast<Sunflower*>(plants[i])->generateSun();
+			}
+			if (dynamic_cast<Peashooter*>(plants[i])) {
+				dynamic_cast<Peashooter*>(plants[i])->shoot();
+			}
+			if (dynamic_cast<Repeater*>(plants[i])) {
+				dynamic_cast<Repeater*>(plants[i])->shoot();
 			}
 		}
+
+
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -125,10 +135,8 @@ int main()
 		Inv.drawInventory(window);
 		//level.move_draw(window);
 
-		for (int i = 0; i < 2; i++) {
-			if (plants[i]) {
-				plants[i]->draw(window);
-			}
+		for (int i = 0; i < Inv.getPlantIndex(); i++) {
+			plants[i]->draw(window);
 		}
 
 

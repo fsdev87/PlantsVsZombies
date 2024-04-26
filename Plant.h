@@ -21,8 +21,8 @@ public:
 	}
 	virtual void setDelay(float f) = 0;
 	virtual void animate() = 0;
-	virtual void shoot() = 0;
 	virtual void draw(RenderWindow& window) = 0;
+
 	/*virtual void shoot() = 0;
 	virtual void repeatShoot() = 0;
 	virtual void explode() = 0;

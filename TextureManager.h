@@ -49,7 +49,6 @@ public:
 	};
 
 	void addTexture(string source, string n) {
-		cout << "Added texture " << n << endl;
 		if (idx >= capacity) resize(10);
 		Texture temp;
 		if (!temp.loadFromFile(source)) {
@@ -74,7 +73,6 @@ public:
 
 	Texture& getTexture(string name) {
 		int index = getIndexFromName(name);
-		cout << "Index of " << name << " texture is " << index << endl;
 		if (index != -1)
 			return textures[index];
 		return dummyTexture;

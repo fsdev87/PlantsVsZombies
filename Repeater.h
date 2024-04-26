@@ -25,7 +25,7 @@ public:
 		bulletDelayClock.restart();
 
 		bullet[0] = Bullet(position[0], position[1]);
-		bullet[1] = Bullet(position[0], position[1] + 0.5);
+		bullet[1] = Bullet(position[0], position[1] + 1);
 
 	}
 	void setDelay(float f) {
@@ -35,7 +35,7 @@ public:
 	void shoot() {
 		bullet[0].move();
 		bullet[1].move();
-		if (bullet[0].getExist() == false && bullet[1].getExist() == false && bulletDelayClock.getElapsedTime().asSeconds() > 2) {
+		if ((bullet[0].getExist() == false || bullet[1].getExist() == false) && bulletDelayClock.getElapsedTime().asSeconds() > 2) {
 			bullet[0].setPosition(position);
 			bullet[0].setExist(true);
 
@@ -51,10 +51,10 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (exists) {
-			if (bullet[0].getExist() == true) {
+			if (bullet[0].getExist()) {
 				bullet[0].draw(window);
 			}
-			if (bullet[1].getExist() == true) {
+			if (bullet[1].getExist()) {
 				bullet[1].draw(window);
 			}
 			window.draw(this->sprite);

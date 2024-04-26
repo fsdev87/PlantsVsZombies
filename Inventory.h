@@ -5,7 +5,11 @@
 #include "TextureManager.h"
 #include "Plant.h"
 #include "Card.h"
+
+#include "Sunflower.h"
 #include "Peashooter.h"
+#include "Repeater.h"
+
 using namespace sf;
 using namespace std;
 
@@ -19,11 +23,16 @@ private:
 	const int maxCards = 8;
 	Sprite inventorySprite;
 	TextureManager* TMptr;
+
+
 	// Selection
 	bool selected = false;
 	int rectIndex;
 	RectangleShape selectedRect;
 
+
+	//
+	int plantIndex = 0;
 
 public:
 	Inventory(TextureManager* tm) {
@@ -63,14 +72,22 @@ public:
 
 	void handlePlacing(int gx, int gy, Plant** plants) {
 		cout << "Placed selected plant\n";
-		int indexInInvetory = rectIndex - 2;
-		cout << gx << ", " << gy << endl;
 		float pos[2] = { gx, gy };
+		int indexInInventory = rectIndex - 2;
+		cout << "Index in inventory = " << indexInInventory << ", index of plant = " << plantIndex << endl;
+		if (plantIndex >= 45) return;
+		if (indexInInventory == 0)
+			plants[plantIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("spritesheet-sun"), 18, pos);
+		else if (indexInInventory == 1)
+			plants[plantIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
+		else if (indexInInventory == 2)
+			plants[plantIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
 
-		plants[1] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
-
+		plantIndex++;
 		selected = false;
 	}
+
+	int getPlantIndex() { return plantIndex; }
 
 	bool hasSelectedSomething() { return selected; }
 

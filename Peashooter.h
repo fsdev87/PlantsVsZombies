@@ -15,13 +15,14 @@ public:
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->health = 100;
+		shooting = true;
 		this->cost = 100;
 		this->exists = true;
-		shooting = true;
 		this->anim = Animation(71, 71, columns);
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 		bulletDelayClock.restart();
 	}
+
 	void setDelay(float f) {
 		anim.setDelay(f);
 	}

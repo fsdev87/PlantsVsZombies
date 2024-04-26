@@ -15,7 +15,7 @@ class Bullet {
 public:
 	Bullet(int x = 0, int y = 0) {
 		position[0] = x, position[1] = y;
-		texture.loadFromFile("assets/Bullets/peabullet.png");
+		if (!texture.loadFromFile("assets/Bullets/peabullet.png")) cout << "Bullet not found\n";
 		sprite.setTexture(texture);
 		damage = 1;
 		exists = true;
