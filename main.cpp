@@ -16,7 +16,7 @@ using namespace sf;
 #include "Zombie.h"
 #include "NormalZombie.h"
 #include "Sunflower.h"
-
+#include "Wallnut.h"
 
 
 int main()
@@ -117,6 +117,9 @@ int main()
 			}
 			if (dynamic_cast<Peashooter*>(plants[i])) {
 				dynamic_cast<Peashooter*>(plants[i])->shoot();
+			}
+			if (dynamic_cast<Snowpea*>(plants[i])) {
+				dynamic_cast<Snowpea*>(plants[i])->shoot();
 			}
 			if (dynamic_cast<Repeater*>(plants[i])) {
 				dynamic_cast<Repeater*>(plants[i])->shoot();
