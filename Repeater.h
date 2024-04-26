@@ -9,7 +9,7 @@ class Repeater : public Plant {
 	Animation anim;
 	Bullet bullet[2];
 	Clock bulletDelayClock;
-
+	Clock startClock;
 
 public:
 	Repeater(Texture& tex, int columns, float pos[2]) {
@@ -26,17 +26,14 @@ public:
 
 		bullet[0].setPosition(position[0], position[1]);
 		bullet[1].setPosition(position[0] - 0.5, position[1]);
-
-	}
-	void setDelay(float f) {
-		anim.setDelay(f);
+		startClock.restart();
 	}
 
 	void shoot() {
 		bullet[0].move();
 		bullet[1].move();
 		if ((bullet[0].getExist() == false || bullet[1].getExist() == false) && bulletDelayClock.getElapsedTime().asSeconds() > 2) {
-			bullet[0].setPosition(position[0], position[1]);
+			bullet[0].setPosition(this->position[0], this->position[1]);
 			bullet[0].setExist(true);
 
 			bullet[1].setPosition(position[0] - 0.5, position[1]);
@@ -51,10 +48,10 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (exists) {
-			if (bullet[0].getExist()) {
+			if (bullet[0].getExist() && startClock.getElapsedTime().asSeconds() > 2) {
 				bullet[0].draw(window);
 			}
-			if (bullet[1].getExist()) {
+			if (bullet[1].getExist() && startClock.getElapsedTime().asSeconds() > 2) {
 				bullet[1].draw(window);
 			}
 			window.draw(this->sprite);

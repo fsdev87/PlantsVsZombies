@@ -7,7 +7,7 @@ class Peashooter : public Plant {
 	Animation anim;
 	Bullet bullet;
 	Clock bulletDelayClock;
-
+	Clock startClock;
 
 public:
 	Peashooter(Texture& tex, int columns, float pos[2]) : bullet(pos[0], pos[1]) {
@@ -21,11 +21,10 @@ public:
 		this->anim = Animation(71, 71, columns);
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 		bulletDelayClock.restart();
+		startClock.restart();
 	}
 
-	void setDelay(float f) {
-		anim.setDelay(f);
-	}
+
 
 	void shoot() {
 		bullet.move();
@@ -42,7 +41,7 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (exists) {
-			if (bullet.getExist() == true) {
+			if (bullet.getExist() == true && startClock.getElapsedTime().asSeconds() > 2) {
 				bullet.draw(window);
 			}
 			window.draw(this->sprite);

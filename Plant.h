@@ -22,7 +22,11 @@ public:
 	float* getPosition() {
 		return this->position;
 	}
-	virtual void setDelay(float f) = 0;
+	void setDelay(float f, Animation& anim) {
+		anim.setDelay(f);
+	}
+
+	virtual void setDelay(float f) {}
 	virtual void animate() = 0;
 	virtual void draw(RenderWindow& window) = 0;
 

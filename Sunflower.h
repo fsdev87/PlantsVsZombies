@@ -9,6 +9,7 @@ class Sunflower : public Plant {
 	Sprite sunSprite;
 	bool showSun = false;
 	Clock showSunClock;
+
 public:
 	Sunflower(Texture& tex, Texture& sunT, int columns, float pos[2]) {
 		this->sprite.setTexture(tex);
@@ -27,13 +28,6 @@ public:
 		sunSprite.setPosition(xFactor + 35 + position[0] * 80, yFactor + position[1] * 96 - 15);
 		this->showSunClock.restart();
 
-	}
-
-
-
-	void setDelay(float f) {
-		this->anim.setDelay(f);
-		this->sunAnim.setDelay(f);
 	}
 
 	void generateSun() {
