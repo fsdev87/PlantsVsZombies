@@ -33,6 +33,7 @@ private:
 
 	//
 	int plantIndex = 0;
+	int plantCords[45][2];
 
 public:
 	Inventory(TextureManager* tm) {
@@ -76,6 +77,14 @@ public:
 		int indexInInventory = rectIndex - 2;
 		cout << "Index in inventory = " << indexInInventory << ", index of plant = " << plantIndex << endl;
 		if (plantIndex >= 45) return;
+		// check if already plant is not there
+		for (int i = 0; i < plantIndex; i++) {
+			if (plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
+				selected = false;
+				return;
+			}
+		}
+		//
 		if (indexInInventory == 0)
 			plants[plantIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("spritesheet-sun"), 18, pos);
 		else if (indexInInventory == 1)
