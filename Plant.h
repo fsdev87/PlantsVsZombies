@@ -19,6 +19,7 @@ public:
 		this->xFactor = 260;
 		this->yFactor = 90;
 	}
+	virtual void setDelay(float f) = 0;
 	virtual void animate() = 0;
 	virtual void shoot() = 0;
 	virtual void draw(RenderWindow& window) = 0;

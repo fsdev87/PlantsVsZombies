@@ -25,9 +25,7 @@ int main()
 	TextureManager TM;
 	loadTextures(&TM);
 	FontManager FM;
-
 	Level level(&FM);
-
 
 	Background background(&TM);
 
@@ -41,6 +39,10 @@ int main()
 	Inv.addCard(TM["card-chomper"], "chomper");
 
 
+
+
+
+
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -52,11 +54,12 @@ int main()
 
 
 
+
 	Plant** plants = new Plant * [2];
 	float pos[2] = { 1, 1 };
 	plants[0] = new Peashooter(TM["spritesheet-peashooter"], 13, pos);
+	plants[0]->setDelay(50);
 	plants[1] = nullptr;
-
 
 
 

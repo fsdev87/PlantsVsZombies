@@ -22,6 +22,9 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 		bulletDelayClock.restart();
 	}
+	void setDelay(float f) {
+		anim.setDelay(f);
+	}
 
 	void shoot() {
 		bullet.move();

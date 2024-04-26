@@ -63,8 +63,10 @@ public:
 
 	void handlePlacing(int gx, int gy, Plant** plants) {
 		cout << "Placed selected plant\n";
+		int indexInInvetory = rectIndex - 2;
 		cout << gx << ", " << gy << endl;
 		float pos[2] = { gx, gy };
+
 		plants[1] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
 
 		selected = false;

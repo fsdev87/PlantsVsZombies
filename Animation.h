@@ -11,6 +11,7 @@ protected:
 	int boxY;
 	int frame;
 	Clock animClock;
+	float delay = 100;
 
 public:
 	int getColumns() { return columns; }
@@ -20,10 +21,13 @@ public:
 	Animation(int boxX = 0, int boxY = 0, int cols = 0) : boxX(boxX), boxY(boxY), columns(cols), frame(0) {
 		animClock.restart();
 	}
+	void setDelay(float f) {
+		delay = f;
+	}
 
 	void animate(Sprite& sprite) {
 		float time = animClock.getElapsedTime().asMilliseconds();
-		if (time > 100) {
+		if (time > delay) {
 			sprite.setTextureRect(IntRect(frame * boxX, 0, boxX, boxY));
 			frame += 1;
 			animClock.restart();
