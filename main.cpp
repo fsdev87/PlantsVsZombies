@@ -26,22 +26,24 @@ int main()
 	TM.addTexture("assets/Inventory-GameScreen/ChooserBackground.png", "inventory");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_sunflower.png", "card_sunflower");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_peashooter.png", "card_peashooter");
-	TM.addTexture("assets/Inventory-GameScreen/Cards/card_repeaterpea.png", "card_repeater");
+	/*TM.addTexture("assets/Inventory-GameScreen/Cards/card_repeaterpea.png", "card_repeater");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_wallnut.png", "card_wallnut");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_snowpea.png", "card_snowpea");
 	TM.addTexture("assets/Inventory-GameScreen/Cards/card_cherrybomb.png", "card_cherrybomb");
-	TM.addTexture("assets/Inventory-GameScreen/Cards/card_chomper.png", "card_chomper");
+	TM.addTexture("assets/Inventory-GameScreen/Cards/card_chomper.png", "card_chomper");*/
 
-	Inventory Inv(TM["inventory"]);
-	Inv.addCard(TM["card_sunflower"]);
-	Inv.addCard(TM["card_peashooter"]);
-	Inv.addCard(TM["card_repeater"]);
+	TM.addTexture("assets/Spritesheets/peashooter.png", "spritesheet-Peashooter");
+
+	Inventory Inv(&TM);
+	Inv.addCard(TM["card-sunflower"], "sunflower");
+	Inv.addCard(TM["card-peashooter"], "peashooter");
+	/*Inv.addCard(TM["card_repeater"]);
 	Inv.addCard(TM["card_wallnut"]);
 	Inv.addCard(TM["card_snowpea"]);
 	Inv.addCard(TM["card_cherrybomb"]);
 	Inv.addCard(TM["card_chomper"]);
 	Inv.addCard(TM["card_sunflower"]);
-	Inv.addCard(TM["card_peashooter"]);
+	Inv.addCard(TM["card_peashooter"]);*/
 
 
 	RectangleShape garden[5][9];
@@ -55,13 +57,13 @@ int main()
 
 
 	//Level level;
-	Texture tex, tex2;
-	tex.loadFromFile("assets/Spritesheets/nZombWalk.png");
-	tex2.loadFromFile("assets/Spritesheets/peashooter.png");
-	float pos[2] = { 4, 3 };
-	float pos2[2] = { 0, 3 };
-	NormalZombie zomb(tex, 22, pos);
-	Peashooter pea(tex2, 13, pos2);
+
+	Plant** plants = new Plant * [2];
+	float pos[2] = { 1, 1 };
+	plants[0] = new Peashooter(TM["spritesheet-Peashooter"], 13, pos);
+	plants[1] = nullptr;
+
+
 
 
 
@@ -90,17 +92,31 @@ int main()
 					if (gardenCords.valid(mouseX, mouseY)) {
 						cout << mouseX << " " << mouseY << endl;
 						cout << "Position on Grid: " << (mouseY - gardenCords.topY) / 96 << ", " << (mouseX - gardenCords.leftX) / 80 << endl;
+
+						if (Inv.hasSelectedSomething()) {
+							int gx = (mouseX - gardenCords.leftX) / 80;
+							int gy = (mouseY - gardenCords.topY) / 96;
+							Inv.handlePlacing(gx, gy, plants);
+						}
 					}
+
+					if (Inv.validMouseClick(mouseX, mouseY)) {
+						cout << "Valid Mouse Click on Inventory\n";
+					}
+
+
 				}
 			}
 		}
 
 		window.clear();
 
-		// Do all updating and animation here...
-		zomb.animate();
-		pea.animate();
-		pea.shoot();
+		for (int i = 0; i < 2; i++) {
+			if (plants[i] != nullptr) {
+				plants[i]->shoot();
+				plants[i]->animate();
+			}
+		}
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -112,10 +128,13 @@ int main()
 		Inv.drawInventory(window);
 		//level.move_draw(window);
 
+		for (int i = 0; i < 2; i++) {
+			if (plants[i]) {
+				plants[i]->draw(window);
+			}
+		}
 
 
-		zomb.draw(window);
-		pea.draw(window);
 
 		window.display();
 

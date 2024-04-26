@@ -38,10 +38,10 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (exists) {
-			window.draw(this->sprite);
 			if (bullet.getExist() == true) {
 				bullet.draw(window);
 			}
+			window.draw(this->sprite);
 		}
 	}
 };
