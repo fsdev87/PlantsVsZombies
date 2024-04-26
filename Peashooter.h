@@ -27,7 +27,7 @@ public:
 		bullet.move();
 		if (bullet.getExist() == false && bulletDelayClock.getElapsedTime().asSeconds() > 2) {
 			bullet.setPosition(position);
-			bullet.getExist() = true;
+			bullet.setExist(true);
 			bulletDelayClock.restart();
 		}
 	}

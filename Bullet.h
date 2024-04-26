@@ -22,7 +22,12 @@ public:
 		bulletClock.restart();
 	}
 
-	bool& getExist() { return exists; }
+	void changeSprite(Texture& tex) {
+		this->sprite.setTexture(tex);
+	}
+
+	bool getExist() { return exists; }
+	void setExist(bool val) { exists = val; }
 
 	void setPosition(float position[2]) {
 		this->position[0] = position[0];
