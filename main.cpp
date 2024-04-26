@@ -103,27 +103,11 @@ int main()
 		window.clear();
 
 
-		// inside outside rule applied
-		// ye karta ye hai ke
-		// agar ham is plant k pointer ko sunflower main convert krte
-		// aur wo nullptr nai hota
-		// to phir ham usay access kar sakte, uske apne members 
-		// without having to override them in other classes
-
 		for (int i = 0; i < Inv.getPlantIndex(); i++) {
 			plants[i]->animate();
-			if (dynamic_cast<Sunflower*>(plants[i])) {
-				dynamic_cast<Sunflower*>(plants[i])->generateSun();
-			}
-			if (dynamic_cast<Peashooter*>(plants[i])) {
-				dynamic_cast<Peashooter*>(plants[i])->shoot();
-			}
-			if (dynamic_cast<Snowpea*>(plants[i])) {
-				dynamic_cast<Snowpea*>(plants[i])->shoot();
-			}
-			if (dynamic_cast<Repeater*>(plants[i])) {
-				dynamic_cast<Repeater*>(plants[i])->shoot();
-			}
+			plants[i]->generateSun();
+			plants[i]->shoot();
+			plants[i]->explode();
 		}
 
 
@@ -136,6 +120,7 @@ int main()
 			}
 		}
 		Inv.drawInventory(window);
+
 		//level.move_draw(window);
 
 		for (int i = 0; i < Inv.getPlantIndex(); i++) {

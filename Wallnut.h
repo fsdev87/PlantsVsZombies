@@ -1,8 +1,7 @@
 #pragma once
-#include "Plant.h"
+#include "NonShooter.h"
 
-class Wallnut : public Plant {
-	Animation anim;
+class Wallnut : public NonShooter {
 
 public:
 	Wallnut(Texture& tex, int columns, float pos[2]) {

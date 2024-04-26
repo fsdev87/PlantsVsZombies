@@ -1,15 +1,9 @@
 #pragma once
-
-
-#include "Plant.h"
+#include "Shooter.h"
 #include "Bullet.h"
 
-class Snowpea : public Plant {
-	bool shooting;
-	Animation anim;
+class Snowpea : public Shooter {
 	Bullet bullet;
-	Clock bulletDelayClock;
-	Clock startClock;
 
 public:
 	Snowpea(Texture& tex, Texture& itex, int columns, float pos[2]) : bullet(pos[0], pos[1]) {

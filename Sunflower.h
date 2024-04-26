@@ -1,10 +1,7 @@
 #pragma once
-#include "Plant.h"
+#include "NonShooter.h"
 
-class Sunflower : public Plant {
-	Animation anim;
-	Clock sunClock;
-
+class Sunflower : public NonShooter {
 	Animation sunAnim;
 	Sprite sunSprite;
 	bool showSun = false;
@@ -25,23 +22,30 @@ public:
 		this->sunAnim = Animation(71, 71, 22);
 		this->sunSprite.setTexture(sunT);
 		this->sunSprite.setScale(0.7, 0.7);
-		sunSprite.setPosition(xFactor + 35 + position[0] * 80, yFactor + position[1] * 96 - 15);
+		this->sunSprite.setPosition(xFactor + 35 + position[0] * 80, yFactor + position[1] * 96 - 15);
 		this->showSunClock.restart();
 
 	}
 
 	void generateSun() {
-		if (showSunClock.getElapsedTime().asSeconds() < 5.0) return;
-		this->showSun = true;
+		if (this->showSunClock.getElapsedTime().asSeconds() < 5.0) return;
+		if (this->exists) {
+			this->showSun = true;
+			this->showSunClock.restart();
+		}
 	}
 
 	void animate() {
-		this->anim.animate(this->sprite);
+		if (this->exists) {
+			this->anim.animate(this->sprite);
+		}
 		if (this->showSun) this->sunAnim.animate(this->sunSprite);
 	}
 
 	void draw(RenderWindow& window) {
-		window.draw(sprite);
-		if (this->showSun) window.draw(sunSprite);
+		if (this->exists) {
+			window.draw(this->sprite);
+		}
+		if (this->showSun) window.draw(this->sunSprite);
 	}
 };

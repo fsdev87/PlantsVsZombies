@@ -14,15 +14,14 @@ protected:
 	float delay = 100;
 
 public:
-	int getColumns() { return columns; }
-	void setColumns(int cols) { columns = cols; }
+	int getColumns() { return this->columns; }
+	void setColumns(int cols) { this->columns = cols; }
+	int getFrame() { return this->frame; }
+	void setDelay(float d) { this->delay = d; }
 
 public:
 	Animation(int boxX = 0, int boxY = 0, int cols = 0) : boxX(boxX), boxY(boxY), columns(cols), frame(0) {
 		animClock.restart();
-	}
-	void setDelay(float f) {
-		delay = f;
 	}
 
 	void animate(Sprite& sprite) {

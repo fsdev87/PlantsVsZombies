@@ -11,6 +11,7 @@
 #include "Peashooter.h"
 #include "Repeater.h"
 #include "Snowpea.h"
+#include "Cherrybomb.h"
 
 using namespace sf;
 using namespace std;
@@ -80,7 +81,7 @@ public:
 		if (plantIndex >= 45) return;
 		// check if already plant is not there
 		for (int i = 0; i < plantIndex; i++) {
-			if (plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
+			if (plants[i]->getExist() && plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
 				selected = false;
 				return;
 			}
@@ -96,6 +97,8 @@ public:
 			plants[plantIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
 		else if (indexInInventory == 4)
 			plants[plantIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
+		else if (indexInInventory == 5)
+			plants[plantIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
 
 		plantIndex++;
 		selected = false;

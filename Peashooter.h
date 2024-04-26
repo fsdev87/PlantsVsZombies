@@ -1,13 +1,9 @@
 #pragma once
-#include "Plant.h"
+#include "Shooter.h"
 #include "Bullet.h"
 
-class Peashooter : public Plant {
-	bool shooting;
-	Animation anim;
+class Peashooter : public Shooter {
 	Bullet bullet;
-	Clock bulletDelayClock;
-	Clock startClock;
 
 public:
 	Peashooter(Texture& tex, int columns, float pos[2]) : bullet(pos[0], pos[1]) {
@@ -23,8 +19,6 @@ public:
 		bulletDelayClock.restart();
 		startClock.restart();
 	}
-
-
 
 	void shoot() {
 		bullet.move();

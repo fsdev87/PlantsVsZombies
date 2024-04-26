@@ -22,14 +22,14 @@ public:
 	float* getPosition() {
 		return this->position;
 	}
-	void setDelay(float f, Animation& anim) {
-		anim.setDelay(f);
-	}
+	bool getExist() { return this->exists; }
 
 	virtual void setDelay(float f) {}
-	virtual void animate() = 0;
-	virtual void draw(RenderWindow& window) = 0;
-
+	virtual void animate() {}
+	virtual void draw(RenderWindow& window) {}
+	virtual void shoot() {}
+	virtual void generateSun() {}
+	virtual void explode() {}
 	/*virtual void shoot() = 0;
 	virtual void repeatShoot() = 0;
 	virtual void explode() = 0;

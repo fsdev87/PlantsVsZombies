@@ -1,15 +1,9 @@
 #pragma once
-
-#pragma once
-#include "Plant.h"
+#include "Shooter.h"
 #include "Bullet.h"
 
-class Repeater : public Plant {
-	bool shooting;
-	Animation anim;
+class Repeater : public Shooter {
 	Bullet bullet[2];
-	Clock bulletDelayClock;
-	Clock startClock;
 
 public:
 	Repeater(Texture& tex, int columns, float pos[2]) {
