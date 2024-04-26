@@ -1,161 +1,333 @@
 @startuml
+
 class Game {
-- Screen Menu[5]
-- int lives
-- int level
-- int sunCount
+- Plant** plants
+- Zombie** zombies
+- TextureManager TM
+- FontManager FM
+- Inventory Inv
+- Level levels
+- Background backgrounds
+
 + void run()
 }
 
-class Screen {
-- string title
-- string category
-+ void draw(RenderWindow& window)
-}
-
-class Player {
-- string name
-- int score
-+ void setName(string n)
-+ void setScore(int s)
-+ void writeScoreToFile()
-}
-
-Game *-- Screen
 Game *-- Plant
 Game *-- Zombie
-Game *-- Player
-
-class Plant {
-- int cost
-- int placeInterval
-- string type
-+ virtual void shoot()
-}
-Plant <-- Shooter
-Peashooter --> Shooter
-SnowPea --> Shooter
-Repeater --> Shooter
-
-class Shooter {
-+ void shoot() // once
-}
-class Peashooter{
-+ void shoot()
-}
-class Repeater {
-+ void shoot() override
-}
-class SnowPea {
-+ void freeze()
-}
-
-Sunflower --> Plant
-WallNut --> Plant
-CherryBomb --> Plant
-
-class Sunflower {
-  + generateSun(): void
-}
-
-
-class WallNut {
-  - cost: int = 50
-  + blockZombies(): void
-}
-
-
-class CherryBomb {
-  - cost: int = 150
-  + explode(): void
-}
-
-
-
-class Zombie {
-  - speed: String
-  - damageTolerance: int
-  - abilities: String
-}
-
-class SimpleZombie {
-  + void move()
-}
-
-class FootballZombie {
-  + void moveLeft()
-  + void moveRight()
-}
-
-class FlyingZombie {
-  + void fly()
-}
-
-class DancingZombie {
-  + void summonZombies()
-  + void moveDiagonally()
-}
-
-class DolphinRiderZombie {
-  + void jumpOverPlant()
-}
-
-Zombie <-- SimpleZombie
-Zombie <-- FootballZombie
-Zombie <-- FlyingZombie
-Zombie <-- DancingZombie
-Zombie <-- DolphinRiderZombie
-
-
-class Card {
-  - spr: Sprite
-
-  + Card()
-  + void setCardTexture(Texture& t)
-  + void setCardPosition(int x, int y)
-  + void drawCard(RenderWindow& window) const
-}
-
-class Inventory {
-  - inventoryHeight: float
-  - inventoryWidth: float
-  - cards: Card[8]
-  - index: int
-  - maxCards: const int
-  - inventorySprite: Sprite
-
-  + Inventory(Texture& tex)
-  + void drawInventory(RenderWindow& window) const
-  + void addCard(Texture& t)
-}
-
-Inventory *-- Card
-
-class FontManager {
-  - fonts: Font[4]
-
-  + FontManager()
-  + Font& get(int n)
-  + Font& operator[](int n)
-}
-
-class TextureManager {
-  - textures: Texture*
-  - names: string*
-  - capacity: int
-
-  - int getIndexFromName(string n)
-  - void resize(int resizeBy)
-
-  + TextureManager(int t)
-  + void addTexture(string source, string n)
-  + Texture& operator[](string n)
-  + Texture& getTexture(int n)
-  + Texture& getTexture(string name)
-  + ~TextureManager()
-}
-
 Game *-- TextureManager
 Game *-- FontManager
 Game *-- Inventory
+Game *-- Level
+Game *-- Background
+
+class Animation {
+#int columns
+#int boxX
+#int boxY
+#int frame
+#Clock animClock
+#float delay = 100
++int getColumns()
++void setColumns(int cols)
++int getFrame()
++void setDelay()
++Animation()
++void animate(Sprite& sprite)
+}
+
+class Background {
+- Sprite backgroundSprite
++ Background(TextureManager* tm)
++ Sprite& getSprite()
+}
+
+class Bullet {
+- Texture texture
+- Sprite sprite
+- float position[2]
+- int damage
+- Clock bulletClock
+- bool exists
++ Bullet(int x = 0, int y = 0)
++ void changeSprite(Texture& tex)
++ bool getExist()
++ void setExist(bool val)
++ void setPosition(float x, float y)
++ void move()
++ void draw(RenderWindow& window)
+}
+
+class Card {
+-Sprite spr
+-string name
+
++Card()
++void setCardTexture(Texture& t, string n)
++void setCardPosition(int x, int y)
++void drawCard(RenderWindow& window) const
++string getName()
+}
+
+class Cherrybomb{
+-int columns
+
++Cherrybomb(Texture& tex, int columns, float pos[2])
++virtual void explode()
++void animate()
++void draw(RenderWindow& window)
+}
+
+class Exploder {
+#Animation anim
++Exploder()
+virtual void explode()
+}
+
+class FontManager {
+    - Font fonts[4]
+    + FontManager()
+    + Font& get(int n)
+    + Font& operator[](int n)
+}
+
+class Inventory {
+    - float inventoryHeight = 100
+    - float inventoryWidth = 800
+    - Card cards[8]
+    - int index = 0
+    - const int maxCards = 8
+    - Sprite inventorySprite
+    - TextureManager* TMptr
+    - bool selected = false
+    - int rectIndex
+    - RectangleShape selectedRect
+    - int plantIndex = 0
+
+    + Inventory(TextureManager* tm)
+    + void drawInventory(RenderWindow& window) const
+    + bool validMouseClick(int x, int y)
+    + void handlePlacing(int gx, int gy, Plant** plants)
+    + int getPlantIndex()
+    + bool hasSelectedSomething()
+    + void addCard(Texture& t, string n)
+}
+
+class Level {
+    - string str
+    - Text levelText
+    - float levelPosition[2]
+    - const float middle1 = 450
+    - const float middle2 = 550
+    - float speed
+    - bool midWay
+    - Clock levelClock
+    - int level
+    - bool exists
+
+    + Level(FontManager* FM)
+    + void reset()
+    + void increaseLevel()
+    + void move_draw(RenderWindow& window)
+}
+
+class NonShooter {
+# Animation anim
++ NonShooter()
++virtual void generateSun()
+}
+
+
+
+class Peashooter {
+    - Bullet bullet
+
+    + Peashooter(Texture& tex, int columns, float pos[2])
+    + void shoot()
+    + void animate()
+    + void draw(RenderWindow& window)
+}
+
+class Plant {
+    # Sprite sprite
+    # float position[2]
+    # int health
+    # int cost
+    # bool exists
+    # float xFactor
+    # float yFactor
+
+    + Plant()
+    + float* getPosition()
+    + bool getExist()
+    + virtual void setDelay(float f)
+    + virtual void animate()
+    + virtual void draw(RenderWindow& window)
+    + virtual void shoot()
+    + virtual void generateSun()
+    + virtual void explode()
+}
+
+class Repeater {
+    - Bullet bullet[2]
+
+    + Repeater(Texture& tex, int columns, float pos[2])
+    + void shoot()
+    + void animate()
+    + void draw(RenderWindow& window)
+}
+
+class Shooter {
+    # bool shooting
+    # Animation anim
+    # Clock bulletDelayClock
+    # Clock startClock
+
+    + Shooter()
+    + virtual void shoot()
+}
+
+class Snowpea {
+    - Bullet bullet
+
+    + Snowpea(Texture& tex, Texture& itex, int columns, float pos[2])
+    + void shoot()
+    + void animate()
+    + void draw(RenderWindow& window)
+}
+
+class Sunflower {
+    - Animation sunAnim
+    - Sprite sunSprite
+    - bool showSun
+    - Clock showSunClock
+
+    + Sunflower(Texture& tex, Texture& sunT, int columns, float pos[2])
+    + void generateSun()
+    + void animate()
+    + void draw(RenderWindow& window)
+}
+
+class TextureManager {
+    - Texture* textures
+    - string* names
+    - int capacity
+    - int idx
+    - Texture dummyTexture
+
+    - getIndexFromName(string n)
+    - resize(int resizeBy)
+
+    + TextureManager(int t = 10)
+    + void addTexture(string source, string n)
+    + Texture& operator[](string n)
+    + Texture& getTexture(int n)
+    + Texture& getTexture(string name)
+    + ~TextureManager()
+}
+
+class Wallnut {
+
+    + Wallnut(Texture& tex, int columns, float pos[2])
+    + void animate()
+    + void draw(RenderWindow& window)
+}
+
+class NormalZombie {
+
+    + NormalZombie(Texture& tex, int columns, float pos[2])
+    + void draw(RenderWindow& window)
+    + void animate()
+}
+
+class Zombie {
+# Sprite sprite
+# float position[2]
+# int health
+# int xFactor
+# int yFactor
+# bool exists
+# int speed
+# Animation anim
+
++Zombie()
++ virtual void move() = 0
++ virtual void fly()
++ virtual void eat(Plant**) = 0
++ virtual ~Zombie()
+}
+
+class FootballZombie {
+    + FootballZombie(Texture& tex, int columns, float pos[2])
+    + void draw(RenderWindow& window)
+    + void animate()
+    + void move()
+}
+
+class DancingZombie {
+    + DancingZombie(Texture& tex, int columns, float pos[2])
+    + void draw(RenderWindow& window)
+    + void animate()
+    + void move()
+}
+
+class FlyingZombie {
+    + FlyingZombie(Texture& tex, int columns, float pos[2])
+    + void draw(RenderWindow& window)
+    + void animate()
+    + void fly()
+}
+
+class DolphinZombie {
+    + DolphinZombie(Texture& tex, int columns, float pos[2])
+    + void draw(RenderWindow& window)
+    + void animate()
+    + void move()
+}
+
+class BucketZombie {
+    + BucketZombie(Texture& tex, int columns, float pos[2])
+    + void draw(RenderWindow& window)
+    + void animate()
+    + void move()
+}
+
+
+Zombie *-- Animation
+
+Plant <|-- Shooter
+Plant <|-- NonShooter
+Plant <|-- Exploder
+
+
+Shooter <|-- Peashooter
+Shooter <|-- Repeater
+Shooter <|-- Snowpea
+
+NonShooter <|-- Sunflower
+NonShooter <|-- Wallnut
+
+Exploder <|-- Cherrybomb
+
+Peashooter *-- Animation
+Peashooter *-- Bullet
+
+Repeater *-- Animation
+Repeater *-- Bullet
+
+Snowpea *-- Animation
+Snowpea *-- Bullet
+
+Sunflower *-- Animation
+
+Wallnut *-- Animation
+
+
+
+Inventory *-- Card
+Zombie <|-- NormalZombie
+Zombie <|-- FootballZombie
+Zombie <|-- DancingZombie
+Zombie <|-- FlyingZombie
+Zombie <|-- DolphinZombie
+
 @enduml
