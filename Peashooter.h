@@ -30,7 +30,7 @@ public:
 	void shoot() {
 		bullet.move();
 		if (bullet.getExist() == false && bulletDelayClock.getElapsedTime().asSeconds() > 2) {
-			bullet.setPosition(position);
+			bullet.setPosition(position[0], position[1]);
 			bullet.setExist(true);
 			bulletDelayClock.restart();
 		}

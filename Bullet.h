@@ -29,9 +29,9 @@ public:
 	bool getExist() { return exists; }
 	void setExist(bool val) { exists = val; }
 
-	void setPosition(float position[2]) {
-		this->position[0] = position[0];
-		this->position[1] = position[1];
+	void setPosition(float x, float y) {
+		this->position[0] = x;
+		this->position[1] = y;
 	}
 
 	void move() {

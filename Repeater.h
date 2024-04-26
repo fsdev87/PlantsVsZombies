@@ -24,8 +24,8 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 		bulletDelayClock.restart();
 
-		bullet[0] = Bullet(position[0], position[1]);
-		bullet[1] = Bullet(position[0], position[1] + 1);
+		bullet[0].setPosition(position[0], position[1]);
+		bullet[1].setPosition(position[0] - 0.5, position[1]);
 
 	}
 	void setDelay(float f) {
@@ -36,10 +36,10 @@ public:
 		bullet[0].move();
 		bullet[1].move();
 		if ((bullet[0].getExist() == false || bullet[1].getExist() == false) && bulletDelayClock.getElapsedTime().asSeconds() > 2) {
-			bullet[0].setPosition(position);
+			bullet[0].setPosition(position[0], position[1]);
 			bullet[0].setExist(true);
 
-			bullet[1].setPosition(position);
+			bullet[1].setPosition(position[0] - 0.5, position[1]);
 			bullet[1].setExist(true);
 			bulletDelayClock.restart();
 		}
