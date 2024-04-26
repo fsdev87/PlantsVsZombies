@@ -16,34 +16,29 @@ using namespace sf;
 #include "Zombie.h"
 #include "NormalZombie.h"
 
+
+
+
 int main()
 {
 	RenderWindow window(VideoMode(1400, 600), "game");
-
-	Background background;
-	FontManager FM;
 	TextureManager TM;
-	TM.addTexture("assets/Inventory-GameScreen/ChooserBackground.png", "inventory");
-	TM.addTexture("assets/Inventory-GameScreen/Cards/card_sunflower.png", "card_sunflower");
-	TM.addTexture("assets/Inventory-GameScreen/Cards/card_peashooter.png", "card_peashooter");
-	/*TM.addTexture("assets/Inventory-GameScreen/Cards/card_repeaterpea.png", "card_repeater");
-	TM.addTexture("assets/Inventory-GameScreen/Cards/card_wallnut.png", "card_wallnut");
-	TM.addTexture("assets/Inventory-GameScreen/Cards/card_snowpea.png", "card_snowpea");
-	TM.addTexture("assets/Inventory-GameScreen/Cards/card_cherrybomb.png", "card_cherrybomb");
-	TM.addTexture("assets/Inventory-GameScreen/Cards/card_chomper.png", "card_chomper");*/
+	loadTextures(&TM);
+	FontManager FM;
 
-	TM.addTexture("assets/Spritesheets/peashooter.png", "spritesheet-Peashooter");
+	Level level(&FM);
+
+
+	Background background(&TM);
 
 	Inventory Inv(&TM);
 	Inv.addCard(TM["card-sunflower"], "sunflower");
 	Inv.addCard(TM["card-peashooter"], "peashooter");
-	/*Inv.addCard(TM["card_repeater"]);
-	Inv.addCard(TM["card_wallnut"]);
-	Inv.addCard(TM["card_snowpea"]);
-	Inv.addCard(TM["card_cherrybomb"]);
-	Inv.addCard(TM["card_chomper"]);
-	Inv.addCard(TM["card_sunflower"]);
-	Inv.addCard(TM["card_peashooter"]);*/
+	Inv.addCard(TM["card-repeater"], "repeater");
+	Inv.addCard(TM["card-wallnut"], "wallnut");
+	Inv.addCard(TM["card-snowpea"], "snowpea");
+	Inv.addCard(TM["card-cherrybomb"], "cherrybomb");
+	Inv.addCard(TM["card-chomper"], "chomper");
 
 
 	RectangleShape garden[5][9];
@@ -56,11 +51,10 @@ int main()
 	}
 
 
-	//Level level;
 
 	Plant** plants = new Plant * [2];
 	float pos[2] = { 1, 1 };
-	plants[0] = new Peashooter(TM["spritesheet-Peashooter"], 13, pos);
+	plants[0] = new Peashooter(TM["spritesheet-peashooter"], 13, pos);
 	plants[1] = nullptr;
 
 

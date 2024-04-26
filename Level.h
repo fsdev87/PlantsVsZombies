@@ -9,7 +9,6 @@ class Level {
 private:
 	string str;
 	Text levelText;
-	FontManager FM;
 	float levelPosition[2];
 	const float middle1 = 450, middle2 = 550;
 	float speed;
@@ -19,8 +18,8 @@ private:
 	bool exists;
 
 public:
-	Level() {
-		levelText.setFont(FM[2]);
+	Level(FontManager* FM) {
+		levelText.setFont(FM->operator[](2));
 		levelText.setCharacterSize(120);
 		levelText.setString("LEVEL 1");
 		levelText.setFillColor(Color(16, 12, 12));

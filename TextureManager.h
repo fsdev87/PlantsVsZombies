@@ -24,16 +24,23 @@ private:
 	}
 
 	void resize(int resizeBy) {
-		Texture* temp = new Texture[capacity + resizeBy];
-		string* tempS = new string[capacity + resizeBy];
-		for (int i = 0; i < this->capacity; i++) {
-			temp[i] = this->textures[i];
-			tempS[i] = this->names[i];
+		Texture* tempTextures = new Texture[capacity + resizeBy];
+		string* tempNames = new string[capacity + resizeBy];
+
+		for (int i = 0; i < idx; i++) {
+			tempTextures[i] = textures[i];
+			tempNames[i] = names[i];
 		}
-		delete[] this->textures, delete[] this->names;
-		this->textures = temp;
-		this->names = tempS;
+
+		delete[] textures;
+		delete[] names;
+
+		textures = tempTextures;
+		names = tempNames;
+
+		capacity += resizeBy;
 	}
+
 
 public:
 	TextureManager(int t = 10) : capacity(t), idx(0) {
@@ -43,7 +50,7 @@ public:
 
 	void addTexture(string source, string n) {
 		cout << "Added texture " << n << endl;
-		if (idx >= capacity) resize(2);
+		if (idx >= capacity) resize(10);
 		Texture temp;
 		if (!temp.loadFromFile(source)) {
 			cout << "Couldn't load " << n << " texture from " << source << endl;
@@ -78,3 +85,43 @@ public:
 		textures = nullptr;
 	}
 };
+
+
+void loadTextures(TextureManager* TM) {
+	TM->addTexture("assets/Screens/ChooserBackground.png", "inventory"); // Inventory Background
+
+	TM->addTexture("assets/Background/bgday.jpg", "bgday");
+	TM->addTexture("assets/Background/bgnight.jpg", "bgnight");
+	TM->addTexture("assets/Background/limitedbg.jpg", "limitedbg");
+	TM->addTexture("assets/Background/waterday.jpg", "waterday");
+	TM->addTexture("assets/Background/waternight.jpg", "waternight");
+
+	//->All Inventory Cards
+	TM->addTexture("assets/Screens/Cards/card_sunflower.png", "card-sunflower");
+	TM->addTexture("assets/Screens/Cards/card_peashooter.png", "card-peashooter");
+	TM->addTexture("assets/Screens/Cards/card_repeaterpea.png", "card-repeater");
+	TM->addTexture("assets/Screens/Cards/card_wallnut.png", "card-wallnut");
+	TM->addTexture("assets/Screens/Cards/card_snowpea.png", "card-snowpea");
+	TM->addTexture("assets/Screens/Cards/card_cherrybomb.png", "card-cherrybomb");
+	TM->addTexture("assets/Screens/Cards/card_chomper.png", "card-chomper");
+
+	//TM->addTexture("assets/Spritesheets/shovel.png", "shovel");
+	// Spritesheets
+	TM->addTexture("assets/Spritesheets/peashooter.png", "spritesheet-peashooter");
+	TM->addTexture("assets/Spritesheets/wallnut.png", "spritesheet-wallnut");
+	TM->addTexture("assets/Spritesheets/cherrybomb.png", "spritesheet-cherrybomb");
+	TM->addTexture("assets/Spritesheets/repeater.png", "spritesheet-repeater");
+	TM->addTexture("assets/Spritesheets/snowpea.png", "spritesheet-snowpea");
+	TM->addTexture("assets/Spritesheets/sunflower.png", "spritesheet-sunflower");
+	TM->addTexture("assets/Spritesheets/sun.png", "spritesheet-sun");
+	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-normalZEat");
+	TM->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-normalZWalk");
+	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucketZEat");
+	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucketZWalk");
+	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
+
+	TM->addTexture("assets/Bullets/peabullet.png", "bullet");
+	TM->addTexture("assets/Bullets/peabulletexplode.png", "bulletExplode");
+	TM->addTexture("assets/Bullets/peaice.png", "bulletIce");
+
+}

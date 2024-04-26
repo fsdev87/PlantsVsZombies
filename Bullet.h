@@ -15,7 +15,7 @@ class Bullet {
 public:
 	Bullet(int x = 0, int y = 0) {
 		position[0] = x, position[1] = y;
-		texture.loadFromFile("assets/Bullets/PeaNormal/pea.png");
+		texture.loadFromFile("assets/Bullets/peabullet.png");
 		sprite.setTexture(texture);
 		damage = 1;
 		exists = true;
