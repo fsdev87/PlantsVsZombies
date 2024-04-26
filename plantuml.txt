@@ -1,86 +1,78 @@
 @startuml
 
 class Game {
-- Plant** plants
-- Zombie** zombies
-- TextureManager TM
-- FontManager FM
-- Inventory Inv
-- Level levels
-- Background backgrounds
+    - Plant** plants
+    - Zombie** zombies
+    - TextureManager TM
+    - FontManager FM
+    - Inventory Inv
+    - Level levels
+    - Background backgrounds
 
-+ void run()
+    + void run()
 }
 
-Game *-- Plant
-Game *-- Zombie
-Game *-- TextureManager
-Game *-- FontManager
-Game *-- Inventory
-Game *-- Level
-Game *-- Background
-
 class Animation {
-#int columns
-#int boxX
-#int boxY
-#int frame
-#Clock animClock
-#float delay = 100
-+int getColumns()
-+void setColumns(int cols)
-+int getFrame()
-+void setDelay()
-+Animation()
-+void animate(Sprite& sprite)
+    #int columns
+    #int boxX
+    #int boxY
+    #int frame
+    #Clock animClock
+    #float delay = 100
+    +int getColumns()
+    +void setColumns(int cols)
+    +int getFrame()
+    +void setDelay()
+    +Animation()
+    +void animate(Sprite& sprite)
 }
 
 class Background {
-- Sprite backgroundSprite
-+ Background(TextureManager* tm)
-+ Sprite& getSprite()
+    - Sprite backgroundSprite
+    + Background(TextureManager* tm)
+    + Sprite& getSprite()
 }
 
 class Bullet {
-- Texture texture
-- Sprite sprite
-- float position[2]
-- int damage
-- Clock bulletClock
-- bool exists
-+ Bullet(int x = 0, int y = 0)
-+ void changeSprite(Texture& tex)
-+ bool getExist()
-+ void setExist(bool val)
-+ void setPosition(float x, float y)
-+ void move()
-+ void draw(RenderWindow& window)
+    - Texture texture
+    - Sprite sprite
+    - float position[2]
+    - int damage
+    - Clock bulletClock
+    - bool exists
+    + Bullet(int x = 0, int y = 0)
+    + void changeSprite(Texture& tex)
+    + bool getExist()
+    + void setExist(bool val)
+    + void setPosition(float x, float y)
+    + void move()
+    + void draw(RenderWindow& window)
 }
 
 class Card {
--Sprite spr
--string name
+    - Sprite spr
+    - string name
 
-+Card()
-+void setCardTexture(Texture& t, string n)
-+void setCardPosition(int x, int y)
-+void drawCard(RenderWindow& window) const
-+string getName()
+    +Card()
+    +void setCardTexture(Texture& t, string n)
+    +void setCardPosition(int x, int y)
+    +void drawCard(RenderWindow& window) const
+    +string getName()
 }
 
 class Cherrybomb{
--int columns
+    -int columns
 
-+Cherrybomb(Texture& tex, int columns, float pos[2])
-+virtual void explode()
-+void animate()
-+void draw(RenderWindow& window)
+    +Cherrybomb(Texture& tex, int columns, float pos[2])
+    +virtual void explode()
+    +void animate()
+    +void draw(RenderWindow& window)
 }
 
 class Exploder {
-#Animation anim
-+Exploder()
-virtual void explode()
+    #Animation anim
+    +Exploder()
+    virtual void explode()
 }
 
 class FontManager {
@@ -131,12 +123,10 @@ class Level {
 }
 
 class NonShooter {
-# Animation anim
-+ NonShooter()
-+virtual void generateSun()
+    # Animation anim
+    + NonShooter()
+    +virtual void generateSun()
 }
-
-
 
 class Peashooter {
     - Bullet bullet
@@ -291,13 +281,17 @@ class BucketZombie {
     + void move()
 }
 
-
-Zombie *-- Animation
+Game *-- Plant
+Game *-- Zombie
+Game *-- TextureManager
+Game *-- FontManager
+Game *-- Inventory
+Game *-- Level
+Game *-- Background
 
 Plant <|-- Shooter
 Plant <|-- NonShooter
 Plant <|-- Exploder
-
 
 Shooter <|-- Peashooter
 Shooter <|-- Repeater
@@ -321,13 +315,12 @@ Sunflower *-- Animation
 
 Wallnut *-- Animation
 
-
-
 Inventory *-- Card
 Zombie <|-- NormalZombie
 Zombie <|-- FootballZombie
 Zombie <|-- DancingZombie
 Zombie <|-- FlyingZombie
 Zombie <|-- DolphinZombie
+Zombie <|-- BucketZombie
 
 @enduml
