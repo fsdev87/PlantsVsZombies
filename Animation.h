@@ -10,24 +10,18 @@ protected:
 	int boxX;
 	int boxY;
 	int frame;
-	Texture tex;
-	Sprite sprite;
 	Clock animClock;
-	int xCord, yCord;
 
 public:
-	Animation(string source, int boxX, int boxY, int col, int x, int y, float xFactor, float yFactor) : xCord(x), yCord(y), boxX(boxX), boxY(boxY), columns(col), frame(0) {
-		if (!tex.loadFromFile(source)) {
-			cout << "Error loading texture" << endl;
-		}
-		sprite.setTexture(tex);
-		sprite.setTextureRect(IntRect(0, 0, boxX, boxY));
+	int getColumns() { return columns; }
+	void setColumns(int cols) { columns = cols; }
 
-		sprite.setPosition(xFactor + xCord * 80, yFactor + yCord * 96);
+public:
+	Animation(int boxX = 0, int boxY = 0, int cols = 0) : boxX(boxX), boxY(boxY), columns(cols), frame(0) {
 		animClock.restart();
 	}
 
-	void animate() {
+	void animate(Sprite& sprite) {
 		float time = animClock.getElapsedTime().asMilliseconds();
 		if (time > 100) {
 			sprite.setTextureRect(IntRect(frame * boxX, 0, boxX, boxY));
@@ -35,9 +29,5 @@ public:
 			animClock.restart();
 		}
 		if (frame >= columns) frame = 0;
-	}
-
-	void draw(RenderWindow& window) const {
-		window.draw(sprite);
 	}
 };

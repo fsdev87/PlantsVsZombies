@@ -10,10 +10,10 @@ using namespace sf;
 #include "Level.h"
 #include "Garden.h"
 #include "Animation.h"
-#include "Plant.h"
+//#include "Plant.h"
 #include "Bullet.h"
-#include "Peashooter.h"
-
+//#include "Peashooter.h"
+#include "Zombie.h"
 
 int main()
 {
@@ -54,14 +54,13 @@ int main()
 
 
 	//Level level;
+	Texture tex;
+	tex.loadFromFile("assets/Spritesheets/nZombWalk.png");
+	float pos[2] = { 4, 3 };
+	NormalZombie zomb(tex, 22, pos);
 
-	Peashooter pea("assets/Spritesheets/repeater.png", 71, 71, 15, 0, 2);
-	Animation wallnut("assets/Spritesheets/wallnut.png", 71, 71, 16, 1, 2, 260, 90);
 
-	Animation zomb("assets/Spritesheets/zombdie.png", 166, 144, 10, 8, 4, 185, 32);
-	Animation zomb2("assets/Spritesheets/nZombEat.png", 166, 144, 21, 2, 2, 185, 32);
 
-	Animation sunFlower("assets/Spritesheets/sunflower.png", 71, 71, 18, 0, 3, 260, 90);
 
 	while (window.isOpen())
 	{
@@ -96,13 +95,7 @@ int main()
 		window.clear();
 
 		// Do all updating and animation here...
-		pea.animate();
-		pea.shoot();
-		wallnut.animate();
-		sunFlower.animate();
-
 		zomb.animate();
-		zomb2.animate();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -117,11 +110,6 @@ int main()
 
 
 		zomb.draw(window);
-		zomb2.draw(window);
-
-		sunFlower.draw(window);
-		wallnut.draw(window);
-		pea.draw(window);
 
 
 		window.display();
