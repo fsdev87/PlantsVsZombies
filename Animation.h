@@ -28,7 +28,7 @@ public:
 		float time = animClock.getElapsedTime().asMilliseconds();
 		if (time > delay) {
 			sprite.setTextureRect(IntRect(frame * boxX, 0, boxX, boxY));
-			frame += 1;
+			this->frame += 1;
 			animClock.restart();
 		}
 		if (frame >= columns) frame = 0;

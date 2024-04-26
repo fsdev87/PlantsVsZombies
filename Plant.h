@@ -23,7 +23,7 @@ public:
 		return this->position;
 	}
 	bool getExist() { return this->exists; }
-
+	void setExist(bool val) { this->exists = val; }
 	virtual void setDelay(float f) {}
 	virtual void animate() = 0;
 	virtual void draw(RenderWindow& window) {}

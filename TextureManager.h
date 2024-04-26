@@ -18,7 +18,7 @@ private:
 	// For functions
 	int getIndexFromName(string n) {
 		for (int i = 0; i < idx; i++) {
-			if (names[i] == n) return i;
+			if (this->names[i] == n) return i;
 		}
 		return -1;
 	}
@@ -28,24 +28,24 @@ private:
 		string* tempNames = new string[capacity + resizeBy];
 
 		for (int i = 0; i < idx; i++) {
-			tempTextures[i] = textures[i];
-			tempNames[i] = names[i];
+			tempTextures[i] = this->textures[i];
+			tempNames[i] = this->names[i];
 		}
 
 		delete[] textures;
 		delete[] names;
 
-		textures = tempTextures;
-		names = tempNames;
+		this->textures = tempTextures;
+		this->names = tempNames;
 
-		capacity += resizeBy;
+		this->capacity += resizeBy;
 	}
 
 
 public:
 	TextureManager(int t = 10) : capacity(t), idx(0) {
-		textures = new Texture[capacity];
-		names = new string[capacity];
+		this->textures = new Texture[capacity];
+		this->names = new string[capacity];
 	};
 
 	void addTexture(string source, string n) {
@@ -54,9 +54,9 @@ public:
 		if (!temp.loadFromFile(source)) {
 			cout << "Couldn't load " << n << " texture from " << source << endl;
 		}
-		textures[idx] = temp;
-		names[idx] = n;
-		idx++;
+		this->textures[idx] = temp;
+		this->names[idx] = n;
+		this->idx++;
 	}
 
 	Texture& operator[](string n) {
@@ -75,12 +75,12 @@ public:
 		int index = getIndexFromName(name);
 		if (index != -1)
 			return textures[index];
-		return dummyTexture;
+		return this->dummyTexture;
 	}
 
 	~TextureManager() {
-		delete[] textures;
-		textures = nullptr;
+		delete[] this->textures;
+		this->textures = nullptr;
 	}
 };
 
@@ -108,6 +108,7 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/peashooter.png", "spritesheet-peashooter");
 	TM->addTexture("assets/Spritesheets/wallnut.png", "spritesheet-wallnut");
 	TM->addTexture("assets/Spritesheets/cherrybomb.png", "spritesheet-cherrybomb");
+	TM->addTexture("assets/Spritesheets/v.png", "spritesheet-2cherrybomb");
 	TM->addTexture("assets/Spritesheets/repeater.png", "spritesheet-repeater");
 	TM->addTexture("assets/Spritesheets/snowpea.png", "spritesheet-snowpea");
 	TM->addTexture("assets/Spritesheets/sunflower.png", "spritesheet-sunflower");

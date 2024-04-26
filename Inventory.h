@@ -35,82 +35,92 @@ private:
 
 
 	//
-	int plantIndex = 0;
+	int plantsArrayIndex = 0;
 
 public:
 	Inventory(TextureManager* tm) {
-		TMptr = tm;
-		inventorySprite.setTexture(TMptr->getTexture("inventory"));
-		inventorySprite.setPosition(60, 0);
-		inventorySprite.setScale(1.1, 1.1);
+		this->TMptr = tm;
+		this->inventorySprite.setTexture(TMptr->getTexture("inventory"));
+		this->inventorySprite.setPosition(60, 0);
+		this->inventorySprite.setScale(1.1, 1.1);
 
-		selectedRect.setSize({ 51, 75 });
-		selectedRect.setOutlineThickness(4);
-		selectedRect.setOutlineColor(Color::Green);
-		selectedRect.setFillColor(Color::Transparent);
+		this->selectedRect.setSize({ 51, 75 });
+		this->selectedRect.setOutlineThickness(4);
+		this->selectedRect.setOutlineColor(Color::Green);
+		this->selectedRect.setFillColor(Color::Transparent);
 
 	}
 
 	void drawInventory(RenderWindow& window) const {
 		window.draw(inventorySprite);
 		for (int i = 0; i < index; i++) {
-			cards[i].drawCard(window);
+			this->cards[i].drawCard(window);
 		}
-		if (selected)
+		if (this->selected)
 			window.draw(selectedRect);
 	}
 
 	bool validMouseClick(int x, int y) {
-		rectIndex = (x) / 64;
-		selected = true;
+		this->rectIndex = (x) / 64;
+		this->selected = true;
 		if (rectIndex - 2 < index)
-			selectedRect.setPosition(151 + ((rectIndex - 2) * 59), 9);
-		else selected = false;
+			this->selectedRect.setPosition(151 + ((rectIndex - 2) * 59), 9);
+		else this->selected = false;
 
-		cout << rectIndex << " ";
 		bool a = x >= 150 && x <= 616 && y >= 10 && y <= 84;
-		if (!a) selected = false;
+		if (!a) this->selected = false;
 		return a;
 	}
 
+	int getDeadPlantIndex(Plant** plants) {
+		for (int i = 0; i < plantsArrayIndex; i++) {
+			if (plants[i]->getExist() == false) return i;
+		}
+		return -1;
+	}
+
 	void handlePlacing(int gx, int gy, Plant** plants) {
-		cout << "Placed selected plant\n";
 		float pos[2] = { gx, gy };
 		int indexInInventory = rectIndex - 2;
-		cout << "Index in inventory = " << indexInInventory << ", index of plant = " << plantIndex << endl;
-		if (plantIndex >= 45) return;
+		if (this->plantsArrayIndex >= 45) return;
 		// check if already plant is not there
-		for (int i = 0; i < plantIndex; i++) {
+		for (int i = 0; i < this->plantsArrayIndex; i++) {
 			if (plants[i]->getExist() && plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
 				selected = false;
 				return;
 			}
-			/*else if (plants[i]->getExist() == false) {
-				delete[] plants[i];
-				plants[i] = nullptr;
-			}*/
 		}
-		//
-		if (indexInInventory == 0)
-			plants[plantIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("spritesheet-sun"), 18, pos);
-		else if (indexInInventory == 1)
-			plants[plantIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
-		else if (indexInInventory == 2)
-			plants[plantIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
-		else if (indexInInventory == 3)
-			plants[plantIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
-		else if (indexInInventory == 4)
-			plants[plantIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
-		else if (indexInInventory == 5)
-			plants[plantIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
 
-		plantIndex++;
-		selected = false;
+		//
+		int tempArrayIndex = plantsArrayIndex;
+		int deadIndex = getDeadPlantIndex(plants);
+		if (deadIndex != -1) {
+			delete plants[deadIndex];
+			plants[deadIndex] = nullptr;
+			tempArrayIndex = deadIndex;
+		}
+
+		if (indexInInventory == 0)
+			plants[tempArrayIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("spritesheet-sun"), 18, pos);
+		else if (indexInInventory == 1)
+			plants[tempArrayIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
+		else if (indexInInventory == 2)
+			plants[tempArrayIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
+		else if (indexInInventory == 3)
+			plants[tempArrayIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
+		else if (indexInInventory == 4)
+			plants[tempArrayIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
+		else if (indexInInventory == 5) {
+			plants[tempArrayIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
+		}
+
+		if (deadIndex == -1) this->plantsArrayIndex++;
+		this->selected = false;
 	}
 
-	int getPlantIndex() { return plantIndex; }
+	int getPlantIndex() { return this->plantsArrayIndex; }
 
-	bool hasSelectedSomething() { return selected; }
+	bool hasSelectedSomething() { return this->selected; }
 
 	void addCard(Texture& t, string n) {
 		cout << "Added card\n";
@@ -118,9 +128,9 @@ public:
 			cout << "Inventory is full\n";
 			return;
 		}
-		cards[index].setCardTexture(t, n);
-		cards[index].setCardPosition(150 + (index * 59), 9);
+		this->cards[index].setCardTexture(t, n);
+		this->cards[index].setCardPosition(150 + (index * 59), 9);
 
-		index++;
+		this->index++;
 	}
 };

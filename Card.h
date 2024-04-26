@@ -13,18 +13,18 @@ public:
 	Card() = default;
 
 	void setCardTexture(Texture& t, string n) {
-		spr.setTexture(t);
-		spr.setScale(0.86, 0.86);
-		name = n;
+		this->spr.setTexture(t);
+		this->spr.setScale(0.86, 0.86);
+		this->name = n;
 	}
 
 	void setCardPosition(int x, int y) {
-		spr.setPosition(x, y);
+		this->spr.setPosition(x, y);
 	}
 
 	void drawCard(RenderWindow& window) const {
 		window.draw(spr);
 	}
 
-	string getName() { return name; }
+	string getName() { return this->name; }
 };

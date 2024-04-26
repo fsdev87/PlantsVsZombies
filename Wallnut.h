@@ -21,6 +21,7 @@ public:
 
 
 	void draw(RenderWindow& window) {
-		window.draw(sprite);
+		if (this->exists)
+			window.draw(sprite);
 	}
 };

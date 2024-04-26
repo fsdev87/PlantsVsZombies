@@ -39,11 +39,6 @@ int main()
 	Inv.addCard(TM["card-cherrybomb"], "cherrybomb");
 	Inv.addCard(TM["card-chomper"], "chomper");
 
-
-
-
-
-
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -52,9 +47,6 @@ int main()
 			garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 		}
 	}
-
-
-
 
 	const int maxPlantsForLevelOne = 45;
 	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
@@ -70,10 +62,6 @@ int main()
 				if (event.key.code == Keyboard::Escape) {
 					window.close();
 				}
-				/*else if (event.key.code == Keyboard::R) {
-					level.reset();
-					level.increaseLevel();
-				}*/
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {
@@ -102,8 +90,8 @@ int main()
 		}
 
 		window.clear();
-
-
+		// Update everything here
+		// check for collisions, animation, shooting, everything
 		for (int i = 0; i < Inv.getPlantIndex(); i++) {
 			plants[i]->animate();
 			plants[i]->generateSun();
@@ -115,25 +103,22 @@ int main()
 
 		// Draw everything here...
 		window.draw(background.getSprite());
+
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 9; j++) {
 				window.draw(garden[i][j]);
 			}
 		}
-		Inv.drawInventory(window);
 
-		//level.move_draw(window);
+		Inv.drawInventory(window);
+		level.move_draw(window);
 
 		for (int i = 0; i < Inv.getPlantIndex(); i++) {
 			plants[i]->draw(window);
 		}
 
-
-
 		window.display();
-
 	}
-
 	return 0;
 }
 
