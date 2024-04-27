@@ -3,8 +3,6 @@
 #include "Animation.h"
 #include "TextureManager.h"
 
-
-
 class Plant;
 class Zombie {
 protected:
@@ -56,8 +54,8 @@ public:
 			// Taking absolute because on X-Axis
 			// plants are on left (-ve side) and this (Zombie) comes from right (+ve side)
 			if (plants[i]->getExist()) {
-				float dt = abs(plants[i]->getPosition()[0] - this->position[0]);
-				if (dt <= 0.6875) this->blocked = true;
+				float dt = (plants[i]->getPosition()[0] - this->position[0]);
+				if (dt >= -0.6875 && dt <= 0) this->blocked = true;
 			}
 			else {
 				this->blocked = false;
