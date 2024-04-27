@@ -1,5 +1,7 @@
 #pragma once
 #include "Animation.h"
+#include "TextureManager.h"
+#include "Plant.h"
 
 class Zombie {
 protected:
@@ -11,6 +13,8 @@ protected:
 	float xFactor, yFactor;
 	bool exists;
 	Clock moveClock;
+	TextureManager* TMptr;
+	bool blocked = false;
 
 public:
 	Zombie() {
@@ -18,24 +22,39 @@ public:
 		this->yFactor = 32;
 	}
 	bool getExist() { return this->exists; }
+
 	void changeTexture(Texture& tex) {
 		this->sprite = Sprite(tex);
+		this->anim = Animation(166, 144, 21);
+		this->anim.setFrame(0);
 	}
+
 	void animate() {
 		this->anim.animate(this->sprite);
 	}
+
 	void draw(RenderWindow& window) {
 		if (this->exists) {
 			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 			window.draw(this->sprite);
 		}
 	}
-	virtual void move() {
-		if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
+
+	float* getPosition() { return this->position; }
+
+	virtual void move(Plant** plants, int plantsArrayIndex) {
+		for (int i = 0; i < plantsArrayIndex; i++) {
+			if (plants[i]->getPosition()[1] != this->position[1]) continue;
+			float dt = abs(plants[i]->getPosition()[0] - this->position[0]);
+			if (dt <= 0.6875) this->blocked = true;
+			break;
+		}
+		if (this->moveClock.getElapsedTime().asMilliseconds() < 250 || blocked) return;
 		this->position[0] -= this->speed;
 		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 		this->moveClock.restart();
 	}
+
 	virtual void moveDiagonal() {}
 
 

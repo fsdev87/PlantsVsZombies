@@ -33,4 +33,6 @@ public:
 		}
 		if (frame >= columns) frame = 0;
 	}
+
+	void setFrame(int f) { frame = f; animClock.restart(); }
 };

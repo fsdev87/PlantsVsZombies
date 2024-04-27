@@ -50,11 +50,14 @@ int main()
 
 	const int maxPlantsForLevelOne = 45;
 	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
-	float pos[2] = { 10, 4 };
-	float pos1[2] = { 10, 3 };
-	NormalZombie nz(TM["spritesheet-normalZWalk"], 22, pos);
-	DancingZombie dz(TM["spritesheet-normalZWalk"], 22, pos1);
+	int plantsArrayIndex = 0;
 
+	float pos[2] = { 8, 4 };
+	float pos1[2] = { 8, 3 };
+	Zombie** zombies = new Zombie * [2];
+	zombies[0] = new NormalZombie(TM["spritesheet-normalZWalk"], 22, pos, &TM);
+	zombies[1] = new DancingZombie(TM["spritesheet-normalZWalk"], 22, pos1, &TM);
+	bool pause = false;
 	while (window.isOpen())
 	{
 		Event event;
@@ -66,9 +69,24 @@ int main()
 				if (event.key.code == Keyboard::Escape) {
 					window.close();
 				}
-				else if (event.key.code == Keyboard::P) {
-					Inv.showPlantIndex(plants);
+				else if (event.key.code == Keyboard::L) {
+					Inv.showPlantIndex(plants, plantsArrayIndex);
 				}
+				else if (event.key.code == Keyboard::H) {
+					for (int i = 0; i < plantsArrayIndex; i++) {
+						cout << "Plant: " << i << " : " << plants[i]->getPosition()[0] << " " << plants[i]->getPosition()[1] << endl;
+					}
+					for (int i = 0; i < 2; i++) {
+						cout << "Zombie: " << i << " : " << zombies[i]->getPosition()[0] << " " << zombies[i]->getPosition()[1] << endl;
+					}
+				}
+				else if (event.key.code == Keyboard::P) {
+					pause = !pause;
+				}
+				else if (event.key.code == Keyboard::C) {
+					system("cls");
+				}
+
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {
@@ -83,7 +101,7 @@ int main()
 						if (Inv.hasSelectedSomething()) {
 							int gx = (mouseX - gardenCords.leftX) / 80;
 							int gy = (mouseY - gardenCords.topY) / 96;
-							Inv.handlePlacing(gx, gy, plants);
+							Inv.handlePlacing(gx, gy, plants, plantsArrayIndex);
 						}
 					}
 
@@ -99,17 +117,17 @@ int main()
 		window.clear();
 		// Update everything here
 		// check for collisions, animation, shooting, everything
-		for (int i = 0; i < Inv.getPlantIndex(); i++) {
+		for (int i = 0; i < plantsArrayIndex && !pause; i++) {
 			plants[i]->animate();
 			plants[i]->generateSun();
 			plants[i]->shoot();
 			plants[i]->explode();
 		}
-		nz.animate();
-		nz.move();
+		for (int i = 0; i < 2 && !pause; i++) {
+			zombies[i]->animate();
+			zombies[i]->move(plants, plantsArrayIndex);
+		}
 
-		dz.animate();
-		dz.move();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -123,11 +141,12 @@ int main()
 		Inv.drawInventory(window);
 		level.move_draw(window);
 
-		for (int i = 0; i < Inv.getPlantIndex(); i++) {
+		for (int i = 0; i < plantsArrayIndex; i++) {
 			plants[i]->draw(window);
 		}
-		nz.draw(window);
-		dz.draw(window);
+		for (int i = 0; i < 2; i++) {
+			zombies[i]->draw(window);
+		}
 		window.display();
 	}
 	return 0;

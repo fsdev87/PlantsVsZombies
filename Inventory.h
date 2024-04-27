@@ -35,7 +35,7 @@ private:
 
 
 	//
-	int plantsArrayIndex = 0;
+	//int plantsArrayIndex = 0;
 
 public:
 	Inventory(TextureManager* tm) {
@@ -72,26 +72,26 @@ public:
 		return a;
 	}
 
-	int getDeadPlantIndex(Plant** plants) {
+	int getDeadPlantIndex(Plant** plants, int plantsArrayIndex) {
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			if (plants[i]->getExist() == false) return i;
 		}
 		return -1;
 	}
 
-	void showPlantIndex(Plant** plants) {
+	void showPlantIndex(Plant** plants, int plantsArrayIndex) {
 		cout << "Plants alive or dead: \n";
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			cout << i << " = " << plants[i]->getExist() << endl;
 		}
 	}
 
-	void handlePlacing(int gx, int gy, Plant** plants) {
+	void handlePlacing(int gx, int gy, Plant** plants, int& plantsArrayIndex) {
 		float pos[2] = { gx, gy };
 		int indexInInventory = rectIndex - 2;
-		if (this->plantsArrayIndex >= 45) return;
+		if (plantsArrayIndex >= 45) return;
 		// check if already plant is not there
-		for (int i = 0; i < this->plantsArrayIndex; i++) {
+		for (int i = 0; i < plantsArrayIndex; i++) {
 			if (plants[i]->getExist() && plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
 				selected = false;
 				return;
@@ -100,7 +100,7 @@ public:
 
 		//
 		int tempArrayIndex = plantsArrayIndex;
-		int deadIndex = getDeadPlantIndex(plants);
+		int deadIndex = getDeadPlantIndex(plants, plantsArrayIndex);
 		if (deadIndex != -1) {
 			delete plants[deadIndex];
 			plants[deadIndex] = nullptr;
@@ -121,11 +121,9 @@ public:
 			plants[tempArrayIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
 		}
 
-		if (deadIndex == -1) this->plantsArrayIndex++;
+		if (deadIndex == -1) plantsArrayIndex++;
 		this->selected = false;
 	}
-
-	int getPlantIndex() { return this->plantsArrayIndex; }
 
 	bool hasSelectedSomething() { return this->selected; }
 
