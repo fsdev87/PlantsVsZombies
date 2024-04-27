@@ -21,7 +21,7 @@ public:
 
 		this->bullet[0].setPosition(this->position[0], this->position[1]);
 		this->bullet[1].setPosition(this->position[0] - 0.5, this->position[1]);
-		this->startClock.restart();
+		//this->startClock.restart();
 	}
 
 	void shoot(Zombie** zomb, int zombiesArrayIndex) {
@@ -43,10 +43,10 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {
-			if (this->bullet[0].getExist() && this->startClock.getElapsedTime().asSeconds() > 2) {
+			if (this->bullet[0].getExist()) {
 				this->bullet[0].draw(window);
 			}
-			if (this->bullet[1].getExist() && this->startClock.getElapsedTime().asSeconds() > 2) {
+			if (this->bullet[1].getExist()) {
 				this->bullet[1].draw(window);
 			}
 			window.draw(this->sprite);

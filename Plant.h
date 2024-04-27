@@ -34,6 +34,7 @@ public:
 	virtual void shoot(Zombie** zomb, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
 	virtual void explode() {}
+
 	virtual ~Plant() {}
 };
 

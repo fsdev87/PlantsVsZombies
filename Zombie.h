@@ -44,6 +44,13 @@ public:
 		}
 	}
 
+	void setExist(bool val) { this->exists = val; }
+
+	int getHealth() { return this->health; }
+
+	void reduceHealth() {
+		this->health -= 20;
+	}
 
 	virtual void move(Plant** plants, int plantsArrayIndex) {
 		for (int i = 0; i < plantsArrayIndex; i++) {

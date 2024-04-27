@@ -18,8 +18,9 @@ public:
 		this->anim = Animation(71, 71, columns);
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 		this->bulletDelayClock.restart();
-		this->startClock.restart();
+		//this->startClock.restart();
 	}
+
 
 	void shoot(Zombie** zomb, int zombiesArrayIndex) {
 		this->bullet.move(zomb, zombiesArrayIndex);
@@ -36,7 +37,7 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {
-			if (this->bullet.getExist() == true && this->startClock.getElapsedTime().asSeconds() > 2) {
+			if (this->bullet.getExist() == true) {
 				this->bullet.draw(window);
 			}
 			window.draw(this->sprite);
