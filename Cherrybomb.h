@@ -27,13 +27,4 @@ public:
 		}
 	}
 
-	void animate() {
-		if (this->exists) this->anim.animate(this->sprite);
-	}
-
-	void draw(RenderWindow& window) {
-		if (this->exists) {
-			window.draw(this->sprite);
-		}
-	}
 };

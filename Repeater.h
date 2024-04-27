@@ -12,7 +12,6 @@ public:
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->health = 100;
-		this->shooting = true;
 		this->cost = 100;
 		this->exists = true;
 		this->anim = Animation(71, 71, columns);
@@ -25,28 +24,31 @@ public:
 	}
 
 	void shoot(Zombie** zomb, int zombiesArrayIndex) {
-		this->bullet[0].move(zomb, zombiesArrayIndex);
-		this->bullet[1].move(zomb, zombiesArrayIndex);
-		if ((this->bullet[0].getExist() == false || this->bullet[1].getExist() == false) && this->bulletDelayClock.getElapsedTime().asSeconds() > 2) {
-			this->bullet[0].setPosition(this->position[0], this->position[1]);
-			this->bullet[0].setExist(true);
-
-			this->bullet[1].setPosition(this->position[0] - 0.5, this->position[1]);
-			this->bullet[1].setExist(true);
+		if (this->startClock.getElapsedTime().asSeconds() < 2) {
 			this->bulletDelayClock.restart();
+			return;
+		}
+		if (this->exists) {
+			this->bullet[0].move(zomb, zombiesArrayIndex);
+			this->bullet[1].move(zomb, zombiesArrayIndex);
+			if ((this->bullet[0].getExist() == false || this->bullet[1].getExist() == false) && this->bulletDelayClock.getElapsedTime().asSeconds() > 2) {
+				this->bullet[0].setPosition(this->position[0], this->position[1]);
+				this->bullet[0].setExist(true);
+
+				this->bullet[1].setPosition(this->position[0] - 0.5, this->position[1]);
+				this->bullet[1].setExist(true);
+				this->bulletDelayClock.restart();
+			}
 		}
 	}
 
-	void animate() {
-		this->anim.animate(this->sprite);
-	}
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {
-			if (this->bullet[0].getExist()) {
+			if (this->bullet[0].getExist() == true && this->startClock.getElapsedTime().asSeconds() > 2) {
 				this->bullet[0].draw(window);
 			}
-			if (this->bullet[1].getExist()) {
+			if (this->bullet[1].getExist() == true && this->startClock.getElapsedTime().asSeconds() > 2) {
 				this->bullet[1].draw(window);
 			}
 			window.draw(this->sprite);

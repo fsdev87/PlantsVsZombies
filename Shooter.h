@@ -4,10 +4,8 @@
 
 class Shooter : public Plant {
 protected:
-	bool shooting;
-	Animation anim;
 	Clock bulletDelayClock;
-	//Clock startClock;
+	Clock startClock;
 
 public:
 	Shooter() {}

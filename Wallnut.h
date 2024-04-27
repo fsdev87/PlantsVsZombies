@@ -15,13 +15,4 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 	}
 
-	void animate() {
-		this->anim.animate(this->sprite);
-	}
-
-
-	void draw(RenderWindow& window) {
-		if (this->exists)
-			window.draw(sprite);
-	}
 };

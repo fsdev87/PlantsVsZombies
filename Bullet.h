@@ -41,7 +41,7 @@ public:
 		if (bulletClock.getElapsedTime().asMilliseconds() <= 5) {
 			return;
 		}
-		if (exists) {
+		if (this->exists) {
 			for (int i = 0; i < zombiesArrayIndex; i++) {
 				if (zomb[i]->getExist() && (this->position[1] == zomb[i]->getPosition()[1]) && (this->position[0] == zomb[i]->getPosition()[0] || this->position[0] == zomb[i]->getPosition()[0] - 0.03125 || this->position[0] == zomb[i]->getPosition()[0] - 0.0625 || this->position[0] == zomb[i]->getPosition()[0] - 0.09375 || this->position[0] == zomb[i]->getPosition()[0] - 0.125 || this->position[0] == zomb[i]->getPosition()[0] - 0.15625 || this->position[0] == zomb[i]->getPosition()[0] - 0.1875 || this->position[0] == zomb[i]->getPosition()[0] - 0.21875 || this->position[0] == zomb[i]->getPosition()[0] - 0.25 || this->position[0] == zomb[i]->getPosition()[0] - 0.28125 || this->position[0] == zomb[i]->getPosition()[0] - 0.3125 || this->position[0] == zomb[i]->getPosition()[0] - 0.34375 || this->position[0] == zomb[i]->getPosition()[0] - 0.375 || this->position[0] == zomb[i]->getPosition()[0] - 0.40625 || this->position[0] == zomb[i]->getPosition()[0] - 0.4375 || this->position[0] == zomb[i]->getPosition()[0] - 0.46875 || this->position[0] == zomb[i]->getPosition()[0] - 0.5 || this->position[0] == zomb[i]->getPosition()[0] - 0.53125 || this->position[0] == zomb[i]->getPosition()[0] - 0.5625)) {
 					this->exists = false;
@@ -64,8 +64,8 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {
-			this->sprite.setPosition(305 + position[0] * 80, 95 + position[1] * 96);
-			window.draw(sprite);
+			this->sprite.setPosition(305 + this->position[0] * 80, 95 + this->position[1] * 96);
+			window.draw(this->sprite);
 		}
 	}
 };

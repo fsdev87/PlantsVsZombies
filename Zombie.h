@@ -65,8 +65,8 @@ public:
 			// Taking absolute because on X-Axis
 			// plants are on left (-ve side) and this (Zombie) comes from right (+ve side)
 			if (plants[i]->getExist()) {
-				float dt = abs(plants[i]->getPosition()[0] - this->position[0]);
-				if (dt <= 0.6875) {
+				float dt = plants[i]->getPosition()[0] - this->position[0];
+				if (dt <= 0 && dt >= -0.6875) {
 					this->blocked = true;
 					if (!blockFlag) {
 						this->changeTexture((*TMptr)["spritesheet-nZombEat"]);

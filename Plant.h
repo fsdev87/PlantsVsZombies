@@ -18,6 +18,7 @@ protected:
 	bool exists;
 	float xFactor, yFactor;
 	Clock eatClock;
+	Animation anim;
 
 public:
 	Plant() {
@@ -36,9 +37,15 @@ public:
 	}
 	Clock& getEatClock() { return this->eatClock; }
 
+	virtual void animate() {
+		this->anim.animate(this->sprite);
+	}
+
 	virtual void setDelay(float f) {}
-	virtual void animate() = 0;
-	virtual void draw(RenderWindow& window) {}
+	virtual void draw(RenderWindow& window) {
+		if (this->exists)
+			window.draw(this->sprite);
+	}
 	virtual void shoot(Zombie** zomb, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
 	virtual void explode() {}
