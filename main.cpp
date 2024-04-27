@@ -18,7 +18,7 @@ using namespace sf;
 #include "Sunflower.h"
 #include "Wallnut.h"
 #include "Cherrybomb.h"
-
+#include "DancingZombie.h"
 
 int main()
 {
@@ -37,7 +37,7 @@ int main()
 	Inv.addCard(TM["card-wallnut"], "wallnut");
 	Inv.addCard(TM["card-snowpea"], "snowpea");
 	Inv.addCard(TM["card-cherrybomb"], "cherrybomb");
-	Inv.addCard(TM["card-chomper"], "chomper");
+	//Inv.addCard(TM["card-chomper"], "chomper");
 
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
@@ -50,6 +50,10 @@ int main()
 
 	const int maxPlantsForLevelOne = 45;
 	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
+	float pos[2] = { 10, 4 };
+	float pos1[2] = { 10, 3 };
+	NormalZombie nz(TM["spritesheet-normalZWalk"], 22, pos);
+	DancingZombie dz(TM["spritesheet-normalZWalk"], 22, pos1);
 
 	while (window.isOpen())
 	{
@@ -98,8 +102,11 @@ int main()
 			plants[i]->shoot();
 			plants[i]->explode();
 		}
+		nz.animate();
+		nz.move();
 
-
+		dz.animate();
+		dz.move();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -116,7 +123,8 @@ int main()
 		for (int i = 0; i < Inv.getPlantIndex(); i++) {
 			plants[i]->draw(window);
 		}
-
+		nz.draw(window);
+		dz.draw(window);
 		window.display();
 	}
 	return 0;
