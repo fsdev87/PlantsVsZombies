@@ -54,9 +54,12 @@ int main()
 
 	float pos[2] = { 8, 4 };
 	float pos1[2] = { 8, 3 };
-	Zombie** zombies = new Zombie * [2];
-	zombies[0] = new NormalZombie(TM["spritesheet-normalZWalk"], 22, pos, &TM);
-	zombies[1] = new DancingZombie(TM["spritesheet-normalZWalk"], 22, pos1, &TM);
+	float pos2[2] = { 11, 3 };
+	Zombie** zombies = new Zombie * [3];
+	zombies[0] = new DancingZombie(TM["spritesheet-normalZWalk"], 22, pos1, &TM);
+	zombies[1] = new NormalZombie(TM["spritesheet-normalZWalk"], 22, pos, &TM);
+	zombies[2] = new DancingZombie(TM["spritesheet-normalZWalk"], 22, pos2, &TM);
+
 	bool pause = false;
 	while (window.isOpen())
 	{
@@ -76,7 +79,7 @@ int main()
 					for (int i = 0; i < plantsArrayIndex; i++) {
 						cout << "Plant: " << i << " : " << plants[i]->getPosition()[0] << " " << plants[i]->getPosition()[1] << endl;
 					}
-					for (int i = 0; i < 2; i++) {
+					for (int i = 0; i < 3; i++) {
 						cout << "Zombie: " << i << " : " << zombies[i]->getPosition()[0] << " " << zombies[i]->getPosition()[1] << endl;
 					}
 				}
@@ -123,7 +126,7 @@ int main()
 			plants[i]->shoot();
 			plants[i]->explode();
 		}
-		for (int i = 0; i < 2 && !pause; i++) {
+		for (int i = 0; i < 3 && !pause; i++) {
 			zombies[i]->animate();
 			zombies[i]->move(plants, plantsArrayIndex);
 		}
@@ -144,7 +147,7 @@ int main()
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			plants[i]->draw(window);
 		}
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			zombies[i]->draw(window);
 		}
 		window.display();

@@ -121,7 +121,10 @@ public:
 			plants[tempArrayIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
 		}
 
-		if (deadIndex == -1) plantsArrayIndex++;
+		if (deadIndex == -1) {
+			cout << "Incremented plant index\n";
+			plantsArrayIndex++;
+		}
 		this->selected = false;
 	}
 

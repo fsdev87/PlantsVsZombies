@@ -44,10 +44,14 @@ public:
 
 	virtual void move(Plant** plants, int plantsArrayIndex) {
 		for (int i = 0; i < plantsArrayIndex; i++) {
-			if (plants[i]->getPosition()[1] != this->position[1]) continue;
+			if (plants[i]->getPosition()[1] != this->position[1]) {
+				continue;
+			}
+			// Taking absolute because on X-Axis
+			// plants are on left (-ve side) and this (Zombie) comes from right (+ve side)
 			float dt = abs(plants[i]->getPosition()[0] - this->position[0]);
 			if (dt <= 0.6875) this->blocked = true;
-			break;
+			// there was a break here before removed it
 		}
 		if (this->moveClock.getElapsedTime().asMilliseconds() < 250 || blocked) return;
 		this->position[0] -= this->speed;
