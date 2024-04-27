@@ -126,7 +126,7 @@ int main()
 		for (int i = 0; i < plantsArrayIndex && !pause; i++) {
 			plants[i]->animate();
 			plants[i]->generateSun();
-			plants[i]->shoot();
+			plants[i]->shoot(zombies);
 			plants[i]->explode();
 		}
 		for (int i = 0; i < 3 && !pause; i++) {

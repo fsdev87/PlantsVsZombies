@@ -1,6 +1,7 @@
 #pragma once
 #include "Shooter.h"
 #include "Bullet.h"
+#include "Zombie.h"
 
 class Peashooter : public Shooter {
 	Bullet bullet;
@@ -20,8 +21,8 @@ public:
 		this->startClock.restart();
 	}
 
-	void shoot() {
-		this->bullet.move();
+	void shoot(Zombie** zomb) {
+		this->bullet.move(zomb);
 		if (this->bullet.getExist() == false && this->bulletDelayClock.getElapsedTime().asSeconds() > 2) {
 			this->bullet.setPosition(position[0], position[1]);
 			this->bullet.setExist(true);

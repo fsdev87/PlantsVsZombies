@@ -1,8 +1,11 @@
-#pragma once
+#ifndef ZOMBIES_H
+#define ZOMBIES_H
 #include "Animation.h"
 #include "TextureManager.h"
-#include "Plant.h"
 
+
+
+class Plant;
 class Zombie {
 protected:
 	Sprite sprite;
@@ -20,6 +23,9 @@ public:
 	Zombie() {
 		this->xFactor = 185;
 		this->yFactor = 32;
+	}
+	float* getPosition() {
+		return this->position;
 	}
 	bool getExist() { return this->exists; }
 
@@ -40,7 +46,6 @@ public:
 		}
 	}
 
-	float* getPosition() { return this->position; }
 
 	virtual void move(Plant** plants, int plantsArrayIndex) {
 		for (int i = 0; i < plantsArrayIndex; i++) {
@@ -71,3 +76,5 @@ public:
 
 	virtual ~Zombie() {}
 };
+
+#endif

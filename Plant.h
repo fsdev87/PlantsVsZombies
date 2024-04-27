@@ -1,9 +1,13 @@
-#pragma once
+#ifndef PLANT_H
+#define PLANT_H
 #include <SFML/Graphics.hpp>
 #include "Animation.h"
+
 #include "iostream"
 using namespace std;
 using namespace sf;
+
+class Zombie;
 
 class Plant {
 protected:
@@ -27,8 +31,10 @@ public:
 	virtual void setDelay(float f) {}
 	virtual void animate() = 0;
 	virtual void draw(RenderWindow& window) {}
-	virtual void shoot() {}
+	virtual void shoot(Zombie** zomb) {}
 	virtual void generateSun() {}
 	virtual void explode() {}
 	virtual ~Plant() {}
 };
+
+#endif
