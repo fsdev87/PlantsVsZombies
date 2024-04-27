@@ -3,8 +3,6 @@
 #include "Animation.h"
 #include "TextureManager.h"
 
-
-
 class Plant;
 class Zombie {
 protected:
@@ -47,6 +45,13 @@ public:
 		}
 	}
 
+	void setExist(bool val) { this->exists = val; }
+
+	int getHealth() { return this->health; }
+
+	void reduceHealth() {
+		this->health -= 20;
+	}
 
 	virtual void move(Plant** plants, int plantsArrayIndex) {
 		for (int i = 0; i < plantsArrayIndex; i++) {
@@ -60,7 +65,7 @@ public:
 				float dt = abs(plants[i]->getPosition()[0] - this->position[0]);
 				if (dt <= 0.6875) this->blocked = true;
 
-				if (this->blocked && plants[i]->getEatClock().getElapsedTime().asMilliseconds() > 500) {
+				if (this->exists && this->blocked && dt <= 0.6875 && plants[i]->getEatClock().getElapsedTime().asMilliseconds() > 500) {
 					plants[i]->beEaten();
 					plants[i]->getEatClock().restart();
 				}

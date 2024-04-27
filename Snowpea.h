@@ -20,7 +20,7 @@ public:
 
 		this->bullet.changeSprite(itex);
 		this->bulletDelayClock.restart();
-		this->startClock.restart();
+		//this->startClock.restart();
 	}
 
 
@@ -39,7 +39,7 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {
-			if (this->bullet.getExist() == true && this->startClock.getElapsedTime().asSeconds() > 2) {
+			if (this->bullet.getExist() == true) {
 				this->bullet.draw(window);
 			}
 			window.draw(this->sprite);
