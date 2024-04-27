@@ -66,6 +66,9 @@ int main()
 				if (event.key.code == Keyboard::Escape) {
 					window.close();
 				}
+				else if (event.key.code == Keyboard::P) {
+					Inv.showPlantIndex(plants);
+				}
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {

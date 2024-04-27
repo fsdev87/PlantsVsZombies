@@ -79,6 +79,13 @@ public:
 		return -1;
 	}
 
+	void showPlantIndex(Plant** plants) {
+		cout << "Plants alive or dead: \n";
+		for (int i = 0; i < plantsArrayIndex; i++) {
+			cout << i << " = " << plants[i]->getExist() << endl;
+		}
+	}
+
 	void handlePlacing(int gx, int gy, Plant** plants) {
 		float pos[2] = { gx, gy };
 		int indexInInventory = rectIndex - 2;
