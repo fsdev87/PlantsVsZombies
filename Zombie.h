@@ -16,7 +16,7 @@ protected:
 	Clock moveClock;
 	TextureManager* TMptr;
 	bool blocked = false;
-
+	bool blockFlag = false;
 
 public:
 	Zombie() {
@@ -45,6 +45,9 @@ public:
 		}
 	}
 
+	bool getBlockFlag() { return this->blockFlag; }
+	void setBlockFlag(bool val) { this->blockFlag = val; }
+
 	void setExist(bool val) { this->exists = val; }
 
 	int getHealth() { return this->health; }
@@ -63,7 +66,14 @@ public:
 			// plants are on left (-ve side) and this (Zombie) comes from right (+ve side)
 			if (plants[i]->getExist()) {
 				float dt = abs(plants[i]->getPosition()[0] - this->position[0]);
-				if (dt <= 0.6875) this->blocked = true;
+				if (dt <= 0.6875) {
+					this->blocked = true;
+					if (!blockFlag) {
+						this->changeTexture((*TMptr)["spritesheet-nZombEat"]);
+						this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+						this->blockFlag = true;
+					}
+				}
 
 				if (this->exists && this->blocked && dt <= 0.6875 && plants[i]->getEatClock().getElapsedTime().asMilliseconds() > 500) {
 					plants[i]->beEaten();
@@ -72,7 +82,12 @@ public:
 
 			}
 			else {
+				if (this->blocked) {
+					this->changeTexture((*TMptr)["spritesheet-nZombWalk"]);
+					this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+				}
 				this->blocked = false;
+				this->blockFlag = false;
 			}
 
 			// there was a break here before removed it
