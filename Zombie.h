@@ -75,7 +75,7 @@ public:
 					}
 				}
 
-				if (this->exists && this->blocked && dt <= 0.6875 && plants[i]->getEatClock().getElapsedTime().asMilliseconds() > 500) {
+				if (this->exists && this->blocked && dt <= 0 && dt >= -0.6875 && plants[i]->getEatClock().getElapsedTime().asMilliseconds() > 500) {
 					plants[i]->beEaten();
 					plants[i]->getEatClock().restart();
 				}
