@@ -18,7 +18,7 @@ using namespace sf;
 #include "Sunflower.h"
 #include "Wallnut.h"
 #include "Cherrybomb.h"
-
+#include "DancingZombie.h"
 
 int main()
 {
@@ -50,8 +50,11 @@ int main()
 
 	const int maxPlantsForLevelOne = 45;
 	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
-	float pos[2] = { 14, 4 };
+	float pos[2] = { 10, 4 };
+	float pos1[2] = { 10, 3 };
 	NormalZombie nz(TM["spritesheet-normalZWalk"], 22, pos);
+	DancingZombie dz(TM["spritesheet-normalZWalk"], 22, pos1);
+
 	while (window.isOpen())
 	{
 		Event event;
@@ -102,6 +105,8 @@ int main()
 		nz.animate();
 		nz.move();
 
+		dz.animate();
+		dz.move();
 
 		// Draw everything here...
 		window.draw(background.getSprite());
@@ -119,6 +124,7 @@ int main()
 			plants[i]->draw(window);
 		}
 		nz.draw(window);
+		dz.draw(window);
 		window.display();
 	}
 	return 0;
