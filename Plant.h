@@ -31,7 +31,7 @@ public:
 	virtual void setDelay(float f) {}
 	virtual void animate() = 0;
 	virtual void draw(RenderWindow& window) {}
-	virtual void shoot(Zombie** zomb) {}
+	virtual void shoot(Zombie** zomb, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
 	virtual void explode() {}
 	virtual ~Plant() {}

@@ -24,8 +24,8 @@ public:
 	}
 
 
-	void shoot(Zombie** zomb) {
-		this->bullet.move(zomb);
+	void shoot(Zombie** zomb, int zombiesArrayIndex) {
+		this->bullet.move(zomb, zombiesArrayIndex);
 		if (this->bullet.getExist() == false && this->bulletDelayClock.getElapsedTime().asSeconds() > 2) {
 			this->bullet.setPosition(position[0], position[1]);
 			this->bullet.setExist(true);

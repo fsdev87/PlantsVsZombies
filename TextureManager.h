@@ -113,8 +113,8 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/snowpea.png", "spritesheet-snowpea");
 	TM->addTexture("assets/Spritesheets/sunflower.png", "spritesheet-sunflower");
 	TM->addTexture("assets/Spritesheets/sun.png", "spritesheet-sun");
-	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-normalZEat");
-	TM->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-normalZWalk");
+	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
+	TM->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-nZombWalk");
 	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucketZEat");
 	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucketZWalk");
 	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");

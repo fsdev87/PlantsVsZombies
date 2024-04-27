@@ -37,12 +37,12 @@ public:
 		this->position[1] = y;
 	}
 
-	void move(Zombie** zomb) {
+	void move(Zombie** zomb, int zombiesArrayIndex) {
 		if (bulletClock.getElapsedTime().asMilliseconds() <= 5) {
 			return;
 		}
 		if (exists) {
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < zombiesArrayIndex; i++) {
 				if ((this->position[1] == zomb[i]->getPosition()[1]) && (this->position[0] == zomb[i]->getPosition()[0] || this->position[0] == zomb[i]->getPosition()[0] - 0.03125 || this->position[0] == zomb[i]->getPosition()[0] - 0.0625 || this->position[0] == zomb[i]->getPosition()[0] - 0.09375 || this->position[0] == zomb[i]->getPosition()[0] - 0.125 || this->position[0] == zomb[i]->getPosition()[0] - 0.15625 || this->position[0] == zomb[i]->getPosition()[0] - 0.1875 || this->position[0] == zomb[i]->getPosition()[0] - 0.21875 || this->position[0] == zomb[i]->getPosition()[0] - 0.25 || this->position[0] == zomb[i]->getPosition()[0] - 0.28125 || this->position[0] == zomb[i]->getPosition()[0] - 0.3125 || this->position[0] == zomb[i]->getPosition()[0] - 0.34375 || this->position[0] == zomb[i]->getPosition()[0] - 0.375 || this->position[0] == zomb[i]->getPosition()[0] - 0.40625 || this->position[0] == zomb[i]->getPosition()[0] - 0.4375 || this->position[0] == zomb[i]->getPosition()[0] - 0.46875 || this->position[0] == zomb[i]->getPosition()[0] - 0.5 || this->position[0] == zomb[i]->getPosition()[0] - 0.53125 || this->position[0] == zomb[i]->getPosition()[0] - 0.5625)) {
 					this->exists = false;
 					this->bulletClock.restart();

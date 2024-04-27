@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 using namespace sf;
 
@@ -22,6 +24,7 @@ using namespace sf;
 
 int main()
 {
+	srand((unsigned)time(0));
 	RenderWindow window(VideoMode(1400, 600), "game");
 	TextureManager TM;
 	loadTextures(&TM);
@@ -52,13 +55,15 @@ int main()
 	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
 	int plantsArrayIndex = 0;
 
-	float pos[2] = { 8, 4 };
-	float pos1[2] = { 8, 3 };
-	float pos2[2] = { 11, 3 };
-	Zombie** zombies = new Zombie * [3];
-	zombies[0] = new DancingZombie(TM["spritesheet-normalZWalk"], 22, pos1, &TM);
-	zombies[1] = new NormalZombie(TM["spritesheet-normalZWalk"], 22, pos, &TM);
-	zombies[2] = new DancingZombie(TM["spritesheet-normalZWalk"], 22, pos2, &TM);
+
+	const int maxZombieCount = 20;
+	Zombie** zombies = new Zombie * [maxZombieCount];
+	int zombiesArrayIndex = 0;
+	for (int i = 0; i < 5; i++) {
+		float pos[2] = { 5 + i, 3 }; // set random position here
+		zombies[i] = new NormalZombie(TM["spritesheet-nZombWalk"], 22, pos, &TM);
+	}
+	zombiesArrayIndex = 5;
 
 	bool pause = false;
 	while (window.isOpen())
@@ -79,7 +84,7 @@ int main()
 					for (int i = 0; i < plantsArrayIndex; i++) {
 						cout << "Plant: " << i << " : " << plants[i]->getPosition()[0] << " " << plants[i]->getPosition()[1] << endl;
 					}
-					for (int i = 0; i < 3; i++) {
+					for (int i = 0; i < zombiesArrayIndex; i++) {
 						cout << "Zombie: " << i << " : " << zombies[i]->getPosition()[0] << " " << zombies[i]->getPosition()[1] << endl;
 					}
 				}
@@ -126,10 +131,10 @@ int main()
 		for (int i = 0; i < plantsArrayIndex && !pause; i++) {
 			plants[i]->animate();
 			plants[i]->generateSun();
-			plants[i]->shoot(zombies);
+			plants[i]->shoot(zombies, zombiesArrayIndex);
 			plants[i]->explode();
 		}
-		for (int i = 0; i < 3 && !pause; i++) {
+		for (int i = 0; i < zombiesArrayIndex && !pause; i++) {
 			zombies[i]->animate();
 			zombies[i]->move(plants, plantsArrayIndex);
 		}
@@ -150,7 +155,7 @@ int main()
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			plants[i]->draw(window);
 		}
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < zombiesArrayIndex; i++) {
 			zombies[i]->draw(window);
 		}
 		window.display();
