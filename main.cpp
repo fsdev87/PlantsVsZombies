@@ -60,7 +60,7 @@ int main()
 	Zombie** zombies = new Zombie * [maxZombieCount];
 	int zombiesArrayIndex = 0;
 	for (int i = 0; i < 5; i++) {
-		float pos[2] = { 5 + i, 3 }; // set random position here
+		float pos[2] = { 5, i }; // set random position here
 		zombies[i] = new NormalZombie(TM["spritesheet-nZombWalk"], 22, pos, &TM);
 	}
 	zombiesArrayIndex = 5;

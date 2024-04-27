@@ -19,6 +19,7 @@ protected:
 	TextureManager* TMptr;
 	bool blocked = false;
 
+
 public:
 	Zombie() {
 		this->xFactor = 185;
@@ -58,6 +59,12 @@ public:
 			if (plants[i]->getExist()) {
 				float dt = abs(plants[i]->getPosition()[0] - this->position[0]);
 				if (dt <= 0.6875) this->blocked = true;
+
+				if (this->blocked && plants[i]->getEatClock().getElapsedTime().asMilliseconds() > 500) {
+					plants[i]->beEaten();
+					plants[i]->getEatClock().restart();
+				}
+
 			}
 			else {
 				this->blocked = false;

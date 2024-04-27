@@ -17,17 +17,25 @@ protected:
 	int cost;
 	bool exists;
 	float xFactor, yFactor;
+	Clock eatClock;
 
 public:
 	Plant() {
 		this->xFactor = 260;
 		this->yFactor = 90;
+		this->eatClock.restart();
 	}
 	float* getPosition() {
 		return this->position;
 	}
 	bool getExist() { return this->exists; }
 	void setExist(bool val) { this->exists = val; }
+	void beEaten() {
+		this->health -= 20;
+		if (this->health <= 0) this->exists = false;
+	}
+	Clock& getEatClock() { return this->eatClock; }
+
 	virtual void setDelay(float f) {}
 	virtual void animate() = 0;
 	virtual void draw(RenderWindow& window) {}
