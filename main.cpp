@@ -89,6 +89,9 @@ int main()
 				else if (event.key.code == Keyboard::C) {
 					system("cls");
 				}
+				else if (event.key.code == Keyboard::D) {
+					plants[0]->setExist(false);
+				}
 
 			}
 			if (event.type == Event::MouseButtonPressed) {
