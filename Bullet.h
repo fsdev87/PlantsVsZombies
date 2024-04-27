@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
 #include "Animation.h"
+#include "Zombie.h"
 using namespace sf;
 
 class Bullet {
@@ -11,6 +12,7 @@ class Bullet {
 	int damage;
 	Clock bulletClock;
 	bool exists;
+	float speed;
 
 public:
 	Bullet(int x = 0, int y = 0) {
@@ -20,6 +22,7 @@ public:
 		this->damage = 1;
 		this->exists = true;
 		this->bulletClock.restart();
+		this->speed = 0.0625;
 	}
 
 	void changeSprite(Texture& tex) {
@@ -34,13 +37,20 @@ public:
 		this->position[1] = y;
 	}
 
-	void move() {
+	void move(Zombie** zomb) {
 		if (bulletClock.getElapsedTime().asMilliseconds() <= 5) {
 			return;
 		}
 		if (exists) {
+			for (int i = 0; i < 2; i++) {
+				if ((this->position[1] == zomb[i]->getPosition()[1]) && (this->position[0] == zomb[i]->getPosition()[0] || this->position[0] == zomb[i]->getPosition()[0] - 0.03125 || this->position[0] == zomb[i]->getPosition()[0] - 0.0625 || this->position[0] == zomb[i]->getPosition()[0] - 0.09375 || this->position[0] == zomb[i]->getPosition()[0] - 0.125 || this->position[0] == zomb[i]->getPosition()[0] - 0.15625 || this->position[0] == zomb[i]->getPosition()[0] - 0.1875 || this->position[0] == zomb[i]->getPosition()[0] - 0.21875 || this->position[0] == zomb[i]->getPosition()[0] - 0.25 || this->position[0] == zomb[i]->getPosition()[0] - 0.28125 || this->position[0] == zomb[i]->getPosition()[0] - 0.3125 || this->position[0] == zomb[i]->getPosition()[0] - 0.34375 || this->position[0] == zomb[i]->getPosition()[0] - 0.375 || this->position[0] == zomb[i]->getPosition()[0] - 0.40625 || this->position[0] == zomb[i]->getPosition()[0] - 0.4375 || this->position[0] == zomb[i]->getPosition()[0] - 0.46875 || this->position[0] == zomb[i]->getPosition()[0] - 0.5 || this->position[0] == zomb[i]->getPosition()[0] - 0.53125 || this->position[0] == zomb[i]->getPosition()[0] - 0.5625)) {
+					this->exists = false;
+					this->bulletClock.restart();
+					return;
+				}
+			}
 			if (this->position[0] <= 8.5) {
-				this->position[0] += 0.0625;
+				this->position[0] += this->speed;
 			}
 			else {
 				this->exists = false;

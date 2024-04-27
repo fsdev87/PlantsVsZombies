@@ -17,6 +17,9 @@ public:
 		this->xFactor = 185;
 		this->yFactor = 32;
 	}
+	float* getPosition() {
+		return this->position;
+	}
 	bool getExist() { return this->exists; }
 	void changeTexture(Texture& tex) {
 		this->sprite = Sprite(tex);

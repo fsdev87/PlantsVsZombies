@@ -1,5 +1,6 @@
 #pragma once
 #include "Plant.h"
+#include "Zombie.h"
 
 class Shooter : public Plant {
 protected:
@@ -10,5 +11,5 @@ protected:
 
 public:
 	Shooter() {}
-	virtual void shoot() {}
+	virtual void shoot(Zombie** zomb) {}
 };

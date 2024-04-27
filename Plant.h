@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Animation.h"
+#include "Zombie.h"
 #include "iostream"
 using namespace std;
 using namespace sf;
@@ -27,7 +28,7 @@ public:
 	virtual void setDelay(float f) {}
 	virtual void animate() = 0;
 	virtual void draw(RenderWindow& window) {}
-	virtual void shoot() {}
+	virtual void shoot(Zombie** zomb) {}
 	virtual void generateSun() {}
 	virtual void explode() {}
 	virtual ~Plant() {}
