@@ -69,9 +69,10 @@ int main()
 
 	const int maxZombieCount = 20;
 	Zombie** zombies = new Zombie * [maxZombieCount];
-	int zombiesArrayIndex = 5;
+	int zombiesArrayIndex = 10;
 	for (int i = 0; i < zombiesArrayIndex; i++) {
-		float pos[2] = { 10 + i, 3 }; // set random position here
+		float pos[2];
+		pos[0] = 8 + i % 4, pos[1] = i % 5;
 		zombies[i] = new NormalZombie(TM["spritesheet-nZombWalk"], 22, pos, &TM);
 	}
 
@@ -169,7 +170,15 @@ int main()
 			plants[i]->animate();
 			plants[i]->generateSun();
 
-			plants[i]->shoot(zombies, zombiesArrayIndex);
+			int plantRow = 0;
+			for (int j = 0; j < zombiesArrayIndex; j++) {
+				if (plants[i] != nullptr && zombies[j]->getExist() && (zombies[j]->getPosition()[1] == plants[i]->getPosition()[1]) && (zombies[j]->getPosition()[0] <= 9)) {
+					plantRow++;
+				}
+			}
+			if (plantRow > 0) {
+				plants[i]->shoot(zombies, zombiesArrayIndex);
+			}
 			plants[i]->explode();
 		}
 		for (int i = 0; i < zombiesArrayIndex && !pause; i++) {

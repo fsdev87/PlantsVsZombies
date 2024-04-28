@@ -20,7 +20,7 @@ public:
 		if (!texture.loadFromFile("assets/Bullets/peabullet.png")) cout << "Bullet not found\n";
 		this->sprite.setTexture(this->texture);
 		this->damage = 1;
-		this->exists = true;
+		this->exists = false;
 		this->bulletClock.restart();
 		this->speed = 0.0625;
 	}
