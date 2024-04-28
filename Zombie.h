@@ -85,9 +85,11 @@ public:
 				if (this->blocked) {
 					this->changeTexture((*TMptr)["spritesheet-nZombWalk"]);
 					this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+					this->blocked = false;
 				}
-				this->blocked = false;
-				this->blockFlag = false;
+				else {
+					this->blockFlag = false;
+				}
 			}
 
 			// there was a break here before removed it

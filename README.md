@@ -6,4 +6,5 @@
 
 
 ## Current State of Game
-![Screenshot 2024-04-24 182221](https://github.com/abdullahamin231/project/assets/42760671/4559d5a2-c5e9-48b8-b06e-ab19a2d52224)
+![image](https://github.com/abdullahamin231/project/assets/42760671/e0f69176-2533-4211-a12b-62689b67fa80)
+
