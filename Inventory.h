@@ -53,21 +53,27 @@ public:
 
 	bool hasSelectedSomething() { return this->selected; }
 
-	void addCard(Texture& t, string n) {
+	void addCard(Texture& dim, Texture& bright, string n, int cost) {
 		cout << "Added card\n";
 		if (index >= maxCards) {
 			cout << "Inventory is full\n";
 			return;
 		}
-		this->cards[index].setCardTexture(t, n);
+		this->cards[index].setCardTexture(dim, bright, n, cost);
 		this->cards[index].setCardPosition(150 + (index * 59), 9);
 
 		this->index++;
 	}
 
-	void drawInventory(RenderWindow& window) const {
+	void drawInventory(RenderWindow& window, int& sunCount) {
 		window.draw(inventorySprite);
 		for (int i = 0; i < index; i++) {
+			if (this->cards[i].getCost() > sunCount) {
+				this->cards[i].setTexture("dim");
+			}
+			else {
+				this->cards[i].setTexture("bright");
+			}
 			this->cards[i].drawCard(window);
 		}
 		if (this->selected)

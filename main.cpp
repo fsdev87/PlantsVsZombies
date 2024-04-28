@@ -34,16 +34,16 @@ int main()
 	Background background(&TM);
 
 	Inventory Inv(&TM);
-	Inv.addCard(TM["card-sunflower"], "sunflower");
-	Inv.addCard(TM["card-peashooter"], "peashooter");
-	Inv.addCard(TM["card-repeater"], "repeater");
-	Inv.addCard(TM["card-wallnut"], "wallnut");
-	Inv.addCard(TM["card-snowpea"], "snowpea");
-	Inv.addCard(TM["card-cherrybomb"], "cherrybomb");
+	Inv.addCard(TM["card-sunflower_dim"], TM["card-sunflower"], "sunflower", 50);
+	Inv.addCard(TM["card-peashooter_dim"], TM["card-peashooter"], "peashooter", 100);
+	Inv.addCard(TM["card-repeater_dim"], TM["card-repeater"], "repeater", 200);
+	Inv.addCard(TM["card-wallnut_dim"], TM["card-wallnut"], "wallnut", 50);
+	Inv.addCard(TM["card-snowpea_dim"], TM["card-snowpea"], "snowpea", 175);
+	Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 
-	int sunCount = 1000;
+	int sunCount = 250;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));
@@ -90,6 +90,10 @@ int main()
 				}
 				else if (event.key.code == Keyboard::L) {
 					Inv.showPlantIndex(plants, plantsArrayIndex);
+					cout << "Zombie alive or dead: \n";
+					for (int i = 0; i < zombiesArrayIndex; i++) {
+						cout << i << " = " << zombies[i]->getExist() << endl;
+					}
 				}
 				else if (event.key.code == Keyboard::H) {
 					for (int i = 0; i < plantsArrayIndex; i++) {
@@ -172,7 +176,7 @@ int main()
 			}
 		}
 
-		Inv.drawInventory(window);
+		Inv.drawInventory(window, sunCount);
 		level.move_draw(window);
 
 		for (int i = 0; i < plantsArrayIndex; i++) {

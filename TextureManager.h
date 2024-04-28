@@ -101,6 +101,14 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Screens/Cards/card_wallnut.png", "card-wallnut");
 	TM->addTexture("assets/Screens/Cards/card_snowpea.png", "card-snowpea");
 	TM->addTexture("assets/Screens/Cards/card_cherrybomb.png", "card-cherrybomb");
+
+	TM->addTexture("assets/Screens/Cards/card_sunflower_dim.png", "card-sunflower_dim");
+	TM->addTexture("assets/Screens/Cards/card_peashooter_dim.png", "card-peashooter_dim");
+	TM->addTexture("assets/Screens/Cards/card_repeater_dim.png", "card-repeater_dim");
+	TM->addTexture("assets/Screens/Cards/card_wallnut_dim.png", "card-wallnut_dim");
+	TM->addTexture("assets/Screens/Cards/card_snowpea_dim.png", "card-snowpea_dim");
+	TM->addTexture("assets/Screens/Cards/card_cherrybomb_dim.png", "card-cherrybomb_dim");
+
 	TM->addTexture("assets/Screens/Cards/card_chomper.png", "card-chomper");
 
 	//TM->addTexture("assets/Spritesheets/shovel.png", "shovel");
@@ -118,6 +126,7 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucZEat");
 	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
 	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
+
 
 	TM->addTexture("assets/Bullets/peabullet.png", "bullet");
 	TM->addTexture("assets/Bullets/peabulletexplode.png", "bulletExplode");
