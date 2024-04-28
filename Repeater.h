@@ -11,8 +11,8 @@ public:
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
-		this->health = 100;
-		this->cost = 100;
+		this->health = 150;
+		this->cost = 200;
 		this->exists = true;
 		this->anim = Animation(71, 71, columns);
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
