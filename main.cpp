@@ -43,7 +43,7 @@ int main()
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 
-	int sunCount = 10000;
+	int sunCount = 300;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));
@@ -170,7 +170,7 @@ int main()
 			plants[i]->animate();
 			plants[i]->generateSun();
 
-			int plantRow = 0;
+			/*int plantRow = 0;
 			for (int j = 0; j < zombiesArrayIndex; j++) {
 				if (plants[i] != nullptr && zombies[j]->getExist() && (zombies[j]->getPosition()[1] == plants[i]->getPosition()[1]) && (zombies[j]->getPosition()[0] <= 9)) {
 					plantRow++;
@@ -178,7 +178,8 @@ int main()
 			}
 			if (plantRow > 0) {
 				plants[i]->shoot(zombies, zombiesArrayIndex);
-			}
+			}*/
+			plants[i]->shoot(zombies, zombiesArrayIndex);
 			plants[i]->explode();
 		}
 		for (int i = 0; i < zombiesArrayIndex && !pause; i++) {
