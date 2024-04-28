@@ -10,7 +10,7 @@ public:
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->columns = columns; // for checking only if cherrybombs first animation is complete
-		this->cost = 150;
+		this->cost = 250;
 		this->exists = true;
 		this->anim = Animation(71, 71, columns);
 		this->anim.setDelay(150); // for a slower animation

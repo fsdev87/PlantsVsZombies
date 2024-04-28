@@ -8,12 +8,19 @@ class Card {
 private:
 	Sprite spr;
 	string name;
+	Texture brightTex;
+	Texture dimTex;
+	int cost;
 
 public:
 	Card() = default;
 
-	void setCardTexture(Texture& t, string n) {
-		this->spr.setTexture(t);
+	void setCardTexture(Texture& dim, Texture& bright, string n, int cost) {
+		brightTex = bright;
+		dimTex = dim;
+		this->cost = cost;
+		this->spr.setTexture(dimTex);
+
 		this->spr.setScale(0.86, 0.86);
 		this->name = n;
 	}
@@ -22,9 +29,21 @@ public:
 		this->spr.setPosition(x, y);
 	}
 
+	void setTexture(string s) {
+		if (s == "dim") {
+			spr.setTexture(dimTex);
+		}
+		else if (s == "bright") {
+			spr.setTexture(brightTex);
+		}
+	}
+
 	void drawCard(RenderWindow& window) const {
 		window.draw(spr);
 	}
+
+	int getCost() const { return this->cost; }
+
 
 	string getName() { return this->name; }
 };

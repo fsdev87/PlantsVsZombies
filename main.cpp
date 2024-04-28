@@ -34,13 +34,23 @@ int main()
 	Background background(&TM);
 
 	Inventory Inv(&TM);
-	Inv.addCard(TM["card-sunflower"], "sunflower");
-	Inv.addCard(TM["card-peashooter"], "peashooter");
-	Inv.addCard(TM["card-repeater"], "repeater");
-	Inv.addCard(TM["card-wallnut"], "wallnut");
-	Inv.addCard(TM["card-snowpea"], "snowpea");
-	Inv.addCard(TM["card-cherrybomb"], "cherrybomb");
+	Inv.addCard(TM["card-sunflower_dim"], TM["card-sunflower"], "sunflower", 50);
+	Inv.addCard(TM["card-peashooter_dim"], TM["card-peashooter"], "peashooter", 100);
+	Inv.addCard(TM["card-repeater_dim"], TM["card-repeater"], "repeater", 200);
+	Inv.addCard(TM["card-wallnut_dim"], TM["card-wallnut"], "wallnut", 50);
+	Inv.addCard(TM["card-snowpea_dim"], TM["card-snowpea"], "snowpea", 175);
+	Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
 	//Inv.addCard(TM["card-chomper"], "chomper");
+
+
+	int sunCount = 250;
+	Text sunCountText;
+	sunCountText.setFont(FM[0]);
+	sunCountText.setString(to_string(sunCount));
+	sunCountText.setCharacterSize(24);
+	sunCountText.setPosition(86, 62);
+	sunCountText.setFillColor(Color::Black);
+
 
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
@@ -50,6 +60,7 @@ int main()
 			garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 		}
 	}
+
 
 	const int maxPlantsForLevelOne = 45;
 	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
@@ -79,6 +90,10 @@ int main()
 				}
 				else if (event.key.code == Keyboard::L) {
 					Inv.showPlantIndex(plants, plantsArrayIndex);
+					cout << "Zombie alive or dead: \n";
+					for (int i = 0; i < zombiesArrayIndex; i++) {
+						cout << i << " = " << zombies[i]->getExist() << endl;
+					}
 				}
 				else if (event.key.code == Keyboard::H) {
 					for (int i = 0; i < plantsArrayIndex; i++) {
@@ -109,13 +124,25 @@ int main()
 						cout << mouseX << " " << mouseY << endl;
 						cout << "Position on Grid: " << (mouseY - gardenCords.topY) / 96 << ", " << (mouseX - gardenCords.leftX) / 80 << endl;
 
+
+						// Handle placing of plants
+						int gy = (mouseY - gardenCords.topY) / 96;
+						int gx = (mouseX - gardenCords.leftX) / 80;
+
 						if (Inv.hasSelectedSomething()) {
-							int gx = (mouseX - gardenCords.leftX) / 80;
-							int gy = (mouseY - gardenCords.topY) / 96;
-							Inv.handlePlacing(gx, gy, plants, plantsArrayIndex);
+							Inv.handlePlacing(gx, gy, plants, plantsArrayIndex, sunCount);
 						}
+
+						for (int i = 0; i < plantsArrayIndex; i++) {
+							if (plants[i]->getExist() && plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
+								plants[i]->clickSun(sunCount);
+								sunCountText.setString(to_string(sunCount));
+							}
+						}
+
 					}
 
+					// Handle selection of any card in inventory
 					if (Inv.validMouseClick(mouseX, mouseY)) {
 						cout << "Valid Mouse Click on Inventory\n";
 					}
@@ -149,7 +176,7 @@ int main()
 			}
 		}
 
-		Inv.drawInventory(window);
+		Inv.drawInventory(window, sunCount);
 		level.move_draw(window);
 
 		for (int i = 0; i < plantsArrayIndex; i++) {
@@ -158,6 +185,8 @@ int main()
 		for (int i = 0; i < zombiesArrayIndex; i++) {
 			zombies[i]->draw(window);
 		}
+
+		window.draw(sunCountText);
 		window.display();
 	}
 	return 0;

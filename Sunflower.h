@@ -13,7 +13,7 @@ public:
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->health = 100;
-		this->cost = 100;
+		this->cost = 50;
 		this->exists = true;
 		this->anim = Animation(71, 71, columns);
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
@@ -22,7 +22,7 @@ public:
 		this->sunAnim = Animation(71, 71, 22);
 		this->sunSprite.setTexture(sunT);
 		this->sunSprite.setScale(0.7, 0.7);
-		this->sunSprite.setPosition(xFactor + 35 + position[0] * 80, yFactor + position[1] * 96 - 15);
+		this->sunSprite.setPosition(xFactor + 30 + position[0] * 80, yFactor + position[1] * 96 - 10);
 		this->showSunClock.restart();
 
 	}
@@ -31,6 +31,15 @@ public:
 		if (this->showSunClock.getElapsedTime().asSeconds() < 5.0) return;
 		if (this->exists) {
 			this->showSun = true;
+			this->showSunClock.restart();
+		}
+	}
+
+	void clickSun(int& sunCount) {
+		if (this->showSun) {
+			this->showSun = false;
+			sunCount += 25;
+			cout << "Suncount is now: " << sunCount << endl;
 			this->showSunClock.restart();
 		}
 	}
@@ -46,6 +55,6 @@ public:
 		if (this->exists) {
 			window.draw(this->sprite);
 		}
-		if (this->showSun) window.draw(this->sunSprite);
+		if (this->exists && this->showSun) window.draw(this->sunSprite);
 	}
 };

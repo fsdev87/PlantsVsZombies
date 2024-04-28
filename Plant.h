@@ -41,6 +41,8 @@ public:
 		this->anim.animate(this->sprite);
 	}
 
+	int getPrice() { return this->cost; }
+
 	virtual void setDelay(float f) {}
 	virtual void draw(RenderWindow& window) {
 		if (this->exists)
@@ -49,6 +51,7 @@ public:
 	virtual void shoot(Zombie** zomb, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
 	virtual void explode() {}
+	virtual void clickSun(int& sunCount) {}
 
 	virtual ~Plant() {}
 };
