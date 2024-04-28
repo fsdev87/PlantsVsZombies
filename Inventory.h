@@ -129,7 +129,7 @@ public:
 
 		// only place the plant if the sunCount amount is sufficient
 		if (indexInInventory == 0 && sunCount >= 50)
-			plants[tempArrayIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("spritesheet-sun"), 18, pos);
+			plants[tempArrayIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("icon-sun"), 18, pos);
 		else if (indexInInventory == 1 && sunCount >= 100)
 			plants[tempArrayIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
 		else if (indexInInventory == 2 && sunCount >= 200)

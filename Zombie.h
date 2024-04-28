@@ -52,11 +52,12 @@ public:
 
 	int getHealth() { return this->health; }
 
-	void reduceHealth() {
-		this->health -= 20;
+	void reduceHealth(int damage) {
+		this->health -= damage;
 	}
 
 	virtual void move(Plant** plants, int plantsArrayIndex) {
+
 		for (int i = 0; i < plantsArrayIndex; i++) {
 
 			if (plants[i]->getPosition()[1] != this->position[1]) {

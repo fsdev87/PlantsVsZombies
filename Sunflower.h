@@ -2,7 +2,7 @@
 #include "NonShooter.h"
 
 class Sunflower : public NonShooter {
-	Animation sunAnim;
+	//Animation sunAnim;
 	Sprite sunSprite;
 	bool showSun = false;
 	Clock showSunClock;
@@ -19,7 +19,7 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 
 		// Everything sun related
-		this->sunAnim = Animation(71, 71, 22);
+		//this->sunAnim = Animation(71, 71, 22);
 		this->sunSprite.setTexture(sunT);
 		this->sunSprite.setScale(0.7, 0.7);
 		this->sunSprite.setPosition(xFactor + 30 + position[0] * 80, yFactor + position[1] * 96 - 10);
@@ -48,7 +48,7 @@ public:
 		if (this->exists) {
 			this->anim.animate(this->sprite);
 		}
-		if (this->showSun) this->sunAnim.animate(this->sunSprite);
+		//if (this->showSun) this->sunAnim.animate(this->sunSprite);
 	}
 
 	void draw(RenderWindow& window) {
