@@ -43,7 +43,7 @@ int main()
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 
-	int sunCount = 250;
+	int sunCount = 1000;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));
@@ -69,12 +69,11 @@ int main()
 
 	const int maxZombieCount = 20;
 	Zombie** zombies = new Zombie * [maxZombieCount];
-	int zombiesArrayIndex = 0;
-	for (int i = 0; i < 5; i++) {
-		float pos[2] = { 8, i }; // set random position here
+	int zombiesArrayIndex = 5;
+	for (int i = 0; i < zombiesArrayIndex; i++) {
+		float pos[2] = { 10 + i, 3 }; // set random position here
 		zombies[i] = new NormalZombie(TM["spritesheet-nZombWalk"], 22, pos, &TM);
 	}
-	zombiesArrayIndex = 5;
 
 	bool pause = false;
 	while (window.isOpen())
@@ -93,6 +92,17 @@ int main()
 					cout << "Zombie alive or dead: \n";
 					for (int i = 0; i < zombiesArrayIndex; i++) {
 						cout << i << " = " << zombies[i]->getExist() << endl;
+					}
+				}
+				else if (event.key.code == Keyboard::R) {
+					for (int i = 0; i < plantsArrayIndex; i++) {
+						int plantRow = 0;
+						for (int j = 0; j < zombiesArrayIndex; j++) {
+							if (plants[i] != nullptr && zombies[j]->getExist() && (zombies[j]->getPosition()[1] == plants[i]->getPosition()[1]) && (zombies[j]->getPosition()[0] <= 9)) {
+								plantRow++;
+							}
+						}
+						cout << i << " = " << plantRow << endl;
 					}
 				}
 				else if (event.key.code == Keyboard::H) {
@@ -158,6 +168,7 @@ int main()
 		for (int i = 0; i < plantsArrayIndex && !pause; i++) {
 			plants[i]->animate();
 			plants[i]->generateSun();
+
 			plants[i]->shoot(zombies, zombiesArrayIndex);
 			plants[i]->explode();
 		}

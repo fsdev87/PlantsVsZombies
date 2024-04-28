@@ -36,6 +36,12 @@ public:
 		}
 	}
 
+	void setBulletExist(bool val) {
+		this->bullet.setExist(val);
+		this->bulletDelayClock.restart();
+	}
+
+	bool getBulletExist() { return this->bullet.getExist(); }
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {
