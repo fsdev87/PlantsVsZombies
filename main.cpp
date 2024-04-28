@@ -43,7 +43,7 @@ int main()
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 
-	int sunCount = 100;
+	int sunCount = 1000;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));
@@ -130,7 +130,7 @@ int main()
 						}
 
 						for (int i = 0; i < plantsArrayIndex; i++) {
-							if (plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
+							if (plants[i]->getExist() && plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
 								plants[i]->clickSun(sunCount);
 								sunCountText.setString(to_string(sunCount));
 							}

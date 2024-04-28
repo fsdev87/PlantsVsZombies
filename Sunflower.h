@@ -55,6 +55,6 @@ public:
 		if (this->exists) {
 			window.draw(this->sprite);
 		}
-		if (this->showSun) window.draw(this->sunSprite);
+		if (this->exists && this->showSun) window.draw(this->sunSprite);
 	}
 };
