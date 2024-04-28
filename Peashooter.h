@@ -22,10 +22,10 @@ public:
 
 
 	void shoot(Zombie** zomb, int zombiesArrayIndex) {
-		if (this->startClock.getElapsedTime().asSeconds() < 2) {
+		/*if (this->startClock.getElapsedTime().asSeconds() < 2) {
 			this->bulletDelayClock.restart();
 			return;
-		}
+		}*/
 		if (this->exists) {
 			this->bullet.move(zomb, zombiesArrayIndex);
 			if (this->bullet.getExist() == false && this->bulletDelayClock.getElapsedTime().asSeconds() > 2) {
@@ -45,10 +45,10 @@ public:
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {
-			if (this->bullet.getExist() == true && this->startClock.getElapsedTime().asSeconds() > 2) {
-				this->bullet.draw(window);
-			}
 			window.draw(this->sprite);
+		}
+		if (this->startClock.getElapsedTime().asSeconds() > 2) {
+			this->bullet.draw(window);
 		}
 	}
 };

@@ -20,7 +20,6 @@ protected:
 	Clock eatClock;
 	Animation anim;
 
-	bool dummyBool;
 public:
 	Plant() {
 		this->xFactor = 260;
@@ -49,9 +48,6 @@ public:
 		if (this->exists)
 			window.draw(this->sprite);
 	}
-
-	virtual void setBulletExist(bool val) {}
-	virtual bool getBulletExist() { return dummyBool; }
 	virtual void shoot(Zombie** zomb, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
 	virtual void explode() {}
