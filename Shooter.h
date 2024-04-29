@@ -9,5 +9,5 @@ protected:
 
 public:
 	Shooter() {}
-	virtual void shoot(Zombie** zomb, int zombiesArrayIndex) {}
+	virtual void shoot(Zombie** zombies, int zombiesArrayIndex) {}
 };

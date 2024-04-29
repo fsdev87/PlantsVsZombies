@@ -16,7 +16,7 @@ protected:
 	Clock moveClock;
 	TextureManager* TMptr;
 	bool blocked = false;
-	bool blockFlag = false;
+	int eatIndex = -1;
 
 public:
 	Zombie() {
@@ -45,8 +45,6 @@ public:
 		}
 	}
 
-	bool getBlockFlag() { return this->blockFlag; }
-	void setBlockFlag(bool val) { this->blockFlag = val; }
 
 	void setExist(bool val) { this->exists = val; }
 
@@ -57,48 +55,53 @@ public:
 	}
 
 	virtual void move(Plant** plants, int plantsArrayIndex) {
-
-		for (int i = 0; i < plantsArrayIndex; i++) {
-
-			if (plants[i]->getPosition()[1] != this->position[1]) {
-				continue;
+		if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
+		if (this->exists == false) return;
+		if (this->blocked) {
+			if (this->eatIndex != -1) {
+				eat(plants[eatIndex]);
 			}
-			// Taking absolute because on X-Axis
-			// plants are on left (-ve side) and this (Zombie) comes from right (+ve side)
-			if (plants[i]->getExist()) {
-				float dt = plants[i]->getPosition()[0] - this->position[0];
-				if (dt <= 0 && dt >= -0.6875) {
-					this->blocked = true;
-					if (!blockFlag) {
-						this->changeTexture((*TMptr)["spritesheet-nZombEat"]);
-						this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
-						this->blockFlag = true;
-					}
-				}
-
-				if (this->exists && this->blocked && dt <= 0 && dt >= -0.6875 && plants[i]->getEatClock().getElapsedTime().asMilliseconds() > 500) {
-					plants[i]->beEaten();
-					plants[i]->getEatClock().restart();
-				}
-
-			}
-			else {
-				if (this->blocked) {
-					this->changeTexture((*TMptr)["spritesheet-nZombWalk"]);
-					this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
-					this->blocked = false;
-				}
-				else {
-					this->blockFlag = false;
-				}
-			}
-
-			// there was a break here before removed it
+			return;
 		}
-		if (this->moveClock.getElapsedTime().asMilliseconds() < 250 || blocked) return;
+
+		this->moveClock.restart();
 		this->position[0] -= this->speed;
 		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
-		this->moveClock.restart();
+
+
+		for (int i = 0; i < plantsArrayIndex; i++) {
+			if (plants[i]->getExist()) {
+				if (plants[i]->getPosition()[1] == this->position[1]) {
+					float dt = plants[i]->getPosition()[0] - this->position[0];
+					if (dt <= 0 && dt >= -0.6875) {
+						this->blocked = true;
+						this->changeTexture((*TMptr)["spritesheet-nZombEat"]);
+						this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+						this->eatIndex = i;
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	virtual void eat(Plant* plant) {
+		if (this->exists) {
+			if (this->blocked) {
+				if (plant->getExist()) {
+					if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
+						plant->beEaten();
+						plant->getEatClock().restart();
+					}
+				}
+				else {
+					this->blocked = false;
+					this->changeTexture((*TMptr)["spritesheet-nZombWalk"]);
+					this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+					this->eatIndex = -1;
+				}
+			}
+		}
 	}
 
 	virtual void moveDiagonal() {}

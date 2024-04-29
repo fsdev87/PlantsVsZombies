@@ -48,10 +48,11 @@ public:
 		if (this->exists)
 			window.draw(this->sprite);
 	}
-	virtual void shoot(Zombie** zomb, int zombiesArrayIndex) {}
+	virtual void shoot(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
 	virtual void explode() {}
 	virtual void clickSun(int& sunCount) {}
+	virtual void moveBullets(Zombie** zombies, int zombiesArrayIndex) {}
 
 	virtual ~Plant() {}
 };
