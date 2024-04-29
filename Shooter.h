@@ -6,6 +6,7 @@ class Shooter : public Plant {
 protected:
 	Clock bulletDelayClock;
 	Clock startClock;
+	float bulletDelay;
 
 public:
 	Shooter() {}

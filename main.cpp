@@ -179,7 +179,9 @@ int main()
 			if (plantRow > 0) {
 				plants[i]->shoot(zombies, zombiesArrayIndex);
 			}
-
+			else {
+				plants[i]->restartBulletClock();
+			}
 			plants[i]->moveBullets(zombies, zombiesArrayIndex);
 			plants[i]->explode();
 		}

@@ -2,6 +2,9 @@
 #define PLANT_H
 #include <SFML/Graphics.hpp>
 #include "Animation.h"
+#include <cstdlib>
+#include <ctime>
+
 
 #include "iostream"
 using namespace std;
@@ -53,6 +56,7 @@ public:
 	virtual void explode() {}
 	virtual void clickSun(int& sunCount) {}
 	virtual void moveBullets(Zombie** zombies, int zombiesArrayIndex) {}
+	virtual void restartBulletClock() {}
 
 	virtual ~Plant() {}
 };

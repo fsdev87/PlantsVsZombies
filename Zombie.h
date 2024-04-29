@@ -55,8 +55,8 @@ public:
 	}
 
 	virtual void move(Plant** plants, int plantsArrayIndex) {
-		if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
 		if (this->exists == false) return;
+		if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
 				eat(plants[eatIndex]);
@@ -86,21 +86,17 @@ public:
 	}
 
 	virtual void eat(Plant* plant) {
-		if (this->exists) {
-			if (this->blocked) {
-				if (plant->getExist()) {
-					if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
-						plant->beEaten();
-						plant->getEatClock().restart();
-					}
-				}
-				else {
-					this->blocked = false;
-					this->changeTexture((*TMptr)["spritesheet-nZombWalk"]);
-					this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
-					this->eatIndex = -1;
-				}
+		if (plant->getExist()) {
+			if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
+				plant->beEaten();
+				plant->getEatClock().restart();
 			}
+		}
+		else {
+			this->blocked = false;
+			this->changeTexture((*TMptr)["spritesheet-nZombWalk"]);
+			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+			this->eatIndex = -1;
 		}
 	}
 
