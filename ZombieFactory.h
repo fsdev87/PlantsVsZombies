@@ -8,8 +8,15 @@
 
 class ZombieFactory {
 	Zombie** zombies;
-	const int maxZombieCount = 20;
-	int zombiesArrayIndex = 10;
+	int deadIndex = -1;
+
+	const int maxZombies = 50;
+	int zombiesArrayIndex = 0;
+	const float x = 14;
+	float pos[2] = { x, 0 };
+
+	TextureManager* TMptr;
+	Clock spawnClock;
 
 public:
 	ZombieFactory(TextureManager* tm);
@@ -19,6 +26,8 @@ public:
 
 	void updateEverything(Plant** plants, int plantsArrayIndex);
 
+	void spawnZombie();
+	void  getZombieDeadIndex();
 	void draw(RenderWindow& window);
 };
 

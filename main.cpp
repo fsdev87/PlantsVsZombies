@@ -71,9 +71,12 @@ void loadTextures(TextureManager* TM) {
 
 }
 
+
+
 int main()
 {
 	srand((unsigned)time(0));
+
 	RenderWindow window(VideoMode(1400, 600), "game");
 	TextureManager TM;
 
@@ -94,7 +97,7 @@ int main()
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 
-	int sunCount = 5000;
+	int sunCount = 250;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));
@@ -115,6 +118,7 @@ int main()
 	cout << "plant factory created\n";
 	ZombieFactory ZF(&TM);
 	cout << "zombie factory created\n";
+
 
 	bool pause = false;
 	while (window.isOpen())
@@ -166,6 +170,8 @@ int main()
 		PF.updateEverything(ZF.getZombies(), ZF.getZombiesArrayIndex());
 
 		ZF.updateEverything(PF.getPlants(), PF.getPlantsArrayIndex());
+
+		// spawning of zombies
 
 
 		// Draw everything here...
