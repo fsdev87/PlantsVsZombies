@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 
 class Plant;
+
 class Zombie {
 protected:
 	Sprite sprite;

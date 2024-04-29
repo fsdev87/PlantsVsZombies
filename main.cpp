@@ -22,9 +22,36 @@ using namespace sf;
 #include "Cherrybomb.h"
 #include "DancingZombie.h"
 
+int getZombieDeadIndex(Zombie** zombies, int zombiesArrayIndex) {
+	for (int i = 0; i < zombiesArrayIndex; i++) {
+		if (zombies[i]->getExist() == false) return i;
+	}
+	return -1;
+}
+
+
+void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, Clock& spawnClock, float pos[2], TextureManager& TM, const int maxZombies) {
+	if (spawnClock.getElapsedTime().asSeconds() < 5) return;
+	int deadIndex = getZombieDeadIndex(zombies, zombiesArrayIndex);
+	pos[1] = rand() % 5;
+	if (deadIndex != -1) {
+		delete[] zombies[deadIndex];
+		zombies[deadIndex] = new NormalZombie(TM["spritesheet-nZombWalk"], 22, pos, &TM);
+	}
+	else {
+		if (zombiesArrayIndex < maxZombies) {
+			zombies[zombiesArrayIndex] = new NormalZombie(TM["spritesheet-nZombWalk"], 22, pos, &TM);
+			zombiesArrayIndex++;
+		}
+		else cout << "Max zombies reached in spawnZombie function" << endl;
+	}
+	spawnClock.restart();
+}
+
 int main()
 {
 	srand((unsigned)time(0));
+
 	RenderWindow window(VideoMode(1400, 600), "game");
 	TextureManager TM;
 	loadTextures(&TM);
@@ -43,7 +70,7 @@ int main()
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 
-	int sunCount = 5000;
+	int sunCount = 250;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));
@@ -66,15 +93,16 @@ int main()
 	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
 	int plantsArrayIndex = 0;
 
+	Clock spawnClock;
 
-	const int maxZombieCount = 20;
-	Zombie** zombies = new Zombie * [maxZombieCount];
-	int zombiesArrayIndex = 10;
-	for (int i = 0; i < zombiesArrayIndex; i++) {
-		float pos[2];
-		pos[0] = 8 + i % 4, pos[1] = i % 5;
-		zombies[i] = new NormalZombie(TM["spritesheet-nZombWalk"], 22, pos, &TM);
-	}
+
+	const int maxZombies = 50;
+	Zombie** zombies = new Zombie * [maxZombies];
+	int zombiesArrayIndex = 0;
+	const float x = 14;
+	float pos[2] = { x, 0 };
+
+
 
 	bool pause = false;
 	while (window.isOpen())
@@ -189,6 +217,9 @@ int main()
 			zombies[i]->animate();
 			zombies[i]->move(plants, plantsArrayIndex);
 		}
+
+		// spawning of zombies
+		spawnZombie(zombies, zombiesArrayIndex, spawnClock, pos, TM, maxZombies);
 
 
 		// Draw everything here...
