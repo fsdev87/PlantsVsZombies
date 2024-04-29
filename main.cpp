@@ -61,6 +61,8 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Static/sun.png", "icon-sun");
 	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
 	TM->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-nZombWalk");
+	TM->addTexture("assets/Spritesheets/nZombWalkDim.png", "spritesheet-nZombWalkDim");
+	TM->addTexture("assets/Spritesheets/nZombEatDim.png", "spritesheet-nZombEatDim");
 	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucZEat");
 	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
 	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
