@@ -55,14 +55,10 @@ public:
 	}
 
 	void draw(RenderWindow& window) {
+		this->bullet[0].draw(window);
+		this->bullet[1].draw(window);
 		if (this->exists) {
 			window.draw(this->sprite);
-		}
-		if (this->startClock.getElapsedTime().asSeconds() > 2) {
-			this->bullet[0].draw(window);
-		}
-		if (this->startClock.getElapsedTime().asSeconds() > 2) {
-			this->bullet[1].draw(window);
 		}
 	}
 };

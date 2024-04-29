@@ -55,11 +55,9 @@ public:
 	bool getBulletExist() { return this->bullet.getExist(); }
 
 	void draw(RenderWindow& window) {
+		this->bullet.draw(window);
 		if (this->exists) {
 			window.draw(this->sprite);
-		}
-		if (this->startClock.getElapsedTime().asSeconds() > 2) {
-			this->bullet.draw(window);
 		}
 	}
 };
