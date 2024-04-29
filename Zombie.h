@@ -2,8 +2,8 @@
 #define ZOMBIES_H
 #include "Animation.h"
 #include "TextureManager.h"
+#include "Plant.h"
 
-class Plant;
 class Zombie {
 protected:
 	Sprite sprite;

@@ -12,22 +12,73 @@ using namespace sf;
 #include "Level.h"
 #include "Garden.h"
 #include "Animation.h"
-#include "Plant.h"
 #include "Bullet.h"
 #include "Peashooter.h"
-#include "Zombie.h"
 #include "NormalZombie.h"
 #include "Sunflower.h"
 #include "Wallnut.h"
 #include "Cherrybomb.h"
 #include "DancingZombie.h"
 
+#include "PlantFactory.h"
+#include "ZombieFactory.h"
+
+
+void loadTextures(TextureManager* TM) {
+	cout << "Loading Textures\n";
+	TM->addTexture("assets/Screens/ChooserBackground.png", "inventory"); // Inventory Background
+
+	TM->addTexture("assets/Background/bgday.jpg", "bgday");
+	TM->addTexture("assets/Background/bgnight.jpg", "bgnight");
+	TM->addTexture("assets/Background/limitedbg.jpg", "limitedbg");
+	TM->addTexture("assets/Background/waterday.jpg", "waterday");
+	TM->addTexture("assets/Background/waternight.jpg", "waternight");
+
+	//->All Inventory Cards
+	TM->addTexture("assets/Screens/Cards/card_sunflower.png", "card-sunflower");
+	TM->addTexture("assets/Screens/Cards/card_peashooter.png", "card-peashooter");
+	TM->addTexture("assets/Screens/Cards/card_repeaterpea.png", "card-repeater");
+	TM->addTexture("assets/Screens/Cards/card_wallnut.png", "card-wallnut");
+	TM->addTexture("assets/Screens/Cards/card_snowpea.png", "card-snowpea");
+	TM->addTexture("assets/Screens/Cards/card_cherrybomb.png", "card-cherrybomb");
+
+	TM->addTexture("assets/Screens/Cards/card_sunflower_dim.png", "card-sunflower_dim");
+	TM->addTexture("assets/Screens/Cards/card_peashooter_dim.png", "card-peashooter_dim");
+	TM->addTexture("assets/Screens/Cards/card_repeater_dim.png", "card-repeater_dim");
+	TM->addTexture("assets/Screens/Cards/card_wallnut_dim.png", "card-wallnut_dim");
+	TM->addTexture("assets/Screens/Cards/card_snowpea_dim.png", "card-snowpea_dim");
+	TM->addTexture("assets/Screens/Cards/card_cherrybomb_dim.png", "card-cherrybomb_dim");
+	TM->addTexture("assets/Screens/Cards/card_chomper.png", "card-chomper");
+	//->M.addTexture("assets/Spritesheets/shovel.png", "shovel");
+	//->Spritesheets
+	TM->addTexture("assets/Spritesheets/peashooter.png", "spritesheet-peashooter");
+	TM->addTexture("assets/Spritesheets/wallnut.png", "spritesheet-wallnut");
+	TM->addTexture("assets/Spritesheets/cherrybomb.png", "spritesheet-cherrybomb");
+	TM->addTexture("assets/Spritesheets/v.png", "spritesheet-2cherrybomb");
+	TM->addTexture("assets/Spritesheets/repeater.png", "spritesheet-repeater");
+	TM->addTexture("assets/Spritesheets/snowpea.png", "spritesheet-snowpea");
+	TM->addTexture("assets/Spritesheets/sunflower.png", "spritesheet-sunflower");
+	TM->addTexture("assets/Static/sun.png", "icon-sun");
+	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
+	TM->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-nZombWalk");
+	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucZEat");
+	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
+	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
+
+	TM->addTexture("assets/Bullets/peabullet.png", "bullet");
+	TM->addTexture("assets/Bullets/peabulletexplode.png", "bulletExplode");
+	TM->addTexture("assets/Bullets/peaice.png", "bulletIce");
+
+}
+
 int main()
 {
 	srand((unsigned)time(0));
 	RenderWindow window(VideoMode(1400, 600), "game");
 	TextureManager TM;
+
 	loadTextures(&TM);
+
 	FontManager FM;
 	Level level(&FM);
 
@@ -60,21 +111,10 @@ int main()
 			garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 		}
 	}
-
-
-	const int maxPlantsForLevelOne = 45;
-	Plant** plants = new Plant * [maxPlantsForLevelOne] { nullptr };
-	int plantsArrayIndex = 0;
-
-
-	const int maxZombieCount = 20;
-	Zombie** zombies = new Zombie * [maxZombieCount];
-	int zombiesArrayIndex = 10;
-	for (int i = 0; i < zombiesArrayIndex; i++) {
-		float pos[2];
-		pos[0] = 8 + i % 4, pos[1] = i % 5;
-		zombies[i] = new NormalZombie(TM["spritesheet-nZombWalk"], 22, pos, &TM);
-	}
+	PlantFactory PF;
+	cout << "plant factory created\n";
+	ZombieFactory ZF(&TM);
+	cout << "zombie factory created\n";
 
 	bool pause = false;
 	while (window.isOpen())
@@ -88,42 +128,6 @@ int main()
 				if (event.key.code == Keyboard::Escape) {
 					window.close();
 				}
-				else if (event.key.code == Keyboard::L) {
-					Inv.showPlantIndex(plants, plantsArrayIndex);
-					cout << "Zombie alive or dead: \n";
-					for (int i = 0; i < zombiesArrayIndex; i++) {
-						cout << i << " = " << zombies[i]->getExist() << endl;
-					}
-				}
-				else if (event.key.code == Keyboard::R) {
-					for (int i = 0; i < plantsArrayIndex; i++) {
-						int plantRow = 0;
-						for (int j = 0; j < zombiesArrayIndex; j++) {
-							if (plants[i] != nullptr && zombies[j]->getExist() && (zombies[j]->getPosition()[1] == plants[i]->getPosition()[1]) && (zombies[j]->getPosition()[0] <= 9)) {
-								plantRow++;
-							}
-						}
-						cout << i << " = " << plantRow << endl;
-					}
-				}
-				else if (event.key.code == Keyboard::H) {
-					for (int i = 0; i < plantsArrayIndex; i++) {
-						cout << "Plant: " << i << " : " << plants[i]->getPosition()[0] << " " << plants[i]->getPosition()[1] << endl;
-					}
-					for (int i = 0; i < zombiesArrayIndex; i++) {
-						cout << "Zombie: " << i << " : " << zombies[i]->getPosition()[0] << " " << zombies[i]->getPosition()[1] << endl;
-					}
-				}
-				else if (event.key.code == Keyboard::P) {
-					pause = !pause;
-				}
-				else if (event.key.code == Keyboard::C) {
-					system("cls");
-				}
-				else if (event.key.code == Keyboard::D) {
-					plants[0]->setExist(false);
-				}
-
 			}
 			if (event.type == Event::MouseButtonPressed) {
 				if (event.mouseButton.button == Mouse::Left) {
@@ -140,16 +144,9 @@ int main()
 						int gy = (mouseY - gardenCords.topY) / 96;
 						int gx = (mouseX - gardenCords.leftX) / 80;
 
-						if (Inv.hasSelectedSomething()) {
-							Inv.handlePlacing(gx, gy, plants, plantsArrayIndex, sunCount);
-						}
+						PF.handlePlacing(&Inv, gx, gy, sunCount);
 
-						for (int i = 0; i < plantsArrayIndex; i++) {
-							if (plants[i]->getExist() && plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
-								plants[i]->clickSun(sunCount);
-								sunCountText.setString(to_string(sunCount));
-							}
-						}
+						PF.handleSunClick(gx, gy, sunCountText, sunCount);
 
 					}
 
@@ -166,29 +163,9 @@ int main()
 		window.clear();
 		// Update everything here
 		// check for collisions, animation, shooting, everything
-		for (int i = 0; i < plantsArrayIndex && !pause; i++) {
-			plants[i]->animate();
-			plants[i]->generateSun();
+		PF.updateEverything(ZF.getZombies(), ZF.getZombiesArrayIndex());
 
-			int plantRow = 0;
-			for (int j = 0; j < zombiesArrayIndex; j++) {
-				if (plants[i] != nullptr && zombies[j]->getExist() && (zombies[j]->getPosition()[1] == plants[i]->getPosition()[1]) && (zombies[j]->getPosition()[0] <= 9)) {
-					plantRow++;
-				}
-			}
-			if (plantRow > 0) {
-				plants[i]->shoot(zombies, zombiesArrayIndex);
-			}
-			else {
-				plants[i]->restartBulletClock();
-			}
-			plants[i]->moveBullets(zombies, zombiesArrayIndex);
-			plants[i]->explode();
-		}
-		for (int i = 0; i < zombiesArrayIndex && !pause; i++) {
-			zombies[i]->animate();
-			zombies[i]->move(plants, plantsArrayIndex);
-		}
+		ZF.updateEverything(PF.getPlants(), PF.getPlantsArrayIndex());
 
 
 		// Draw everything here...
@@ -203,12 +180,8 @@ int main()
 		Inv.drawInventory(window, sunCount);
 		level.move_draw(window);
 
-		for (int i = 0; i < plantsArrayIndex; i++) {
-			plants[i]->draw(window);
-		}
-		for (int i = 0; i < zombiesArrayIndex; i++) {
-			zombies[i]->draw(window);
-		}
+		PF.draw(window);
+		ZF.draw(window);
 
 		window.draw(sunCountText);
 		window.display();
