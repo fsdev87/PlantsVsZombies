@@ -44,8 +44,6 @@ public:
 			window.draw(this->sprite);
 		}
 	}
-
-
 	void setExist(bool val) { this->exists = val; }
 
 	int getHealth() { return this->health; }

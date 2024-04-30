@@ -107,6 +107,9 @@ public:
 	}
 
 	void handlePlacing(int gx, int gy, Plant** plants, int& plantsArrayIndex, int& sunCount) {
+		if (!selected) return;
+		if (sunCount <= 0) return;
+
 		float pos[2] = { gx, gy };
 		int indexInInventory = rectIndex - 2;
 		if (plantsArrayIndex >= 45) return;
@@ -138,10 +141,13 @@ public:
 			plants[tempArrayIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
 		else if (indexInInventory == 4 && sunCount >= 175)
 			plants[tempArrayIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
-		else if (indexInInventory == 5 && sunCount >= 250)
+		else if (indexInInventory == 5 && sunCount >= 150)
 			plants[tempArrayIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
-		else
-			cout << "Insufficient suncount\n";
+		else {
+			plants[tempArrayIndex] = nullptr;
+			return;
+		}
+
 		// otherwise say insufficient amount
 
 
