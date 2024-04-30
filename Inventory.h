@@ -54,7 +54,7 @@ public:
 	bool hasSelectedSomething() { return this->selected; }
 
 	void addCard(Texture& dim, Texture& bright, string n, int cost) {
-		cout << "Added card\n";
+		cout << "Added card at index " << index << "\n";
 		if (index >= maxCards) {
 			cout << "Inventory is full\n";
 			return;
@@ -80,15 +80,29 @@ public:
 			window.draw(selectedRect);
 	}
 
-	bool validMouseClick(int x, int y) {
+	bool validMouseClick(int x, int y, int& sunCount) {
+
 		this->rectIndex = (x) / 64;
+		this->rectIndex -= 2;
 		this->selected = true;
-		if (rectIndex - 2 < index)
-			this->selectedRect.setPosition(151 + ((rectIndex - 2) * 59) + 1, 10);
-		else this->selected = false;
+		cout << "RectIndex: " << rectIndex << ", cost : " << cards[rectIndex].getCost() << endl;
+
+		if (rectIndex < index) {
+			this->selectedRect.setPosition(151 + ((rectIndex) * 59) + 1, 10);
+		}
+		else {
+			this->selected = false;
+		}
+
+		if (cards[rectIndex].getCost() > sunCount) {
+			this->selected = false;
+		}
+
 
 		bool a = x >= 150 && x <= 616 && y >= 10 && y <= 84;
 		if (!a) this->selected = false;
+
+		cout << "Selected: " << (this->selected == true ? "True" : "False") << "\n";
 		return a;
 	}
 
@@ -107,11 +121,10 @@ public:
 	}
 
 	void handlePlacing(int gx, int gy, Plant** plants, int& plantsArrayIndex, int& sunCount) {
-		if (!selected) return;
-		if (sunCount <= 0) return;
-
+		if (!this->selected) return;
 		float pos[2] = { gx, gy };
-		int indexInInventory = rectIndex - 2;
+
+		int indexInInventory = rectIndex;
 		if (plantsArrayIndex >= 45) return;
 		// check if already plant is not there
 		for (int i = 0; i < plantsArrayIndex; i++) {
@@ -124,7 +137,7 @@ public:
 		//
 		int tempArrayIndex = plantsArrayIndex;
 		int deadIndex = getDeadPlantIndex(plants, plantsArrayIndex);
-		if (deadIndex != -1) {
+		if (deadIndex != -1 && plants[deadIndex]) {
 			delete plants[deadIndex];
 			plants[deadIndex] = nullptr;
 			tempArrayIndex = deadIndex;
@@ -143,23 +156,18 @@ public:
 			plants[tempArrayIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
 		else if (indexInInventory == 5 && sunCount >= 150)
 			plants[tempArrayIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
-		else {
-			plants[tempArrayIndex] = nullptr;
-			return;
-		}
-
+		else
+			cout << "Insufficient suncount\n";
 		// otherwise say insufficient amount
 
 
 		// added a check here because if it didn't place a plant, there would be nullptr at plants[tempArrayIndex]
-		if (plants[tempArrayIndex] != nullptr)
+		if (plants[tempArrayIndex]) {
 			sunCount -= plants[tempArrayIndex]->getPrice();
-
-		// if you didn't place a plant, no need to increment the index
-		if (deadIndex == -1 && plants[tempArrayIndex] != nullptr) {
-			cout << "Incremented plant index\n";
-			plantsArrayIndex++;
+			if (sunCount < 0) sunCount = 0;
+			if (tempArrayIndex == plantsArrayIndex) plantsArrayIndex++;
 		}
+
 		this->selected = false;
 	}
 

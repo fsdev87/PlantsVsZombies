@@ -29,24 +29,27 @@ void PlantFactory::handleSunClick(int gx, int gy, Text& sunCountText, int& sunCo
 }
 
 void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
-	for (int i = 0; i < plantsArrayIndex; i++) {
-		plants[i]->animate();
-		plants[i]->generateSun();
+	for (int i = 0; i < this->plantsArrayIndex && this->plants[i] != nullptr; i++) {
+		if (this->plants[i]->getExist()) {
+			this->plants[i]->animate();
+			this->plants[i]->generateSun();
 
-		int plantRow = 0;
-		for (int j = 0; j < zombiesArrayIndex; j++) {
-			if (plants[i] != nullptr && zombies[j]->getExist() && (zombies[j]->getPosition()[1] == plants[i]->getPosition()[1]) && (zombies[j]->getPosition()[0] <= 9)) {
-				plantRow++;
+			int plantRow = 0;
+			for (int j = 0; j < zombiesArrayIndex; j++) {
+				if (zombies[j]->getExist() && (zombies[j]->getPosition()[1] == this->plants[i]->getPosition()[1]) && (zombies[j]->getPosition()[0] <= 9)) {
+					plantRow++;
+				}
 			}
+			if (plantRow > 0) {
+				this->plants[i]->shoot(zombies, zombiesArrayIndex);
+			}
+			else {
+				this->plants[i]->restartBulletClock();
+			}
+			this->plants[i]->moveBullets(zombies, zombiesArrayIndex);
+			this->plants[i]->explode();
+
 		}
-		if (plantRow > 0) {
-			plants[i]->shoot(zombies, zombiesArrayIndex);
-		}
-		else {
-			plants[i]->restartBulletClock();
-		}
-		plants[i]->moveBullets(zombies, zombiesArrayIndex);
-		plants[i]->explode();
 	}
 }
 

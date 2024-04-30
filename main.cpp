@@ -99,7 +99,7 @@ int main()
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 
-	int sunCount = 250;
+	int sunCount = 500;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));
@@ -142,7 +142,6 @@ int main()
 					int mouseY = event.mouseButton.y;
 					cout << "Mouse X: " << mouseX << " Mouse Y: " << mouseY << endl;
 					if (gardenCords.valid(mouseX, mouseY)) {
-						cout << mouseX << " " << mouseY << endl;
 						cout << "Position on Grid: " << (mouseY - gardenCords.topY) / 96 << ", " << (mouseX - gardenCords.leftX) / 80 << endl;
 
 
@@ -156,10 +155,9 @@ int main()
 
 					}
 
-					// Handle selection of any card in inventory
-					if (Inv.validMouseClick(mouseX, mouseY)) {
-						cout << "Valid Mouse Click on Inventory\n";
-					}
+					// no need to call in if statement
+					Inv.validMouseClick(mouseX, mouseY, sunCount);
+
 
 
 				}
