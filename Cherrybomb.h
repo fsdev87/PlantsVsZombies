@@ -22,14 +22,16 @@ public:
 	virtual void explode(Zombie** zombies, int zombiesArrayIndex) {
 		if (this->exists) {
 			int frame = this->anim.getFrame();
-			if (frame == (this->columns - 1)) { // is the last frame
+			if (frame == (this->columns - 10)) { // is the last frame
 
 				for (int i = 0; i < zombiesArrayIndex; i++) {
 					if (zombies[i]->getExist() && abs(zombies[i]->getPosition()[0] - this->position[0]) <= 1.5 && abs(zombies[i]->getPosition()[1] - this->position[1]) <= 1) {
 						zombies[i]->setExist(false);
+						zombies[i]->setAshes(true);
 					}
 				}
-
+			}
+			if (frame == (this->columns - 1)) {
 				this->exists = false; // cherrybomb exploded
 			}
 			// this is done so that when one animation is done, the bomb is exploded

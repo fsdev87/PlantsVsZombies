@@ -67,6 +67,11 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
 	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
 
+	TM->addTexture("assets/Spritesheets/headlesswalk.png", "spritesheet-headlesswalk");
+	TM->addTexture("assets/Spritesheets/head.png", "spritesheet-head");
+	TM->addTexture("assets/Spritesheets/headlesseat.png", "spritesheet-headlesseat");
+	TM->addTexture("assets/Spritesheets/zombash.png", "spritesheet-zombieAshes");
+
 	TM->addTexture("assets/Bullets/peabullet.png", "bullet");
 	TM->addTexture("assets/Bullets/peabulletexplode.png", "bulletExplode");
 	TM->addTexture("assets/Bullets/peaice.png", "bulletIce");
@@ -97,7 +102,6 @@ int main()
 	Inv.addCard(TM["card-snowpea_dim"], TM["card-snowpea"], "snowpea", 175);
 	Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
 	//Inv.addCard(TM["card-chomper"], "chomper");
-
 
 	int sunCount = 500;
 	Text sunCountText;

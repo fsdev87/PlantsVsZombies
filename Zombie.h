@@ -22,6 +22,9 @@ protected:
 	bool flicker = false;
 	Clock flickerClock;
 
+	bool ashes = false;
+	Clock ashesClock;
+
 public:
 	Zombie() {
 		this->xFactor = 185;
@@ -42,9 +45,9 @@ public:
 		this->anim.setFrame(0);
 	}
 
-	void changeTexture(Texture& tex, int frame) {
+	void changeTexture(Texture& tex, int frame, int columns = 21) {
 		this->sprite = Sprite(tex);
-		this->anim = Animation(166, 144, 21);
+		this->anim = Animation(166, 144, columns);
 		this->anim.setFrame(frame);
 	}
 
@@ -52,7 +55,17 @@ public:
 		this->anim.animate(this->sprite);
 	}
 
-	void draw(RenderWindow& window) {
+	// changes sprite texture to ashes
+	// restarts ashes clock
+	void setAshes(bool value) {
+		this->changeTexture((*TMptr)["spritesheet-zombieAshes"], 0, 20);
+		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+		this->ashes = value, this->ashesClock.restart();
+	}
+
+	void handleFlicker() {
+
+		// Turn off flicker after 150ms and reset appropriate texture
 		if (this->flicker && flickerClock.getElapsedTime().asMilliseconds() > 150) {
 			this->flicker = false;
 			if (this->state == "walk") {
@@ -64,9 +77,8 @@ public:
 			this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
 		}
 
-
+		// set the dim texture 
 		if (this->exists) {
-
 			if (this->flicker) {
 				if (this->state == "walk") {
 					this->changeTexture((*TMptr)["spritesheet-nZombWalkDim"], this->anim.getFrame());
@@ -76,11 +88,35 @@ public:
 				}
 				this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
 			}
+		}
+	}
 
+	void draw(RenderWindow& window) {
+		handleFlicker();
+
+
+		if (this->exists) {
+			// Draw
+			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			window.draw(this->sprite);
+		}
+
+		handleAshes(window);
+	}
+
+	void handleAshes(RenderWindow& window) {
+		// show ashes only when this->exists = false i.e zombie is dead
+		if (!this->exists && this->ashes) {
+			if (this->ashesClock.getElapsedTime().asSeconds() > 2.05) {
+				// there are 20 frames, each frame takes 100ms delay, added 0.05 as padding
+				// set ashes to false after 2 seconds so nothing is drawn afterwards
+				this->ashes = false;
+			}
 			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 			window.draw(this->sprite);
 		}
 	}
+
 	void setExist(bool val) { this->exists = val; }
 
 	int getHealth() { return this->health; }

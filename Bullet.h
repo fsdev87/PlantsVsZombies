@@ -49,7 +49,9 @@ public:
 					zombies[i]->setFlicker(true);
 
 					zombies[i]->reduceHealth(this->damage);
-					if (zombies[i]->getHealth() == 0) zombies[i]->setExist(false);
+					if (zombies[i]->getHealth() == 0) {
+						zombies[i]->setExist(false);
+					}
 					this->bulletClock.restart();
 					cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;
 					return;
