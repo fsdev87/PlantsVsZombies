@@ -21,6 +21,7 @@ protected:
 	string state;
 	bool flicker = false;
 	Clock flickerClock;
+
 public:
 	Zombie() {
 		this->xFactor = 185;
@@ -97,8 +98,8 @@ public:
 		if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
-				state = "eat";
-				eat(plants[eatIndex]);
+				this->state = "eat";
+				eat(plants[this->eatIndex]);
 			}
 			return;
 		}
@@ -133,8 +134,8 @@ public:
 		}
 		else {
 			this->blocked = false;
-			state = "walk";
-			this->changeTexture((*TMptr)["spritesheet-nZombWalk"]);
+			this->state = "walk";
+			this->changeTexture((*(this->TMptr))["spritesheet-nZombWalk"]);
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			this->eatIndex = -1;
 		}
