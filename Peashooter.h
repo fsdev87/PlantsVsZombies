@@ -20,6 +20,7 @@ public:
 		this->bulletDelayClock.restart();
 		this->startClock.restart();
 		this->bulletDelay = 2 + rand() % 3;
+		this->anim.setDelay(80.f);
 	}
 
 	void shoot(Zombie** zomb, int zombiesArrayIndex) {

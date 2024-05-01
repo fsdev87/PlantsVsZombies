@@ -138,37 +138,37 @@ public:
 		}
 
 		//
-		int tempArrayIndex = plantsArrayIndex;
+		int tempIndex = plantsArrayIndex;
 		int deadIndex = getDeadPlantIndex(plants, plantsArrayIndex);
 		if (deadIndex != -1 && plants[deadIndex]) {
 			delete plants[deadIndex];
 			plants[deadIndex] = nullptr;
-			tempArrayIndex = deadIndex;
+			tempIndex = deadIndex;
 		}
 
 		// only place the plant if the sunCount amount is sufficient
 		if (indexInInventory == 0 && sunCount >= 50)
-			plants[tempArrayIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("icon-sun"), 18, pos);
+			plants[tempIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("icon-sun"), 18, pos);
 		else if (indexInInventory == 1 && sunCount >= 100)
-			plants[tempArrayIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
+			plants[tempIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
 		else if (indexInInventory == 2 && sunCount >= 200)
-			plants[tempArrayIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
+			plants[tempIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
 		else if (indexInInventory == 3 && sunCount >= 50)
-			plants[tempArrayIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
+			plants[tempIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
 		else if (indexInInventory == 4 && sunCount >= 175)
-			plants[tempArrayIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
+			plants[tempIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
 		else if (indexInInventory == 5 && sunCount >= 150)
-			plants[tempArrayIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
+			plants[tempIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 7, pos);
 		else
 			cout << "Insufficient suncount\n";
 		// otherwise say insufficient amount
 
 
-		// added a check here because if it didn't place a plant, there would be nullptr at plants[tempArrayIndex]
-		if (plants[tempArrayIndex]) {
-			sunCount -= plants[tempArrayIndex]->getPrice();
+		// added a check here because if it didn't place a plant, there would be nullptr at plants[tempIndex]
+		if (plants[tempIndex]) {
+			sunCount -= plants[tempIndex]->getPrice();
 			if (sunCount < 0) sunCount = 0;
-			if (tempArrayIndex == plantsArrayIndex) plantsArrayIndex++;
+			if (tempIndex == plantsArrayIndex) plantsArrayIndex++;
 		}
 
 		this->selected = false;

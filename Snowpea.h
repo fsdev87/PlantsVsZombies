@@ -20,6 +20,7 @@ public:
 		this->bullet.changeSprite(itex);
 		this->bulletDelayClock.restart();
 		this->bulletDelay = 2 + rand() % 3;
+		this->anim.setDelay(80.f);
 		//this->startClock.restart();
 	}
 

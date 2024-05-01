@@ -17,6 +17,7 @@ public:
 		this->exists = true;
 		this->anim = Animation(71, 71, columns);
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
+		this->anim.setDelay(80.f);
 
 		// Everything sun related
 		//this->sunAnim = Animation(71, 71, 22);
