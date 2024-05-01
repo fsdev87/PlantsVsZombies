@@ -12,7 +12,7 @@ class ZombieFactory {
 
 	const int maxZombies = 50;
 	int zombiesArrayIndex = 0;
-	const float x = 9;
+	const float x = 14;
 	float pos[2] = { x, 0 };
 
 	TextureManager* TMptr;

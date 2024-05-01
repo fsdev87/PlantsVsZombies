@@ -25,7 +25,7 @@ public:
 			if (frame == (this->columns - 1)) { // is the last frame
 
 				for (int i = 0; i < zombiesArrayIndex; i++) {
-					if (zombies[i]->getExist() && abs(zombies[i]->getPosition()[0] - this->position[0]) <= 1.25 && abs(zombies[i]->getPosition()[1] - this->position[1]) <= 1.25) {
+					if (zombies[i]->getExist() && abs(zombies[i]->getPosition()[0] - this->position[0]) <= 1.5 && abs(zombies[i]->getPosition()[1] - this->position[1]) <= 1) {
 						zombies[i]->setExist(false);
 					}
 				}
