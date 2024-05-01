@@ -81,11 +81,12 @@ public:
 	}
 
 	bool validMouseClick(int x, int y, int& sunCount) {
+		this->selected = true;
 
 		this->rectIndex = (x) / 64;
 		this->rectIndex -= 2;
-		this->selected = true;
-		cout << "RectIndex: " << rectIndex << ", cost : " << cards[rectIndex].getCost() << endl;
+		if (rectIndex != -1)
+			cout << "RectIndex: " << rectIndex << ", cost : " << cards[rectIndex].getCost() << endl;
 
 		if (rectIndex < index) {
 			this->selectedRect.setPosition(151 + ((rectIndex) * 59) + 1, 10);
@@ -94,13 +95,15 @@ public:
 			this->selected = false;
 		}
 
-		if (cards[rectIndex].getCost() > sunCount) {
+		if (rectIndex < index && cards[rectIndex].getCost() > sunCount) {
 			this->selected = false;
 		}
 
 
 		bool a = x >= 150 && x <= 616 && y >= 10 && y <= 84;
-		if (!a) this->selected = false;
+		if (a == false) {
+			this->selected = false;
+		}
 
 		cout << "Selected: " << (this->selected == true ? "True" : "False") << "\n";
 		return a;
