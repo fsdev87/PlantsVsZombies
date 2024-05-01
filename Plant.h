@@ -53,7 +53,7 @@ public:
 	}
 	virtual void shoot(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
-	virtual void explode() {}
+	virtual void explode(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void clickSun(int& sunCount) {}
 	virtual void moveBullets(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void restartBulletClock() {}

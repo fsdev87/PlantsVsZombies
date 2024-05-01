@@ -47,7 +47,7 @@ void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
 				this->plants[i]->restartBulletClock();
 			}
 			this->plants[i]->moveBullets(zombies, zombiesArrayIndex);
-			this->plants[i]->explode();
+			this->plants[i]->explode(zombies, zombiesArrayIndex);
 
 		}
 	}
