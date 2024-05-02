@@ -51,6 +51,7 @@ public:
 					zombies[i]->reduceHealth(this->damage);
 					if (zombies[i]->getHealth() == 0) {
 						zombies[i]->setExist(false);
+						zombies[i]->makeDead();
 					}
 					this->bulletClock.restart();
 					cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;

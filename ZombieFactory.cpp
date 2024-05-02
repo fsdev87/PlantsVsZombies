@@ -35,7 +35,7 @@ void ZombieFactory::spawnZombie() {
 	}
 	else {
 		if (this->zombiesArrayIndex < this->maxZombies) {
-			this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("spritesheet-bucZWalk"), 15, this->pos, this->TMptr);
+			this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr);
 			this->zombiesArrayIndex++;
 		}
 		else cout << "Max zombies reached in spawnZombie function" << endl;

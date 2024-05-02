@@ -25,6 +25,9 @@ protected:
 	bool ashes = false;
 	Clock ashesClock;
 
+	bool dead = false;
+	Clock deadClock;
+
 public:
 	Zombie() {
 		this->xFactor = 185;
@@ -60,6 +63,7 @@ public:
 		this->ashes = value, this->ashesClock.restart();
 	}
 
+	// should be specific for each zombie
 	virtual void handleFlicker() {
 		//if (!this->exists) return;
 		//if (this->flicker) {
@@ -102,8 +106,29 @@ public:
 		}
 
 		handleAshes(window);
+
+		handleDeath(window);
 	}
 
+	void makeDead() {
+		if (this->exists == false && this->ashes != true) {
+			this->changeTexture((*TMptr)["spritesheet-zombieDeath"], 0, 10);
+			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+			this->dead = true, this->deadClock.restart();
+		}
+	}
+
+	void handleDeath(RenderWindow& window) {
+		if (!this->exists && this->dead) {
+			if (this->deadClock.getElapsedTime().asSeconds() > 1.05) {
+				this->dead = false;
+			}
+			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			window.draw(this->sprite);
+		}
+	}
+
+	// same for each zombie
 	void handleAshes(RenderWindow& window) {
 		// show ashes only when this->exists = false i.e zombie is dead
 		if (!this->exists && this->ashes) {
@@ -117,7 +142,11 @@ public:
 		}
 	}
 
-	void setExist(bool val) { this->exists = val; }
+	void setExist(bool val) {
+		this->exists = val;
+	}
+
+
 
 	int getHealth() { return this->health; }
 
@@ -125,6 +154,7 @@ public:
 		this->health -= damage;
 	}
 
+	// should be specific for each zombie
 	virtual void move(Plant** plants, int plantsArrayIndex) {
 		//if (this->exists == false) return;
 		/*if (this->flicker) {
@@ -161,6 +191,7 @@ public:
 		//}
 	}
 
+	// should be specific for each zombie
 	virtual void eat(Plant* plant) {
 		/*if (plant->getExist()) {
 			if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
