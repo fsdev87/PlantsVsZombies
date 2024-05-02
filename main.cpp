@@ -50,31 +50,37 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Screens/Cards/card_cherrybomb_dim.png", "card-cherrybomb_dim");
 	TM->addTexture("assets/Screens/Cards/card_chomper.png", "card-chomper");
 	//->M.addTexture("assets/Spritesheets/shovel.png", "shovel");
+	TM->addTexture("assets/Static/sun.png", "icon-sun");
 	//->Spritesheets
 	TM->addTexture("assets/Spritesheets/peashooter.png", "spritesheet-peashooter");
 	TM->addTexture("assets/Spritesheets/wallnut.png", "spritesheet-wallnut");
-	TM->addTexture("assets/Spritesheets/cherrybomb.png", "spritesheet-cherrybomb");
-	TM->addTexture("assets/Spritesheets/v.png", "spritesheet-2cherrybomb");
+	TM->addTexture("assets/Spritesheets/v.png", "spritesheet-cherrybomb");
 	TM->addTexture("assets/Spritesheets/repeater.png", "spritesheet-repeater");
 	TM->addTexture("assets/Spritesheets/snowpea.png", "spritesheet-snowpea");
 	TM->addTexture("assets/Spritesheets/sunflower.png", "spritesheet-sunflower");
-	TM->addTexture("assets/Static/sun.png", "icon-sun");
+
+	// All are for normal zombie
 	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
 	TM->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-nZombWalk");
 	TM->addTexture("assets/Spritesheets/nZombWalkDim.png", "spritesheet-nZombWalkDim");
 	TM->addTexture("assets/Spritesheets/nZombEatDim.png", "spritesheet-nZombEatDim");
-	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucZEat");
-	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
-	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
-
 	TM->addTexture("assets/Spritesheets/headlesswalk.png", "spritesheet-headLessWalk");
 	TM->addTexture("assets/Spritesheets/headlesseat.png", "spritesheet-headLessEat");
 	TM->addTexture("assets/Spritesheets/headlesswalkdim.png", "spritesheet-headLessWalkDim");
 	TM->addTexture("assets/Spritesheets/normalzombiedie.png", "spritesheet-headLessDeath");
 	TM->addTexture("assets/Spritesheets/headLessEatDim.png", "spritesheet-headLessEatDim");
 	TM->addTexture("assets/Spritesheets/head.png", "spritesheet-head");
+	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
+
+	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucZEat");
+	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
+	TM->addTexture("assets/Spritesheets/bucHeadZombEatDim.png", "spritesheet-bucZEatDim");
+	TM->addTexture("assets/Spritesheets/bucHeadZombWalkDim.png", "spritesheet-bucZWalkDim");
+
+	// For all explosion
 	TM->addTexture("assets/Spritesheets/zombash.png", "spritesheet-zombieAshes");
 
+	// Bullets
 	TM->addTexture("assets/Bullets/peabullet.png", "bullet");
 	TM->addTexture("assets/Bullets/peabulletexplode.png", "bulletExplode");
 	TM->addTexture("assets/Bullets/peaice.png", "bulletIce");
@@ -106,7 +112,7 @@ int main()
 	Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
-	int sunCount = 500;
+	int sunCount = 1000;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));

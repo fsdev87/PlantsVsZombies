@@ -158,7 +158,7 @@ public:
 		else if (indexInInventory == 4 && sunCount >= 175)
 			plants[tempIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
 		else if (indexInInventory == 5 && sunCount >= 150)
-			plants[tempIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-2cherrybomb"), 18, pos);
+			plants[tempIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 18, pos);
 		else
 			cout << "Insufficient suncount\n";
 		// otherwise say insufficient amount
