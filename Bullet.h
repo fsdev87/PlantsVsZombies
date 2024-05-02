@@ -37,7 +37,7 @@ public:
 		this->position[1] = y;
 	}
 
-	void move(Zombie** zombies, int zombiesArrayIndex) {
+	void move(Zombie** zombies, int zombiesArrayIndex, bool isSnow = false) {
 		if (bulletClock.getElapsedTime().asMilliseconds() <= 5) {
 			return;
 		}
@@ -53,8 +53,14 @@ public:
 						zombies[i]->setExist(false);
 						zombies[i]->makeDead();
 					}
+					else if (zombies[i]->getHealth() == 40) {
+						zombies[i]->setHeadFall(true);
+					}
 					this->bulletClock.restart();
 					cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;
+					if (isSnow) {
+						zombies[i]->setMoveDelay(350);
+					}
 					return;
 				}
 			}

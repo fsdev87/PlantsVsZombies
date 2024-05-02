@@ -42,7 +42,7 @@ public:
 
 	void moveBullets(Zombie** zombies, int zombiesArrayIndex) {
 		if (this->exists) {
-			this->bullet.move(zombies, zombiesArrayIndex);
+			this->bullet.move(zombies, zombiesArrayIndex, true);
 		}
 	}
 

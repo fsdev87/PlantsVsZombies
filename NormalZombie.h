@@ -13,6 +13,10 @@ public:
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->anim = Animation(166, 144, columns);
 		this->moveClock.restart();
+		// head
+		this->headSprite.setTexture(this->TMptr->getTexture("spritesheet-head"));
+		this->headSprite.setTextureRect(IntRect(0, 0, 166, 144));
+		this->headAnim = Animation(150, 186, 12);
 	}
 
 	void handleFlicker() {
@@ -78,7 +82,7 @@ public:
 	void move(Plant** plants, int plantsArrayIndex) {
 		if (this->exists == false) return;
 
-		if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
+		if (this->moveClock.getElapsedTime().asMilliseconds() < this->moveDelay) return;
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
 				this->state = "eat";

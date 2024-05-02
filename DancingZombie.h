@@ -50,7 +50,7 @@ public:
 	void move(Plant** plants, int plantsArrayIndex) {
 		if (this->exists == false) return;
 
-		if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
+		if (this->moveClock.getElapsedTime().asMilliseconds() < this->moveDelay) return;
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
 				this->state = "eat";

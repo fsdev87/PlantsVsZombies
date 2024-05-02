@@ -14,9 +14,15 @@ protected:
 	float xFactor, yFactor;
 	bool exists;
 	Clock moveClock;
+	float moveDelay = 250;
 	TextureManager* TMptr;
 	bool blocked = false;
 	int eatIndex = -1;
+
+	Sprite headSprite;
+	Animation headAnim;
+	Clock headClock;
+	bool headFall = false;
 
 	string state;
 	bool flicker = false;
@@ -34,8 +40,11 @@ public:
 		this->yFactor = 32;
 		this->state = "walk";
 	}
+	/*float getSpeed() { return this->speed; }
+	void setSpeed(float val) { this->speed = val; }*/
 
-
+	void setAnimDelay(float val) { this->anim.setDelay(val); }
+	void setMoveDelay(float val) { this->moveDelay = val; }
 	float* getPosition() {
 		return this->position;
 	}
@@ -49,10 +58,24 @@ public:
 
 	void animate() {
 		this->anim.animate(this->sprite);
+		if (this->headFall) {
+			if (this->headAnim.getFrame() < this->headAnim.getColumns()) {
+				this->headAnim.animate(this->headSprite);
+			}
+			if (this->headClock.getElapsedTime().asSeconds() >= 1.205) {
+				this->headFall = false;
+			}
+		}
 	}
 
 	void setFlicker(bool value) {
 		this->flicker = value, this->flickerClock.restart();
+	}
+
+	void setHeadFall(bool val) {
+		this->headFall = val;
+		this->headClock.restart();
+		this->headSprite.setPosition(this->xFactor + 50 + this->position[0] * 80, this->yFactor - 10 + this->position[1] * 96);
 	}
 
 	// changes sprite texture to ashes
@@ -108,6 +131,9 @@ public:
 		handleAshes(window);
 
 		handleDeath(window);
+		if (this->headFall) {
+			window.draw(this->headSprite);
+		}
 	}
 
 	void makeDead() {

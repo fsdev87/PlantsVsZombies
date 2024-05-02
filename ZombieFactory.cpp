@@ -26,20 +26,24 @@ void ZombieFactory::getZombieDeadIndex() {
 void ZombieFactory::spawnZombie() {
 	if (this->spawnClock.getElapsedTime().asSeconds() < 5) return;
 
-	getZombieDeadIndex();
 	this->pos[1] = rand() % 5;
-	if (this->deadIndex != -1) {
-		cout << "dead index is not -1\n";
-		delete[] this->zombies[this->deadIndex];
-		this->zombies[this->deadIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr);
+
+	if (this->zombiesArrayIndex < this->maxZombies) {
+		this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr);
+		this->zombiesArrayIndex++;
 	}
 	else {
-		if (this->zombiesArrayIndex < this->maxZombies) {
-			this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr);
-			this->zombiesArrayIndex++;
+		getZombieDeadIndex();
+		if (this->deadIndex != -1) {
+			cout << "dead index is not -1\n";
+			delete[] this->zombies[this->deadIndex];
+			this->zombies[this->deadIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr);
 		}
-		else cout << "Max zombies reached in spawnZombie function" << endl;
+		else {
+			cout << "Max zombies reached in spawnZombie function" << endl;
+		}
 	}
+
 	this->spawnClock.restart();
 }
 
