@@ -67,8 +67,8 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/headlesswalk.png", "spritesheet-headLessWalk");
 	TM->addTexture("assets/Spritesheets/headlesseat.png", "spritesheet-headLessEat");
 	TM->addTexture("assets/Spritesheets/headlesswalkdim.png", "spritesheet-headLessWalkDim");
-	TM->addTexture("assets/Spritesheets/normalzombiedie.png", "spritesheet-headLessDeath");
 	TM->addTexture("assets/Spritesheets/headLessEatDim.png", "spritesheet-headLessEatDim");
+	TM->addTexture("assets/Spritesheets/normalzombiedie.png", "spritesheet-headLessDeath");
 	TM->addTexture("assets/Spritesheets/head.png", "spritesheet-head");
 	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
 

@@ -17,6 +17,7 @@ public:
 
 	void handleFlicker() {
 		if (!this->exists) return;
+
 		if (this->flicker) {
 			// Turn off flicker after 150ms and reset appropriate texture
 			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
@@ -24,21 +25,50 @@ public:
 
 				// Reset texture
 				if (this->state == "walk") {
-					this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame(), 22);
+
+					if (this->health >= 60) {
+						this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame(), 22);
+					}
+					else {
+						this->changeTexture((*(this->TMptr))["spritesheet-headLessWalk"], this->anim.getFrame(), 18);
+					}
+
 				}
 				else if (this->state == "eat") {
-					this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame(), 21);
+
+					if (this->health >= 60) {
+						this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame(), 21);
+					}
+					else {
+						this->changeTexture((*TMptr)["spritesheet-headLessEat"], this->anim.getFrame(), 11);
+					}
+
 				}
+
 				this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
 				return;
 			}
 
 			// Set texture
 			if (this->state == "walk") {
-				this->changeTexture((*TMptr)["spritesheet-nZombWalkDim"], this->anim.getFrame(), 22);
+
+				if (this->health >= 60) {
+					this->changeTexture((*TMptr)["spritesheet-nZombWalkDim"], this->anim.getFrame(), 22);
+				}
+				else {
+					this->changeTexture((*(this->TMptr))["spritesheet-headLessWalkDim"], this->anim.getFrame(), 18);
+				}
+
 			}
 			else if (this->state == "eat") {
-				this->changeTexture((*TMptr)["spritesheet-nZombEatDim"], this->anim.getFrame(), 21);
+
+				if (this->health >= 60) {
+					this->changeTexture((*TMptr)["spritesheet-nZombEatDim"], this->anim.getFrame(), 21);
+				}
+				else {
+					this->changeTexture((*TMptr)["spritesheet-headLessEatDim"], this->anim.getFrame(), 11);
+				}
+
 			}
 
 			this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
@@ -68,7 +98,14 @@ public:
 					float dt = plants[i]->getPosition()[0] - this->position[0];
 					if (dt <= 0 && dt >= -0.6875) {
 						this->blocked = true;
-						this->changeTexture((*TMptr)["spritesheet-nZombEat"], 0, 21);
+
+						if (this->health >= 60) {
+							this->changeTexture((*TMptr)["spritesheet-nZombEat"], 0, 21);
+						}
+						else {
+							this->changeTexture((*TMptr)["spritesheet-headLessEat"], 0, 11);
+						}
+
 						this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 						this->eatIndex = i;
 						return;
@@ -88,7 +125,14 @@ public:
 		else {
 			this->blocked = false;
 			this->state = "walk";
-			this->changeTexture((*(this->TMptr))["spritesheet-nZombWalk"], 0, 22);
+
+			if (this->health >= 60) {
+				this->changeTexture((*(this->TMptr))["spritesheet-nZombWalk"], 0, 22);
+			}
+			else {
+				this->changeTexture((*(this->TMptr))["spritesheet-headLessWalk"], 0, 18);
+			}
+
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			this->eatIndex = -1;
 		}
