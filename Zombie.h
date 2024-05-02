@@ -32,7 +32,6 @@ public:
 		this->state = "walk";
 	}
 
-	void setFlicker(bool value) { this->flicker = value, this->flickerClock.restart(); }
 
 	float* getPosition() {
 		return this->position;
@@ -55,6 +54,10 @@ public:
 		this->anim.animate(this->sprite);
 	}
 
+	void setFlicker(bool value) {
+		this->flicker = value, this->flickerClock.restart();
+	}
+
 	// changes sprite texture to ashes
 	// restarts ashes clock
 	void setAshes(bool value) {
@@ -64,31 +67,34 @@ public:
 	}
 
 	void handleFlicker() {
+		if (!this->exists) return;
+		if (this->flicker) {
+			// Turn off flicker after 150ms and reset appropriate texture
+			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
+				this->flicker = false;
 
-		// Turn off flicker after 150ms and reset appropriate texture
-		if (this->flicker && flickerClock.getElapsedTime().asMilliseconds() > 150) {
-			this->flicker = false;
+				// Reset texture
+				if (this->state == "walk") {
+					this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame());
+				}
+				else if (this->state == "eat") {
+					this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame());
+				}
+				this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
+				return;
+			}
+
+			// Set texture
 			if (this->state == "walk") {
-				this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame());
+				this->changeTexture((*TMptr)["spritesheet-nZombWalkDim"], this->anim.getFrame());
 			}
 			else if (this->state == "eat") {
-				this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame());
+				this->changeTexture((*TMptr)["spritesheet-nZombEatDim"], this->anim.getFrame());
 			}
+
 			this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
 		}
 
-		// set the dim texture 
-		if (this->exists) {
-			if (this->flicker) {
-				if (this->state == "walk") {
-					this->changeTexture((*TMptr)["spritesheet-nZombWalkDim"], this->anim.getFrame());
-				}
-				else if (this->state == "eat") {
-					this->changeTexture((*TMptr)["spritesheet-nZombEatDim"], this->anim.getFrame());
-				}
-				this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-			}
-		}
 	}
 
 	void draw(RenderWindow& window) {
