@@ -132,7 +132,7 @@ public:
 		// check if already plant is not there
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			if (plants[i]->getExist() && plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
-				selected = false;
+				this->selected = false;
 				return;
 			}
 		}
