@@ -3,15 +3,16 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
+#include "SoundManager.h"
 #include "Inventory.h"
 
 class PlantFactory {
 	Plant** plants;
 	int plantsArrayIndex;
 	const int maxPlants = 45;
+	SoundManager* SMptr;
 public:
-	PlantFactory();
+	PlantFactory(SoundManager* SM);
 	Plant** getPlants();
 	int getPlantsArrayIndex();
 	int& getPlantsArrayIndexByRef();

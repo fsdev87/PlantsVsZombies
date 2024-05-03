@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
@@ -21,6 +22,7 @@ using namespace sf;
 #include "DancingZombie.h"
 
 #include "PlantFactory.h"
+#include "SoundManager.h"
 #include "ZombieFactory.h"
 
 
@@ -106,6 +108,12 @@ int main()
 
 	Background background(&TM);
 
+	SoundManager SM;
+	SM.loadSound("assets/sounds/mainmusic.mp3", "mainmusic");
+	SM.loadSound("assets/sounds/cherrybomb.ogg", "cherrybomb-explosion");
+	SM.loadSound("assets/sounds/zombiefall.ogg", "zombie-fall");
+
+
 	Inventory Inv(&TM);
 	Inv.addCard(TM["card-sunflower_dim"], TM["card-sunflower"], "sunflower", 50);
 	Inv.addCard(TM["card-peashooter_dim"], TM["card-peashooter"], "peashooter", 100);
@@ -133,13 +141,19 @@ int main()
 			garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 		}
 	}
-	PlantFactory PF;
+	PlantFactory PF(&SM);
 	cout << "plant factory created\n";
-	ZombieFactory ZF(&TM);
+	ZombieFactory ZF(&TM, &SM);
 	cout << "zombie factory created\n";
 
 
 	bool pause = false;
+
+	SM.getMainMusic()->play();
+	SM.getMainMusic()->setLoop(true);
+	SM.getMainMusic()->setVolume(30.0f);
+
+
 	while (window.isOpen())
 	{
 		Event event;
@@ -191,6 +205,7 @@ int main()
 		// spawning of zombies
 
 
+
 		// Draw everything here...
 		window.draw(background.getSprite());
 
@@ -205,6 +220,9 @@ int main()
 
 		PF.draw(window);
 		ZF.draw(window);
+
+
+
 
 		window.draw(sunCountText);
 		window.display();

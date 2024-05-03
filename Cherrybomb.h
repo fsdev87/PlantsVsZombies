@@ -19,11 +19,11 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 	}
 
-	virtual void explode(Zombie** zombies, int zombiesArrayIndex) {
+	virtual void explode(Zombie** zombies, int zombiesArrayIndex, SoundManager* SMptr) {
 		if (this->exists) {
 			int frame = this->anim.getFrame();
 			if (frame == (this->columns - 10)) { // is the last frame
-
+				SMptr->playSound("cherrybomb-explosion");
 				for (int i = 0; i < zombiesArrayIndex; i++) {
 					if (zombies[i]->getExist() && abs(zombies[i]->getPosition()[0] - this->position[0]) <= 1.5 && abs(zombies[i]->getPosition()[1] - this->position[1]) <= 1) {
 						zombies[i]->setExist(false);

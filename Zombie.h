@@ -34,6 +34,8 @@ protected:
 	bool dead = false;
 	Clock deadClock;
 
+	SoundManager* SMptr;
+
 public:
 	Zombie() {
 		this->xFactor = 185;
@@ -141,6 +143,7 @@ public:
 			this->changeTexture((*TMptr)["spritesheet-zombieDeath"], 0, 10);
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			this->dead = true, this->deadClock.restart();
+			this->SMptr->playSound("zombie-fall");
 		}
 	}
 

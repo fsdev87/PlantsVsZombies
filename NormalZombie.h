@@ -3,7 +3,8 @@
 
 class NormalZombie : public Zombie {
 public:
-	NormalZombie(Texture& tex, int columns, float pos[2], TextureManager* TM) {
+	NormalZombie(Texture& tex, int columns, float pos[2], TextureManager* TM, SoundManager* SM) {
+		this->SMptr = SM;
 		this->TMptr = TM;
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
