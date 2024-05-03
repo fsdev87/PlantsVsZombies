@@ -9,6 +9,7 @@
 #include "Wallnut.h"
 #include "Sunflower.h"
 #include "Peashooter.h"
+#include "Threepeater.h"
 #include "Repeater.h"
 #include "Snowpea.h"
 #include "Cherrybomb.h"
@@ -54,7 +55,7 @@ public:
 	bool hasSelectedSomething() { return this->selected; }
 
 	void addCard(Texture& dim, Texture& bright, string n, int cost) {
-		cout << "Added card at index " << index << "\n";
+		cout << "Added " << n << " at index " << index << "\n";
 		if (index >= maxCards) {
 			cout << "Inventory is full\n";
 			return;
@@ -159,6 +160,8 @@ public:
 			plants[tempIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
 		else if (indexInInventory == 5 && sunCount >= 150)
 			plants[tempIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 18, pos);
+		else if (indexInInventory == 6 && sunCount >= 325)
+			plants[tempIndex] = new Threepeater(this->TMptr->getTexture("spritesheet-threepeater"), 16, pos);
 		else
 			cout << "Insufficient suncount\n";
 		// otherwise say insufficient amount

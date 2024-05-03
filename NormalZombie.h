@@ -8,12 +8,12 @@ public:
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 		this->speed = 0.0625;
-		this->health = 100;
+		this->health = 120;
 		this->exists = true;
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->anim = Animation(166, 144, columns);
 		this->moveClock.restart();
-		this->anim.setDelay(70);
+		this->anim.setDelay(50);
 		// head
 		this->headSprite.setTexture(this->TMptr->getTexture("spritesheet-head"));
 		this->headSprite.setTextureRect(IntRect(0, 0, 166, 144));
@@ -31,7 +31,7 @@ public:
 				// Reset texture
 				if (this->state == "walk") {
 
-					if (this->health >= 60) {
+					if (this->health > 60) {
 						this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame(), 22);
 					}
 					else {
@@ -41,7 +41,7 @@ public:
 				}
 				else if (this->state == "eat") {
 
-					if (this->health >= 60) {
+					if (this->health > 60) {
 						this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame(), 21);
 					}
 					else {
@@ -57,7 +57,7 @@ public:
 			// Set texture
 			if (this->state == "walk") {
 
-				if (this->health >= 60) {
+				if (this->health > 60) {
 					this->changeTexture((*TMptr)["spritesheet-nZombWalkDim"], this->anim.getFrame(), 22);
 				}
 				else {
@@ -67,7 +67,7 @@ public:
 			}
 			else if (this->state == "eat") {
 
-				if (this->health >= 60) {
+				if (this->health > 60) {
 					this->changeTexture((*TMptr)["spritesheet-nZombEatDim"], this->anim.getFrame(), 21);
 				}
 				else {
@@ -104,7 +104,7 @@ public:
 					if (dt <= 0 && dt >= -0.6875) {
 						this->blocked = true;
 
-						if (this->health >= 60) {
+						if (this->health > 60) {
 							this->changeTexture((*TMptr)["spritesheet-nZombEat"], 0, 21);
 						}
 						else {
@@ -131,7 +131,7 @@ public:
 			this->blocked = false;
 			this->state = "walk";
 
-			if (this->health >= 60) {
+			if (this->health > 60) {
 				this->changeTexture((*(this->TMptr))["spritesheet-nZombWalk"], 0, 22);
 			}
 			else {

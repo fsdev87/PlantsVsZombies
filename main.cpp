@@ -49,6 +49,8 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Screens/Cards/card_snowpea_dim.png", "card-snowpea_dim");
 	TM->addTexture("assets/Screens/Cards/card_cherrybomb_dim.png", "card-cherrybomb_dim");
 	TM->addTexture("assets/Screens/Cards/card_chomper.png", "card-chomper");
+	TM->addTexture("assets/Screens/Cards/card_threepeater.png", "card-threepeater");
+	TM->addTexture("assets/Screens/Cards/card_threepeater_dim.png", "card-threepeater_dim");
 	//->M.addTexture("assets/Spritesheets/shovel.png", "shovel");
 	TM->addTexture("assets/Static/sun.png", "icon-sun");
 	//->Spritesheets
@@ -58,6 +60,7 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/repeater.png", "spritesheet-repeater");
 	TM->addTexture("assets/Spritesheets/snowpea.png", "spritesheet-snowpea");
 	TM->addTexture("assets/Spritesheets/sunflower.png", "spritesheet-sunflower");
+	TM->addTexture("assets/Spritesheets/threepeater.png", "spritesheet-threepeater");
 
 	// All are for normal zombie
 	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
@@ -110,6 +113,7 @@ int main()
 	Inv.addCard(TM["card-wallnut_dim"], TM["card-wallnut"], "wallnut", 50);
 	Inv.addCard(TM["card-snowpea_dim"], TM["card-snowpea"], "snowpea", 175);
 	Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
+	Inv.addCard(TM["card-threepeater_dim"], TM["card-threepeater"], "threepeater", 250);
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 	int sunCount = 1000;

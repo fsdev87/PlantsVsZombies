@@ -53,7 +53,7 @@ public:
 						zombies[i]->setExist(false);
 						zombies[i]->makeDead();
 					}
-					else if (zombies[i]->getHealth() == 40) {
+					else if (zombies[i]->getHealth() == 60) {
 						zombies[i]->setHeadFall(true);
 					}
 					this->bulletClock.restart();
