@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 
+#include "SoundManager.h"
 
 #include "iostream"
 using namespace std;
@@ -53,7 +54,7 @@ public:
 	}
 	virtual void shoot(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
-	virtual void explode(Zombie** zombies, int zombiesArrayIndex) {}
+	virtual void explode(Zombie** zombies, int zombiesArrayIndex, SoundManager* SMptr) {}
 	virtual void clickSun(int& sunCount) {}
 	virtual void moveBullets(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void restartBulletClock() {}

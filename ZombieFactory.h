@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "NormalZombie.h"
+#include "SoundManager.h"
 #include "DancingZombie.h"
 
 class ZombieFactory {
@@ -17,10 +18,11 @@ class ZombieFactory {
 	float pos[2] = { x, 0 };
 
 	TextureManager* TMptr;
+	SoundManager* SMptr;
 	Clock spawnClock;
 
 public:
-	ZombieFactory(TextureManager* tm);
+	ZombieFactory(TextureManager* tm, SoundManager* SM);
 
 	Zombie** getZombies();
 	int& getZombiesArrayIndex();

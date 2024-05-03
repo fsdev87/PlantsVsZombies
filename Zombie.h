@@ -34,6 +34,8 @@ protected:
 	bool dead = false;
 	Clock deadClock;
 
+	SoundManager* SMptr;
+
 	float limit = 20; // this is for at what health of zombie will the head fall
 
 public:
@@ -145,6 +147,7 @@ public:
 			this->changeTexture((*TMptr)["spritesheet-zombieDeath"], 0, 10);
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			this->dead = true, this->deadClock.restart();
+			this->SMptr->playSound("zombie-fall");
 		}
 	}
 

@@ -4,7 +4,8 @@ using namespace std;
 using namespace sf;
 
 
-ZombieFactory::ZombieFactory(TextureManager* tm) {
+ZombieFactory::ZombieFactory(TextureManager* tm, SoundManager* SMptr) {
+	this->SMptr = SMptr;
 	this->zombies = new Zombie * [this->maxZombies] { nullptr };
 	this->TMptr = tm;
 	this->deadIndex = -1;
@@ -29,7 +30,7 @@ void ZombieFactory::spawnZombie() {
 	this->pos[1] = rand() % 5;
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
-		this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr);
+		this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
 		this->zombiesArrayIndex++;
 	}
 	else {
@@ -37,7 +38,7 @@ void ZombieFactory::spawnZombie() {
 		if (this->deadIndex != -1) {
 			cout << "dead index is not -1\n";
 			delete[] this->zombies[this->deadIndex];
-			this->zombies[this->deadIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr);
+			this->zombies[this->deadIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
 		}
 		else {
 			cout << "Max zombies reached in spawnZombie function" << endl;

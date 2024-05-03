@@ -3,8 +3,9 @@
 using namespace std;
 using namespace sf;
 
-PlantFactory::PlantFactory() : plantsArrayIndex(0) {
-	plants = new Plant * [maxPlants] { nullptr };
+PlantFactory::PlantFactory(SoundManager* SM) : plantsArrayIndex(0) {
+	this->SMptr = SM;
+	this->plants = new Plant * [maxPlants] { nullptr };
 }
 
 Plant** PlantFactory::getPlants() { return this->plants; }
@@ -47,7 +48,7 @@ void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
 				this->plants[i]->restartBulletClock();
 			}
 			this->plants[i]->moveBullets(zombies, zombiesArrayIndex);
-			this->plants[i]->explode(zombies, zombiesArrayIndex);
+			this->plants[i]->explode(zombies, zombiesArrayIndex, SMptr);
 
 		}
 	}
