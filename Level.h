@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "FontManager.h"
+#include "SoundManager.h"
 using namespace std;
 using namespace sf;
 
@@ -10,18 +11,20 @@ private:
 	string str;
 	Text levelText;
 	float levelPosition[2];
-	const float middle1 = 450, middle2 = 550;
+	const float middle1 = 450, middle2 = 620;
 	float speed;
 	bool midWay;
 	Clock levelClock;
 	int level;
 	bool exists;
+	SoundManager* SMptr;
 
 public:
-	Level(FontManager* FM) {
+	Level(FontManager* FM, SoundManager* SM) {
+		this->SMptr = SM;
 		this->levelText.setFont(FM->operator[](2));
 		this->levelText.setCharacterSize(120);
-		this->levelText.setString("LEVEL 1");
+		this->levelText.setString("ROUND 1");
 		this->levelText.setFillColor(Color(16, 12, 12));
 		this->levelPosition[0] = -250, levelPosition[1] = 250;
 		this->levelText.setPosition(levelPosition[0], levelPosition[1]);
@@ -29,6 +32,8 @@ public:
 		this->midWay = false;
 		this->level = 1;
 		this->exists = true;
+		this->SMptr->playSound("round1");
+
 	}
 	void reset() {
 		this->levelPosition[0] = -250, levelPosition[1] = 250;
@@ -39,10 +44,12 @@ public:
 	}
 	void increaseLevel() {
 		this->level++;
-		this->levelText.setString("LEVEL " + to_string(level));
+		this->levelText.setString("ROUND " + to_string(level));
 	}
 	void move_draw(RenderWindow& window) {
+
 		if (this->exists) {
+
 			if (this->levelClock.getElapsedTime().asMilliseconds() > 15) {
 				this->levelPosition[0] += speed;
 				if (this->levelPosition[0] >= this->middle1 && this->levelPosition[1] <= this->middle2 && !this->midWay) {

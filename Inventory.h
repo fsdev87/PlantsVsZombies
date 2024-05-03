@@ -34,12 +34,13 @@ private:
 	int rectIndex;
 	RectangleShape selectedRect;
 
-
+	SoundManager* SMptr;
 	//
 	//int plantsArrayIndex = 0;
 
 public:
-	Inventory(TextureManager* tm) {
+	Inventory(TextureManager* tm, SoundManager* sm) {
+		this->SMptr = sm;
 		this->TMptr = tm;
 		this->inventorySprite.setTexture(TMptr->getTexture("inventory"));
 		this->inventorySprite.setPosition(60, 0);
@@ -86,7 +87,7 @@ public:
 
 		this->rectIndex = (x) / 64;
 		this->rectIndex -= 2;
-		if (rectIndex != -1)
+		if (rectIndex != -1 && rectIndex < index)
 			cout << "RectIndex: " << rectIndex << ", cost : " << cards[rectIndex].getCost() << endl;
 
 		if (rectIndex < index) {
@@ -97,6 +98,7 @@ public:
 		}
 
 		if (rectIndex < index && cards[rectIndex].getCost() > sunCount) {
+			this->SMptr->playSound("misclick");
 			this->selected = false;
 		}
 
@@ -162,9 +164,8 @@ public:
 			plants[tempIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 18, pos);
 		else if (indexInInventory == 6 && sunCount >= 325)
 			plants[tempIndex] = new Threepeater(this->TMptr->getTexture("spritesheet-threepeater"), 16, pos);
-		else
-			cout << "Insufficient suncount\n";
 		// otherwise say insufficient amount
+		this->SMptr->playSound("place2");
 
 
 		// added a check here because if it didn't place a plant, there would be nullptr at plants[tempIndex]

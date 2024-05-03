@@ -18,6 +18,9 @@ class ZombieFactory {
 	float pos[2] = { x, 0 };
 
 	TextureManager* TMptr;
+
+	// Zombie factory has it's own SMptr, just in case
+	// we will give each zombie its own SMptr
 	SoundManager* SMptr;
 	Clock spawnClock;
 

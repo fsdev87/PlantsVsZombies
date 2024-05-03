@@ -23,7 +23,7 @@ void PlantFactory::handlePlacing(Inventory* Inv, int gx, int gy, int& sunCount) 
 void PlantFactory::handleSunClick(int gx, int gy, Text& sunCountText, int& sunCount) {
 	for (int i = 0; i < this->plantsArrayIndex; i++) {
 		if (this->plants[i]->getExist() && this->plants[i]->getPosition()[0] == gx && this->plants[i]->getPosition()[1] == gy) {
-			this->plants[i]->clickSun(sunCount);
+			this->plants[i]->clickSun(sunCount, this->SMptr);
 			sunCountText.setString(to_string(sunCount));
 		}
 	}

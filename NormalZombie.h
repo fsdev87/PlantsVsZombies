@@ -28,7 +28,6 @@ public:
 			// Turn off flicker after 150ms and reset appropriate texture
 			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
 				this->flicker = false;
-
 				// Reset texture
 				if (this->state == "walk") {
 
@@ -84,6 +83,7 @@ public:
 	void move(Plant** plants, int plantsArrayIndex) {
 		if (this->exists == false) return;
 
+
 		if (this->moveClock.getElapsedTime().asMilliseconds() < this->moveDelay) return;
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
@@ -96,6 +96,7 @@ public:
 		this->moveClock.restart();
 		this->position[0] -= this->speed;
 		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+
 
 
 		for (int i = 0; i < plantsArrayIndex; i++) {
@@ -126,10 +127,12 @@ public:
 			if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
 				plant->beEaten();
 				plant->getEatClock().restart();
+
 			}
 		}
 		else {
 			this->blocked = false;
+
 			this->state = "walk";
 
 			if (this->health > this->limit) {

@@ -16,7 +16,8 @@ public:
 		this->cost = 325;
 		this->exists = true;
 		this->anim = Animation(73, 80, columns);
-		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+		this->sprite.setScale(1.05, 1.05);
+		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor - 10 + this->position[1] * 96);
 		this->bulletDelayClock.restart();
 		this->bullet[0].setPosition(this->position[0], this->position[1]);
 		this->bullet[1].setPosition(this->position[0] - 0.75, this->position[1]);

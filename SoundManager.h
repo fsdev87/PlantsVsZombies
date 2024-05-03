@@ -7,12 +7,13 @@ using namespace sf;
 
 class SoundManager {
 	Music mainMusic;
+
 	string* names;
 	SoundBuffer* buffers;
 	Sound* sounds;
 
 	int count;
-	int capacity = 10;
+	int capacity = 30;
 
 public:
 	SoundManager() {
@@ -23,16 +24,25 @@ public:
 	}
 
 	void resize(int n) {
-		SoundBuffer* buffertemp = new SoundBuffer[capacity];
-		Sound* soundtemp = new Sound[capacity];
+		cout << "resizing by " << n << endl;
+		SoundBuffer* buffertemp = new SoundBuffer[capacity + n];
+		Sound* soundtemp = new Sound[capacity + n];
+		string* nametemp = new string[capacity + n];
+
 		for (int i = 0; i < capacity; i++) {
 			buffertemp[i] = this->buffers[i];
 			soundtemp[i] = this->sounds[i];
+			nametemp[i] = this->names[i];
 		}
+
 		delete[] this->sounds;
 		delete[] this->buffers;
+		delete[] this->names;
+
 		this->buffers = buffertemp;
 		this->sounds = soundtemp;
+		this->names = nametemp;
+
 		this->capacity += n;
 	}
 
@@ -44,6 +54,7 @@ public:
 		}
 
 		if (!this->buffers[this->count].loadFromFile(source)) cout << "Couldn't load from " << source << endl;
+
 		this->sounds[this->count].setBuffer(this->buffers[this->count]);
 		this->names[this->count] = name;
 		this->count++;
@@ -81,5 +92,23 @@ public:
 				this->sounds[index].play();
 			}
 		}
+	}
+
+	void stopSound(string n, int i = -1) {
+		if (i != -1) {
+			this->sounds[i].stop();
+		}
+		else {
+			int index = this->getSoundIndex(n);
+			if (index != -1) {
+				this->sounds[index].stop();
+			}
+		}
+	}
+
+	~SoundManager() {
+		delete[] names;
+		delete[] buffers;
+		delete[] sounds;
 	}
 };

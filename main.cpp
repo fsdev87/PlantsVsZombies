@@ -102,19 +102,39 @@ int main()
 	TextureManager TM;
 
 	loadTextures(&TM);
+	SoundManager SM;
+	SM.loadSound("assets/sounds/menu/mainmusic.mp3", "mainmusic");
+	SM.loadSound("assets/sounds/plant/cherrybomb.ogg", "cherrybomb-explosion");
+	SM.loadSound("assets/sounds/zombie/zombiefall.ogg", "zombie-fall");
+	SM.loadSound("assets/sounds/menu/sunclick.mp3", "sunclick");
+	SM.loadSound("assets/sounds/menu/misclick.mp3", "misclick");
+	SM.loadSound("assets/sounds/zombie/lowgroan.ogg", "groan1");
+	SM.loadSound("assets/sounds/zombie/lowgroan2.ogg", "groan2");
+	SM.loadSound("assets/sounds/zombie/eating.mp3", "eating");
+	SM.loadSound("assets/sounds/menu/round1.mp3", "round1");
+	SM.loadSound("assets/sounds/zombie/mczombie.mp3", "mczombie");
+	SM.loadSound("assets/sounds/menu/place1.mp3", "place1");
+	SM.loadSound("assets/sounds/menu/place2.mp3", "place2");
+	SM.loadSound("assets/sounds/zombie/zombieattack.mp3", "zombieattack");
+	SM.loadSound("assets/sounds/zombie/zombieroar.mp3", "zombieroar");
+
+	SM.loadSound("assets/sounds/zombie/hit.mp3", "hit");
+	SM.getSound("hit")->setVolume(70);
+
+
+	SM.getSound("round1")->setPlayingOffset(sf::Time(sf::seconds(1.05)));
 
 	FontManager FM;
-	Level level(&FM);
+	Level level(&FM, &SM);
 
 	Background background(&TM);
 
-	SoundManager SM;
-	SM.loadSound("assets/sounds/mainmusic.mp3", "mainmusic");
-	SM.loadSound("assets/sounds/cherrybomb.ogg", "cherrybomb-explosion");
-	SM.loadSound("assets/sounds/zombiefall.ogg", "zombie-fall");
+	SM.getSound("sunclick")->setVolume(30.0);
+	//SM.getSound("misclick")->setVolume(100.0);
+	SM.getSound("eating")->setVolume(30.0);
+	SM.getSound("place2")->setVolume(30.0);
 
-
-	Inventory Inv(&TM);
+	Inventory Inv(&TM, &SM);
 	Inv.addCard(TM["card-sunflower_dim"], TM["card-sunflower"], "sunflower", 50);
 	Inv.addCard(TM["card-peashooter_dim"], TM["card-peashooter"], "peashooter", 100);
 	Inv.addCard(TM["card-repeater_dim"], TM["card-repeater"], "repeater", 200);
@@ -151,7 +171,9 @@ int main()
 
 	SM.getMainMusic()->play();
 	SM.getMainMusic()->setLoop(true);
-	SM.getMainMusic()->setVolume(30.0f);
+	SM.getMainMusic()->setVolume(40.0f);
+	// using sf::seconds here so It is evident that seconds is from SFML
+	/*SM.getMainMusic()->setPlayingOffset(Time(sf::seconds(30)));*/
 
 
 	while (window.isOpen())
@@ -214,9 +236,9 @@ int main()
 				window.draw(garden[i][j]);
 			}
 		}
+		level.move_draw(window);
 
 		Inv.drawInventory(window, sunCount);
-		level.move_draw(window);
 
 		PF.draw(window);
 		ZF.draw(window);
