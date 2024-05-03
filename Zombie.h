@@ -34,6 +34,8 @@ protected:
 	bool dead = false;
 	Clock deadClock;
 
+	float limit = 20; // this is for at what health of zombie will the head fall
+
 public:
 	Zombie() {
 		this->xFactor = 185;
@@ -49,6 +51,8 @@ public:
 		return this->position;
 	}
 	bool getExist() { return this->exists; }
+
+	float getLimit() { return this->limit; }
 
 	void changeTexture(Texture& tex, int frame = 0, int columns = 21) {
 		this->sprite = Sprite(tex);

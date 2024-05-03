@@ -16,19 +16,19 @@ public:
 		this->cost = 325;
 		this->exists = true;
 		this->anim = Animation(73, 80, columns);
-		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
+		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 		this->bulletDelayClock.restart();
 		this->bullet[0].setPosition(this->position[0], this->position[1]);
-		this->bullet[1].setPosition(this->position[0] - 0.5, this->position[1]);
-		this->bullet[2].setPosition(this->position[0] - 0.75, this->position[1]);
-		this->bulletDelay = 2 + rand() % 3;
+		this->bullet[1].setPosition(this->position[0] - 0.75, this->position[1]);
+		this->bullet[2].setPosition(this->position[0] - 1, this->position[1]);
+		this->bulletDelay = 2 + rand() % 2;
 		this->anim.setDelay(105.f);
 		//this->startClock.restart();
 	}
 
-	void shoot(Zombie** zomb, int zombiesArrayIndex) {
+	void shoot(Zombie** zombies, int zombiesArrayIndex) {
 		if (this->exists) {
-			if ((this->bullet[0].getExist() == false || this->bullet[2].getExist() == false || this->bullet[1].getExist() == false) && this->bulletDelayClock.getElapsedTime().asSeconds() > bulletDelay) {
+			if ((this->bullet[0].getExist() == false || this->bullet[1].getExist() == false || this->bullet[2].getExist() == false) && this->bulletDelayClock.getElapsedTime().asSeconds() > bulletDelay) {
 				this->bullet[0].setPosition(this->position[0], this->position[1]);
 				this->bullet[0].setExist(true);
 
