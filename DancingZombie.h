@@ -3,7 +3,6 @@
 #include "TextureManager.h"
 
 class DancingZombie : public Zombie {
-
 	Clock spawnClock;
 
 public:
@@ -127,8 +126,5 @@ public:
 		this->spawnClock.restart();
 
 	}
-
-
-
 
 };
