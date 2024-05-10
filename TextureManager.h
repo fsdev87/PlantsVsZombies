@@ -76,6 +76,7 @@ public:
 		int index = getIndexFromName(name);
 		if (index != -1)
 			return textures[index];
+		cout << "\nWRONG NAME ENTERED THATS WHY WHITE TEXTURE\n";
 		return this->dummyTexture;
 	}
 

@@ -7,6 +7,7 @@
 #include "NormalZombie.h"
 #include "SoundManager.h"
 #include "DancingZombie.h"
+#include "FootballZombie.h"
 #include "LawnMower.h"
 #include "Life.h"
 
