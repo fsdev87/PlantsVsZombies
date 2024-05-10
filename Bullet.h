@@ -56,14 +56,6 @@ public:
 						zombies[i]->reduceHealth(this->damage);
 						zombies[i]->checkHealth();
 
-						/*if (zombies[i]->getHealth() == 0) {
-							zombies[i]->setExist(false);
-							zombies[i]->makeDead();
-						}
-						else if (zombies[i]->getHealth() == zombies[i]->getLimit()) {
-							zombies[i]->setHeadFall(true);
-						}*/
-
 						this->bulletClock.restart();
 						cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;
 						if (isSnow) {
