@@ -52,9 +52,6 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Screens/Cards/card_wallnut_dim.png", "card-wallnut_dim");
 	TM->addTexture("assets/Screens/Cards/card_snowpea_dim.png", "card-snowpea_dim");
 	TM->addTexture("assets/Screens/Cards/card_cherrybomb_dim.png", "card-cherrybomb_dim");
-	TM->addTexture("assets/Screens/Cards/card_chomper.png", "card-chomper");
-	TM->addTexture("assets/Screens/Cards/card_threepeater.png", "card-threepeater");
-	TM->addTexture("assets/Screens/Cards/card_threepeater_dim.png", "card-threepeater_dim");
 	//->M.addTexture("assets/Spritesheets/shovel.png", "shovel");
 	TM->addTexture("assets/Static/sun.png", "icon-sun");
 	//->Spritesheets
@@ -70,20 +67,14 @@ void loadTextures(TextureManager* TM) {
 	// All are for normal zombie
 	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
 	TM->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-nZombWalk");
-	TM->addTexture("assets/Spritesheets/nZombWalkDim.png", "spritesheet-nZombWalkDim");
-	TM->addTexture("assets/Spritesheets/nZombEatDim.png", "spritesheet-nZombEatDim");
 	TM->addTexture("assets/Spritesheets/headlesswalk.png", "spritesheet-headLessWalk");
 	TM->addTexture("assets/Spritesheets/headlesseat.png", "spritesheet-headLessEat");
-	TM->addTexture("assets/Spritesheets/headlesswalkdim.png", "spritesheet-headLessWalkDim");
-	TM->addTexture("assets/Spritesheets/headLessEatDim.png", "spritesheet-headLessEatDim");
 	TM->addTexture("assets/Spritesheets/normalzombiedie.png", "spritesheet-headLessDeath");
 	TM->addTexture("assets/Spritesheets/head.png", "spritesheet-head");
 	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
 
 	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucZEat");
 	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
-	TM->addTexture("assets/Spritesheets/bucHeadZombEatDim.png", "spritesheet-bucZEatDim");
-	TM->addTexture("assets/Spritesheets/bucHeadZombWalkDim.png", "spritesheet-bucZWalkDim");
 
 	TM->addTexture("assets/Spritesheets/wallnutrolling.png", "spritesheet-wallnut-rolling");
 	// For all explosion
@@ -101,17 +92,16 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/football-eat.png", "football-eat");
 	TM->addTexture("assets/Spritesheets/football-eat-2.png", "football-eat-2");
 	TM->addTexture("assets/Spritesheets/football-eat-3.png", "football-eat-3");
-
-	TM->addTexture("assets/Spritesheets/football-walk-dim.png", "football-walk-dim");
-	TM->addTexture("assets/Spritesheets/football-walk-2-dim.png", "football-walk-2-dim");
-	TM->addTexture("assets/Spritesheets/football-walk-3-dim.png", "football-walk-3-dim");
-
-	TM->addTexture("assets/Spritesheets/football-eat-dim.png", "football-eat-dim");
-	TM->addTexture("assets/Spritesheets/football-eat-2-dim.png", "football-eat-2-dim");
-	TM->addTexture("assets/Spritesheets/football-eat-3-dim.png", "football-eat-3-dim");
 	TM->addTexture("assets/Spritesheets/football-die.png", "football-die");
 
-	TM->addTexture("assets/Spritesheets/football-die.png", "football-die");
+
+	TM->addTexture("assets/Spritesheets/dancingwalk1.png", "dancing-walk-1");
+	TM->addTexture("assets/Spritesheets/dancingeat1.png", "dancing-eat-1");
+	TM->addTexture("assets/Spritesheets/dancinghead.png", "dancing-head");
+	TM->addTexture("assets/Spritesheets/dancingdie.png", "dancing-die");
+	TM->addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
+	TM->addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
+
 
 }
 
@@ -172,11 +162,11 @@ int main()
 	Inv.addCard(TM["card-wallnut_dim"], TM["card-wallnut"], "wallnut", 50);
 	Inv.addCard(TM["card-snowpea_dim"], TM["card-snowpea"], "snowpea", 175);
 	Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
-	Inv.addCard(TM["card-threepeater_dim"], TM["card-threepeater"], "threepeater", 250);
+	//Inv.addCard(TM["card-threepeater_dim"], TM["card-threepeater"], "threepeater", 250);
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 	// Sun things
-	int sunCount = 1000;
+	int sunCount = 10000;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));

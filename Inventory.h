@@ -9,7 +9,6 @@
 #include "Wallnut.h"
 #include "Sunflower.h"
 #include "Peashooter.h"
-#include "Threepeater.h"
 #include "Repeater.h"
 #include "Snowpea.h"
 #include "Cherrybomb.h"
@@ -98,7 +97,6 @@ public:
 		}
 
 		if (rectIndex < index && cards[rectIndex].getCost() > sunCount) {
-			this->SMptr->playSound("misclick");
 			this->selected = false;
 		}
 
@@ -162,8 +160,6 @@ public:
 			plants[tempIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
 		else if (indexInInventory == 5 && sunCount >= 150)
 			plants[tempIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 18, pos);
-		else if (indexInInventory == 6 && sunCount >= 325)
-			plants[tempIndex] = new Threepeater(this->TMptr->getTexture("spritesheet-threepeater"), 16, pos);
 		// otherwise say insufficient amount
 		this->SMptr->playSound("place2");
 

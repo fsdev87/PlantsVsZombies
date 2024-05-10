@@ -66,7 +66,7 @@ public:
 		this->anim.setFrame(frame);
 	}
 
-	void animate() {
+	virtual void animate() {
 		this->anim.animate(this->sprite);
 		if (this->headFall) {
 			if (this->headAnim.getFrame() < this->headAnim.getColumns()) {
@@ -80,12 +80,6 @@ public:
 	}
 
 	void setFlicker(bool value) {
-		/*if (this->flicker != true) {
-			this->SMptr->getSound("hit")->setPlayingOffset(sf::Time(sf::seconds(0.70)));
-			this->SMptr->getSound("hit")->setVolume(50.0f);
-			this->SMptr->playSound("hit");
-		}*/
-
 		this->flicker = value, this->flickerClock.restart();
 	}
 
@@ -110,30 +104,11 @@ public:
 		this->ashes = value, this->ashesClock.restart();
 	}
 
-	// should be specific for each zombie
-	void handleFlicker() {
-		if (!this->exists) return;
-
-		if (this->flicker) {
-			// Turn off flicker after 150ms and reset appropriate texture
-			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
-				this->flicker = false;
-				// Reset texture
-				this->sprite.setColor(Color(255, 255, 255, 255));
-			}
-			else {
-				// Set DIM texture
-				this->sprite.setColor(Color(255, 255, 255, 255 * 0.6));
-			}
-
-		}
-	}
 	//
 	virtual void checkHealth() {}
 	Sprite& getSprite() { return this->sprite; }
 	//
 	void draw(RenderWindow& window) {
-		//handleFlicker();
 
 
 		if (this->exists) {
@@ -169,6 +144,14 @@ public:
 		}
 	}
 
+	void handleFlicker() {
+		if (!this->exists) return;
+		if (this->flicker && this->flickerClock.getElapsedTime().asMilliseconds() > 50) {
+			this->flicker = false;
+			this->sprite.setColor(Color(255, 255, 255, 255));
+		}
+	}
+
 	// same for each zombie
 	void handleAshes(RenderWindow& window) {
 		// show ashes only when this->exists = false i.e zombie is dead
@@ -195,61 +178,11 @@ public:
 		this->health -= damage;
 	}
 
+
+
 	// should be specific for each zombie
 	virtual void move(Plant** plants, int plantsArrayIndex) = 0;
-	//if (this->exists == false) return;
-	/*if (this->flicker) {
-	//	this->moveClock.restart();
-	//	return;
-	//}*/
-	//if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
-	//if (this->blocked) {
-	//	if (this->eatIndex != -1) {
-	//		this->state = "eat";
-	//		eat(plants[this->eatIndex]);
-	//	}
-	//	return;
-	//}
-
-	//this->moveClock.restart();
-	//this->position[0] -= this->speed;
-	//this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
-
-
-	//for (int i = 0; i < plantsArrayIndex; i++) {
-	//	if (plants[i]->getExist()) {
-	//		if (plants[i]->getPosition()[1] == this->position[1]) {
-	//			float dt = plants[i]->getPosition()[0] - this->position[0];
-	//			if (dt <= 0 && dt >= -0.6875) {
-	//				this->blocked = true;
-	//				this->changeTexture((*TMptr)["spritesheet-nZombEat"]);
-	//				this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
-	//				this->eatIndex = i;
-	//				return;
-	//			}
-	//		}
-	//	}
-	//}
-
-// should be specific for each zombie
 	virtual void eat(Plant* plant) = 0;
-	/*if (plant->getExist()) {
-		if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
-			plant->beEaten();
-			plant->getEatClock().restart();
-		}
-	}
-	else {
-		this->blocked = false;
-		this->state = "walk";
-		this->changeTexture((*(this->TMptr))["spritesheet-nZombWalk"]);
-		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
-		this->eatIndex = -1;
-	}*/
-
-
-
-
 	virtual ~Zombie() {}
 };
 

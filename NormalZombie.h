@@ -22,67 +22,6 @@ public:
 		this->headAnim = Animation(150, 186, 12);
 	}
 
-	void handleFlicker() {
-		if (!this->exists) return;
-		if (this->flicker && this->flickerClock.getElapsedTime().asMilliseconds() > 50) {
-			this->flicker = false;
-			this->sprite.setColor(Color(255, 255, 255, 255));
-		}
-		//if (this->flicker) {
-		//	// Turn off flicker after 150ms and reset appropriate texture
-		//	if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
-		//		this->flicker = false;
-		//		// Reset texture
-		//		if (this->state == "walk") {
-
-		//			if (this->health > this->limit) {
-		//				this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame(), 22);
-		//			}
-		//			else {
-		//				this->changeTexture((*(this->TMptr))["spritesheet-headLessWalk"], this->anim.getFrame(), 18);
-		//			}
-
-		//		}
-		//		else if (this->state == "eat") {
-
-		//			if (this->health > this->limit) {
-		//				this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame(), 21);
-		//			}
-		//			else {
-		//				this->changeTexture((*TMptr)["spritesheet-headLessEat"], this->anim.getFrame(), 11);
-		//			}
-
-		//		}
-
-		//		this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-		//		return;
-		//	}
-
-		//	// Set texture
-		//	if (this->state == "walk") {
-
-		//		if (this->health > this->limit) {
-		//			this->changeTexture((*TMptr)["spritesheet-nZombWalkDim"], this->anim.getFrame(), 22);
-		//		}
-		//		else {
-		//			this->changeTexture((*(this->TMptr))["spritesheet-headLessWalkDim"], this->anim.getFrame(), 18);
-		//		}
-
-		//	}
-		//	else if (this->state == "eat") {
-
-		//		if (this->health > this->limit) {
-		//			this->changeTexture((*TMptr)["spritesheet-nZombEatDim"], this->anim.getFrame(), 21);
-		//		}
-		//		else {
-		//			this->changeTexture((*TMptr)["spritesheet-headLessEatDim"], this->anim.getFrame(), 11);
-		//		}
-
-		//	}
-
-		//	this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-		//}
-	}
 
 	void checkHealth() {
 		if (this->exists) {
