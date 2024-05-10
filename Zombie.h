@@ -105,11 +105,10 @@ public:
 	}
 
 	//
-	virtual void checkHealth() {}
+	virtual void checkHealth() = 0;
 	Sprite& getSprite() { return this->sprite; }
 	//
 	void draw(RenderWindow& window) {
-
 
 		if (this->exists) {
 			// Draw

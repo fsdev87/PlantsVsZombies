@@ -12,13 +12,14 @@ public:
 		this->TMptr = tm;
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
-		this->speed = 0.0625;
+		this->speed = 0.09375;
 		this->health = 80;
 		this->exists = true;
 		this->limit = 20;
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->anim = Animation(166, 144, columns);
 		this->moveClock.restart(), this->spawnClock.restart();
+		this->moveDelay = 180;
 		this->anim.setDelay(70);
 		this->xFactor += 45;
 		for (int i = 0; i < 4; spawnIndex[i++] = -1);
@@ -95,7 +96,7 @@ public:
 		}
 
 		if (rand() % 75 == 1) {
-			this->position[0] += (10 * this->speed);
+			//this->position[0] += (10 * this->speed);
 			if (rand() % 2) {
 				this->position[1] += 1;
 				if (this->position[1] > 4) this->position[1] = 4;

@@ -59,7 +59,7 @@ public:
 						this->bulletClock.restart();
 						cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;
 						if (isSnow) {
-							zombies[i]->setMoveDelay(350);
+							zombies[i]->setMoveDelay(500);
 						}
 						return;
 					}
