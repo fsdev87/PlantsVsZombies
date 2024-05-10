@@ -110,7 +110,12 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/football-eat-2-dim.png", "football-eat-2-dim");
 	TM->addTexture("assets/Spritesheets/football-eat-3-dim.png", "football-eat-3-dim");
 
-
+	TM->addTexture("assets/Spritesheets/dancingwalk1.png", "dancing-walk-1");
+	TM->addTexture("assets/Spritesheets/dancingeat1.png", "dancing-eat-1");
+	TM->addTexture("assets/Spritesheets/dancinghead.png", "dancing-head");
+	TM->addTexture("assets/Spritesheets/dancingdie.png", "dancing-die");
+	TM->addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
+	TM->addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
 }
 
 
