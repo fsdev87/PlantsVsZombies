@@ -32,8 +32,11 @@ void PlantFactory::handleSunClick(int gx, int gy, Text& sunCountText, int& sunCo
 
 void PlantFactory::handleWallnutClick(int gx, int gy) {
 	for (int i = 0; i < this->plantsArrayIndex; i++) {
-		if (this->plants[i]->getExist() && this->plants[i]->getPosition()[0] == gx && this->plants[i]->getPosition()[1] == gy) {
-			this->plants[i]->activate(this->TMptr->getTexture("spritesheet-wallnut-rolling"));
+		if (this->plants[i]->getExist()) {
+			float* plantPos = this->plants[i]->getPosition();
+			if (plantPos[0] == gx && plantPos[1] == gy) {
+				this->plants[i]->activate(this->TMptr->getTexture("spritesheet-wallnut-rolling"));
+			}
 		}
 	}
 };

@@ -3,9 +3,11 @@
 #include "Zombie.h"
 
 class Wallnut : public NonShooter {
+private:
 	bool active;
 	Clock moveClock;
 	float speed = 0.03125;
+
 public:
 	Wallnut(Texture& tex, int columns, float pos[2]) {
 		this->sprite.setTexture(tex);
