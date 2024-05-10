@@ -109,7 +109,7 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/football-eat-dim.png", "football-eat-dim");
 	TM->addTexture("assets/Spritesheets/football-eat-2-dim.png", "football-eat-2-dim");
 	TM->addTexture("assets/Spritesheets/football-eat-3-dim.png", "football-eat-3-dim");
-
+	TM->addTexture("assets/Spritesheets/football-die.png", "football-die");
 
 }
 

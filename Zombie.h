@@ -136,9 +136,12 @@ public:
 		//}
 
 	}
-
+	//
+	virtual void checkHealth() {}
+	Sprite& getSprite() { return this->sprite; }
+	//
 	void draw(RenderWindow& window) {
-		handleFlicker();
+		//handleFlicker();
 
 
 		if (this->exists) {
@@ -157,14 +160,14 @@ public:
 
 	void makeDead() {
 		if (this->exists == false && this->ashes != true) {
-			this->changeTexture((*TMptr)["spritesheet-zombieDeath"], 0, 10);
+			this->changeTexture(this->TMptr->getTexture("spritesheet-zombieDeath"), 0, 10);
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			this->dead = true, this->deadClock.restart();
 			this->SMptr->playSound("zombie-fall");
 		}
 	}
 
-	void handleDeath(RenderWindow& window) {
+	virtual void handleDeath(RenderWindow& window) {
 		if (!this->exists && this->dead) {
 			if (this->deadClock.getElapsedTime().asSeconds() > 1.05) {
 				this->dead = false;

@@ -15,7 +15,7 @@ public:
 		this->speed = 0.125;
 		this->health = 180;
 		this->exists = true;
-		this->limit = 60;
+		this->limit = 40;
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->anim = Animation(166, 144, columns);
 		this->moveClock.restart(), this->reverseClock.restart();
@@ -30,72 +30,122 @@ public:
 
 	void handleFlicker() {
 		if (!this->exists) return;
+		if (this->flicker && this->flickerClock.getElapsedTime().asMilliseconds() > 50) {
+			this->flicker = false;
+			this->sprite.setColor(Color(255, 255, 255, 255));
+		}
+		//if (this->flicker) {
+		//	// Turn off flicker after 150ms and reset appropriate texture
+		//	if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
+		//		this->flicker = false;
+		//		// Reset texture
+		//		if (this->state == "walk") {
 
-		if (this->flicker) {
-			// Turn off flicker after 150ms and reset appropriate texture
-			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
-				this->flicker = false;
-				// Reset texture
+		//			if (this->health > 120) {
+		//				this->changeTexture((*TMptr)["football-walk"], 0, 11);
+		//			}
+		//			else if (this->health > 60 && this->health <= 120) {
+		//				this->changeTexture((*TMptr)["football-walk-2"], 0, 11);
+		//			}
+		//			else {
+		//				this->changeTexture((*TMptr)["football-walk-3"], 0, 10);
+		//			}
+
+		//		}
+		//		else if (this->state == "eat") {
+
+		//			if (this->health > 120) {
+		//				this->changeTexture((*TMptr)["football-eat"], 0, 10);
+		//			}
+		//			else if (this->health > 60 && this->health <= 120) {
+		//				this->changeTexture((*TMptr)["football-eat-2"], 0, 11);
+		//			}
+		//			else {
+		//				this->changeTexture((*TMptr)["football-eat-3"], 0, 10);
+		//			}
+
+		//		}
+
+		//		this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
+		//		return;
+		//	}
+
+		//	// Set DIM texture
+		//	if (this->state == "walk") {
+
+		//		if (this->health > 120) {
+		//			this->changeTexture((*TMptr)["football-walk-dim"], 0, 11);
+		//		}
+		//		else if (this->health > 60 && this->health <= 120) {
+		//			this->changeTexture((*TMptr)["football-walk-2-dim"], 0, 11);
+		//		}
+		//		else {
+		//			this->changeTexture((*TMptr)["football-walk-3-dim"], 0, 10);
+		//		}
+
+		//	}
+		//	else if (this->state == "eat") {
+
+		//		if (this->health > 120) {
+		//			this->changeTexture((*TMptr)["football-eat-dim"], 0, 10);
+		//		}
+		//		else if (this->health > 60 && this->health <= 120) {
+		//			this->changeTexture((*TMptr)["football-eat-2-dim"], 0, 11);
+		//		}
+		//		else {
+		//			this->changeTexture((*TMptr)["football-eat-3-dim"], 0, 10);
+		//		}
+
+		//	}
+
+		//	this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
+		//}
+	}
+
+	void makeDead() {
+		if (this->exists == false && this->ashes != true) {
+			this->changeTexture(this->TMptr->getTexture("football-die"), 0, 7);
+			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+			this->dead = true, this->deadClock.restart();
+			this->SMptr->playSound("zombie-fall");
+		}
+	}
+
+	void handleDeath(RenderWindow& window) {
+		if (!this->exists && this->dead) {
+			if (this->deadClock.getElapsedTime().asSeconds() > 0.705) {
+				this->dead = false;
+			}
+			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			window.draw(this->sprite);
+		}
+	}
+
+	void checkHealth() {
+		if (this->exists) {
+			if (this->health == 120) {
 				if (this->state == "walk") {
-
-					if (this->health > 120) {
-						this->changeTexture((*TMptr)["football-walk"], 0, 11);
-					}
-					else if (this->health > 60 && this->health <= 120) {
-						this->changeTexture((*TMptr)["football-walk-2"], 0, 11);
-					}
-					else {
-						this->changeTexture((*TMptr)["football-walk-3"], 0, 10);
-					}
-
-				}
-				else if (this->state == "eat") {
-
-					if (this->health > 120) {
-						this->changeTexture((*TMptr)["football-eat"], 0, 10);
-					}
-					else if (this->health > 60 && this->health <= 120) {
-						this->changeTexture((*TMptr)["football-eat-2"], 0, 11);
-					}
-					else {
-						this->changeTexture((*TMptr)["football-eat-3"], 0, 10);
-					}
-
-				}
-
-				this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-				return;
-			}
-
-			// Set DIM texture
-			if (this->state == "walk") {
-
-				if (this->health > 120) {
-					this->changeTexture((*TMptr)["football-walk-dim"], 0, 11);
-				}
-				else if (this->health > 60 && this->health <= 120) {
-					this->changeTexture((*TMptr)["football-walk-2-dim"], 0, 11);
+					changeTexture(this->TMptr->getTexture("football-walk-2"), 0, 11);
 				}
 				else {
-					this->changeTexture((*TMptr)["football-walk-3-dim"], 0, 10);
+					changeTexture(this->TMptr->getTexture("football-eat-2"), 0, 11);
 				}
-
+				this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			}
-			else if (this->state == "eat") {
-
-				if (this->health > 120) {
-					this->changeTexture((*TMptr)["football-eat-dim"], 0, 10);
-				}
-				else if (this->health > 60 && this->health <= 120) {
-					this->changeTexture((*TMptr)["football-eat-2-dim"], 0, 11);
+			else if (this->health == this->limit) {
+				if (this->state == "walk") {
+					changeTexture(this->TMptr->getTexture("football-walk-3"), 0, 10);
 				}
 				else {
-					this->changeTexture((*TMptr)["football-eat-3-dim"], 0, 10);
+					changeTexture(this->TMptr->getTexture("football-eat-3"), 0, 10);
 				}
-
+				setHeadFall(true);
+				this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			}
-
-			this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
+			else if (this->health == 0) {
+				this->exists = false;
+				this->makeDead();
+			}
 		}
 	}
 
@@ -113,8 +163,8 @@ public:
 
 		if (this->moveClock.getElapsedTime().asMilliseconds() < this->moveDelay) return;
 
-		reverseDirection();
-
+		handleFlicker();
+		//reverseDirection();
 
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
@@ -132,19 +182,21 @@ public:
 
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			if (plants[i]->getExist()) {
-				if (plants[i]->getPosition()[1] == this->position[1]) {
-					float dt = plants[i]->getPosition()[0] - this->position[0];
+				float* plantPos = plants[i]->getPosition();
+
+				if (plantPos[1] == this->position[1]) {
+					float dt = plantPos[0] - this->position[0];
 					if (dt <= 0 && dt >= -0.6875) {
 						this->blocked = true;
 
 						if (this->health > 120) {
-							this->changeTexture((*TMptr)["football-eat"], 0, 10);
+							this->changeTexture(this->TMptr->getTexture("football-eat"), 0, 10);
 						}
-						else if (this->health > 60 && this->health <= 120) {
-							this->changeTexture((*TMptr)["football-eat-2"], 0, 11);
+						else if (this->health > this->limit && this->health <= 120) {
+							this->changeTexture(this->TMptr->getTexture("football-eat-2"), 0, 11);
 						}
 						else {
-							this->changeTexture((*TMptr)["football-eat-3"], 0, 10);
+							this->changeTexture(this->TMptr->getTexture("football-eat-3"), 0, 10);
 						}
 
 						this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
@@ -169,13 +221,13 @@ public:
 			this->state = "walk";
 
 			if (this->health > 120) {
-				this->changeTexture((*TMptr)["football-walk"], 0, 11);
+				this->changeTexture(this->TMptr->getTexture("football-walk"), 0, 11);
 			}
-			else if (this->health > 60 && this->health <= 120) {
-				this->changeTexture((*TMptr)["football-walk-2"], 0, 11);
+			else if (this->health > this->limit && this->health <= 120) {
+				this->changeTexture(this->TMptr->getTexture("football-walk-2"), 0, 11);
 			}
 			else {
-				this->changeTexture((*TMptr)["football-walk-3"], 0, 10);
+				this->changeTexture(this->TMptr->getTexture("football-walk-3"), 0, 10);
 			}
 
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
@@ -184,5 +236,3 @@ public:
 	}
 
 };
-
-
