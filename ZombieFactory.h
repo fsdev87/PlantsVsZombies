@@ -9,6 +9,7 @@
 #include "DancingZombie.h"
 #include "FootballZombie.h"
 #include "LawnMower.h"
+#include "Life.h"
 
 class ZombieFactory {
 	Zombie** zombies;
@@ -32,7 +33,7 @@ public:
 	Zombie** getZombies();
 	int& getZombiesArrayIndex();
 
-	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers);
+	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives);
 
 	void spawnZombie();
 	void  getZombieDeadIndex();

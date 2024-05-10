@@ -21,6 +21,7 @@ using namespace sf;
 #include "Cherrybomb.h"
 #include "DancingZombie.h"
 #include "LawnMower.h"
+#include "Life.h"
 
 #include "PlantFactory.h"
 #include "SoundManager.h"
@@ -109,18 +110,26 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/football-eat-2-dim.png", "football-eat-2-dim");
 	TM->addTexture("assets/Spritesheets/football-eat-3-dim.png", "football-eat-3-dim");
 
-
+	TM->addTexture("assets/Spritesheets/dancingwalk1.png", "dancing-walk-1");
+	TM->addTexture("assets/Spritesheets/dancingeat1.png", "dancing-eat-1");
+	TM->addTexture("assets/Spritesheets/dancinghead.png", "dancing-head");
+	TM->addTexture("assets/Spritesheets/dancingdie.png", "dancing-die");
+	TM->addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
+	TM->addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
 }
 
 
 int main()
 {
 	srand((unsigned)time(0));
-
+	// window
 	RenderWindow window(VideoMode(1400, 600), "game");
-	TextureManager TM;
 
+	// Texture Manager
+	TextureManager TM;
 	loadTextures(&TM);
+
+	//Sound Manager
 	SoundManager SM;
 	SM.loadSound("assets/sounds/menu/mainmusic.mp3", "mainmusic");
 	SM.loadSound("assets/sounds/plant/cherrybomb.ogg", "cherrybomb-explosion");
@@ -144,9 +153,13 @@ int main()
 
 	SM.getSound("round1")->setPlayingOffset(sf::Time(sf::seconds(1.05)));
 
+	// Font Manager
 	FontManager FM;
+
+	// Level
 	Level level(&FM, &SM);
 
+	// Background
 	Background background(&TM);
 
 	SM.getSound("sunclick")->setVolume(30.0);
@@ -154,6 +167,7 @@ int main()
 	SM.getSound("eating")->setVolume(30.0);
 	SM.getSound("place2")->setVolume(30.0);
 
+	// Inventory
 	Inventory Inv(&TM, &SM);
 	Inv.addCard(TM["card-sunflower_dim"], TM["card-sunflower"], "sunflower", 50);
 	Inv.addCard(TM["card-peashooter_dim"], TM["card-peashooter"], "peashooter", 100);
@@ -164,6 +178,7 @@ int main()
 	Inv.addCard(TM["card-threepeater_dim"], TM["card-threepeater"], "threepeater", 250);
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
+	// Sun things
 	int sunCount = 1000;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
@@ -172,7 +187,7 @@ int main()
 	sunCountText.setPosition(86, 62);
 	sunCountText.setFillColor(Color::Black);
 
-
+	// Garden things
 	RectangleShape garden[5][9];
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -181,6 +196,8 @@ int main()
 			garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 		}
 	}
+
+	// Plant and Zombie Factories
 	PlantFactory PF(&SM, &TM);
 	cout << "plant factory created\n";
 	ZombieFactory ZF(&TM, &SM);
@@ -202,6 +219,9 @@ int main()
 	SM.getMainMusic()->setVolume(10.0f);
 	// using sf::seconds here so It is evident that seconds is from SFML
 	/*SM.getMainMusic()->setPlayingOffset(Time(sf::seconds(30)));*/
+
+	// Lives
+	Life lives;
 
 
 	while (window.isOpen())
@@ -252,7 +272,7 @@ int main()
 		// check for collisions, animation, shooting, everything
 		PF.updateEverything(ZF.getZombies(), ZF.getZombiesArrayIndex());
 
-		ZF.updateEverything(PF.getPlants(), PF.getPlantsArrayIndex(), lawnmowers);
+		ZF.updateEverything(PF.getPlants(), PF.getPlantsArrayIndex(), lawnmowers, &lives);
 
 		for (int i = 0; i < 5; i++) {
 			lawnmowers[i]->move(ZF.getZombies(), ZF.getZombiesArrayIndex());
@@ -278,10 +298,13 @@ int main()
 		PF.draw(window);
 		ZF.draw(window);
 
+		// draw lawn mowers
 		for (int i = 0; i < 5; i++) {
 			lawnmowers[i]->draw(window);
 		}
 
+		// draw lives
+		lives.drawLives(window);
 
 		window.draw(sunCountText);
 		window.display();

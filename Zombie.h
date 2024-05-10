@@ -23,7 +23,11 @@ protected:
 	Animation headAnim;
 	Clock headClock;
 	bool headFall = false;
+<<<<<<< HEAD
 	bool headOnceFell = false;
+=======
+	bool firstHeadFall = false;
+>>>>>>> b3ddf1f78c8d16985308261762d8e373bb3f3627
 
 	float limit;
 
@@ -57,6 +61,8 @@ public:
 	}
 	bool getExist() { return this->exists; }
 
+	bool getHeadFall() { return this->firstHeadFall; }
+	bool getDead() { return this->dead; }
 	virtual float getLimit() { return this->limit; }
 
 	void changeTexture(Texture& tex, int frame = 0, int columns = 21) {
@@ -73,7 +79,11 @@ public:
 			}
 			if (this->headClock.getElapsedTime().asSeconds() >= 1.205) {
 				this->headFall = false;
+<<<<<<< HEAD
 				this->headOnceFell = true;
+=======
+				this->firstHeadFall = true;
+>>>>>>> b3ddf1f78c8d16985308261762d8e373bb3f3627
 			}
 		}
 	}
@@ -90,6 +100,7 @@ public:
 
 	void setHeadFall(bool val) {
 		this->headFall = val;
+		this->firstHeadFall = val;
 		this->headClock.restart();
 		this->headSprite.setPosition(this->xFactor + 50 + this->position[0] * 80, this->yFactor - 10 + this->position[1] * 96);
 	}
@@ -202,60 +213,58 @@ public:
 	}
 
 	// should be specific for each zombie
-	virtual void move(Plant** plants, int plantsArrayIndex) {
-		//if (this->exists == false) return;
-		/*if (this->flicker) {
-		//	this->moveClock.restart();
-		//	return;
-		//}*/
-		//if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
-		//if (this->blocked) {
-		//	if (this->eatIndex != -1) {
-		//		this->state = "eat";
-		//		eat(plants[this->eatIndex]);
-		//	}
-		//	return;
-		//}
+	virtual void move(Plant** plants, int plantsArrayIndex) = 0;
+	//if (this->exists == false) return;
+	/*if (this->flicker) {
+	//	this->moveClock.restart();
+	//	return;
+	//}*/
+	//if (this->moveClock.getElapsedTime().asMilliseconds() < 250) return;
+	//if (this->blocked) {
+	//	if (this->eatIndex != -1) {
+	//		this->state = "eat";
+	//		eat(plants[this->eatIndex]);
+	//	}
+	//	return;
+	//}
 
-		//this->moveClock.restart();
-		//this->position[0] -= this->speed;
-		//this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+	//this->moveClock.restart();
+	//this->position[0] -= this->speed;
+	//this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 
 
-		//for (int i = 0; i < plantsArrayIndex; i++) {
-		//	if (plants[i]->getExist()) {
-		//		if (plants[i]->getPosition()[1] == this->position[1]) {
-		//			float dt = plants[i]->getPosition()[0] - this->position[0];
-		//			if (dt <= 0 && dt >= -0.6875) {
-		//				this->blocked = true;
-		//				this->changeTexture((*TMptr)["spritesheet-nZombEat"]);
-		//				this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
-		//				this->eatIndex = i;
-		//				return;
-		//			}
-		//		}
-		//	}
-		//}
-	}
+	//for (int i = 0; i < plantsArrayIndex; i++) {
+	//	if (plants[i]->getExist()) {
+	//		if (plants[i]->getPosition()[1] == this->position[1]) {
+	//			float dt = plants[i]->getPosition()[0] - this->position[0];
+	//			if (dt <= 0 && dt >= -0.6875) {
+	//				this->blocked = true;
+	//				this->changeTexture((*TMptr)["spritesheet-nZombEat"]);
+	//				this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+	//				this->eatIndex = i;
+	//				return;
+	//			}
+	//		}
+	//	}
+	//}
 
-	// should be specific for each zombie
-	virtual void eat(Plant* plant) {
-		/*if (plant->getExist()) {
-			if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
-				plant->beEaten();
-				plant->getEatClock().restart();
-			}
+// should be specific for each zombie
+	virtual void eat(Plant* plant) = 0;
+	/*if (plant->getExist()) {
+		if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
+			plant->beEaten();
+			plant->getEatClock().restart();
 		}
-		else {
-			this->blocked = false;
-			this->state = "walk";
-			this->changeTexture((*(this->TMptr))["spritesheet-nZombWalk"]);
-			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
-			this->eatIndex = -1;
-		}*/
 	}
+	else {
+		this->blocked = false;
+		this->state = "walk";
+		this->changeTexture((*(this->TMptr))["spritesheet-nZombWalk"]);
+		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+		this->eatIndex = -1;
+	}*/
 
-	virtual void moveDiagonal() {}
+
 
 
 	virtual ~Zombie() {}
