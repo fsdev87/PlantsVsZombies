@@ -21,18 +21,18 @@ public:
 
 public:
 	Animation(int boxX = 0, int boxY = 0, int cols = 0) : boxX(boxX), boxY(boxY), columns(cols), frame(0) {
-		animClock.restart();
+		this->animClock.restart();
 	}
 
 	void animate(Sprite& sprite) {
 		float time = animClock.getElapsedTime().asMilliseconds();
-		if (time > delay) {
-			sprite.setTextureRect(IntRect(frame * boxX, 0, boxX, boxY));
+		if (time > this->delay) {
+			sprite.setTextureRect(IntRect(this->frame * this->boxX, 0, this->boxX, this->boxY));
 			this->frame += 1;
-			animClock.restart();
+			this->animClock.restart();
 		}
-		if (frame >= columns) frame = 0;
+		if (this->frame >= this->columns) this->frame = 0;
 	}
 
-	void setFrame(int f) { frame = f; animClock.restart(); }
+	void setFrame(int f) { this->frame = f; this->animClock.restart(); }
 };

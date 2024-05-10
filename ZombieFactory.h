@@ -7,6 +7,7 @@
 #include "NormalZombie.h"
 #include "SoundManager.h"
 #include "DancingZombie.h"
+#include "LawnMower.h"
 
 class ZombieFactory {
 	Zombie** zombies;
@@ -14,7 +15,7 @@ class ZombieFactory {
 
 	const int maxZombies = 50;
 	int zombiesArrayIndex = 0;
-	const float x = 9;
+	const float x = 1;
 	float pos[2] = { x, 0 };
 
 	TextureManager* TMptr;
@@ -30,7 +31,7 @@ public:
 	Zombie** getZombies();
 	int& getZombiesArrayIndex();
 
-	void updateEverything(Plant** plants, int plantsArrayIndex);
+	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers);
 
 	void spawnZombie();
 	void  getZombieDeadIndex();

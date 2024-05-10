@@ -20,6 +20,7 @@ using namespace sf;
 #include "Wallnut.h"
 #include "Cherrybomb.h"
 #include "DancingZombie.h"
+#include "LawnMower.h"
 
 #include "PlantFactory.h"
 #include "SoundManager.h"
@@ -63,7 +64,8 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/snowpea.png", "spritesheet-snowpea");
 	TM->addTexture("assets/Spritesheets/sunflower.png", "spritesheet-sunflower");
 	TM->addTexture("assets/Spritesheets/threepeater.png", "spritesheet-threepeater");
-
+	TM->addTexture("assets/Spritesheets/lawnmower.png", "spritesheet-lawnmower");
+	TM->addTexture("assets/Spritesheets/lawnmowerIdle.png", "image-lawnmowerIdle");
 	// All are for normal zombie
 	TM->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
 	TM->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-nZombWalk");
@@ -91,7 +93,6 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Bullets/peaice.png", "bulletIce");
 
 }
-
 
 
 int main()
@@ -166,6 +167,14 @@ int main()
 	ZombieFactory ZF(&TM, &SM);
 	cout << "zombie factory created\n";
 
+	// Lawn Mowers
+	LawnMower* lawnmowers[5];
+	float lawnMowerPos[2] = { -1, 0 };
+	for (int i = 0; i < 5; i++) {
+		lawnMowerPos[1] = i;
+		lawnmowers[i] = new LawnMower(&TM, lawnMowerPos);
+	}
+
 
 	bool pause = false;
 
@@ -222,7 +231,12 @@ int main()
 		// check for collisions, animation, shooting, everything
 		PF.updateEverything(ZF.getZombies(), ZF.getZombiesArrayIndex());
 
-		ZF.updateEverything(PF.getPlants(), PF.getPlantsArrayIndex());
+		ZF.updateEverything(PF.getPlants(), PF.getPlantsArrayIndex(), lawnmowers);
+
+		for (int i = 0; i < 5; i++) {
+			lawnmowers[i]->move(ZF.getZombies(), ZF.getZombiesArrayIndex());
+			lawnmowers[i]->animate();
+		}
 
 		// spawning of zombies
 
@@ -243,7 +257,9 @@ int main()
 		PF.draw(window);
 		ZF.draw(window);
 
-
+		for (int i = 0; i < 5; i++) {
+			lawnmowers[i]->draw(window);
+		}
 
 
 		window.draw(sunCountText);

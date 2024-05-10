@@ -51,10 +51,14 @@ void ZombieFactory::spawnZombie() {
 Zombie** ZombieFactory::getZombies() { return this->zombies; }
 int& ZombieFactory::getZombiesArrayIndex() { return this->zombiesArrayIndex; }
 
-void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex) {
+void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers) {
 	for (int i = 0; i < this->zombiesArrayIndex; i++) {
 		this->zombies[i]->animate();
 		this->zombies[i]->move(plants, plantsArrayIndex);
+		float* position = zombies[i]->getPosition();
+		if (position[0] <= -0.5 && position[0] >= -1) {
+			lawnmowers[(int)position[1]]->activate();
+		}
 	}
 	spawnZombie();
 }
