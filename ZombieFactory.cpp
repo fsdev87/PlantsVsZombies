@@ -30,7 +30,8 @@ void ZombieFactory::spawnZombie() {
 	this->pos[1] = rand() % 5;
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
-		this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
+		//this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
+		this->zombies[this->zombiesArrayIndex] = new FootballZombie(this->TMptr->getTexture("football-walk"), 11, this->pos, this->TMptr, this->SMptr);
 		this->zombiesArrayIndex++;
 	}
 	else {

@@ -24,6 +24,9 @@ protected:
 	Clock headClock;
 	bool headFall = false;
 
+	float limit;
+
+
 	string state;
 	bool flicker = false;
 	Clock flickerClock;
@@ -36,7 +39,6 @@ protected:
 
 	SoundManager* SMptr;
 
-	float limit = 20; // this is for at what health of zombie will the head fall
 
 public:
 	Zombie() {
@@ -54,7 +56,7 @@ public:
 	}
 	bool getExist() { return this->exists; }
 
-	float getLimit() { return this->limit; }
+	virtual float getLimit() { return this->limit; }
 
 	void changeTexture(Texture& tex, int frame = 0, int columns = 21) {
 		this->sprite = Sprite(tex);
@@ -75,11 +77,11 @@ public:
 	}
 
 	void setFlicker(bool value) {
-		if (this->flicker != true) {
+		/*if (this->flicker != true) {
 			this->SMptr->getSound("hit")->setPlayingOffset(sf::Time(sf::seconds(0.70)));
 			this->SMptr->getSound("hit")->setVolume(50.0f);
 			this->SMptr->playSound("hit");
-		}
+		}*/
 
 		this->flicker = value, this->flickerClock.restart();
 	}

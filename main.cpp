@@ -93,6 +93,23 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Bullets/peabulletexplode.png", "bulletExplode");
 	TM->addTexture("assets/Bullets/peaice.png", "bulletIce");
 
+	TM->addTexture("assets/Spritesheets/football-walk.png", "football-walk");
+	TM->addTexture("assets/Spritesheets/football-walk-2.png", "football-walk-2");
+	TM->addTexture("assets/Spritesheets/football-walk-3.png", "football-walk-3");
+
+	TM->addTexture("assets/Spritesheets/football-eat.png", "football-eat");
+	TM->addTexture("assets/Spritesheets/football-eat-2.png", "football-eat-2");
+	TM->addTexture("assets/Spritesheets/football-eat-3.png", "football-eat-3");
+
+	TM->addTexture("assets/Spritesheets/football-walk-dim.png", "football-walk-dim");
+	TM->addTexture("assets/Spritesheets/football-walk-2-dim.png", "football-walk-2-dim");
+	TM->addTexture("assets/Spritesheets/football-walk-3-dim.png", "football-walk-3-dim");
+
+	TM->addTexture("assets/Spritesheets/football-eat-dim.png", "football-eat-dim");
+	TM->addTexture("assets/Spritesheets/football-eat-2-dim.png", "football-eat-2-dim");
+	TM->addTexture("assets/Spritesheets/football-eat-3-dim.png", "football-eat-3-dim");
+
+
 }
 
 
