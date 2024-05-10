@@ -5,6 +5,7 @@ class FootballZombie : public Zombie {
 private:
 	Clock reverseClock;
 	float reverseDelay;
+	string direction = "left";
 
 public:
 	FootballZombie(Texture& tex, int columns, float pos[2], TextureManager* TM, SoundManager* SM) {
@@ -47,82 +48,13 @@ public:
 		}
 	}
 
-	void handleFlicker() {
-		if (!this->exists) return;
-
-		if (this->flicker) {
-			// Turn off flicker after 150ms and reset appropriate texture
-			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
-				this->flicker = false;
-				// Reset texture
-				if (this->state == "walk") {
-
-					if (this->health > 120) {
-						this->changeTexture((*TMptr)["football-walk"], 0, 11);
-					}
-					else if (this->health > 60 && this->health <= 120) {
-						this->changeTexture((*TMptr)["football-walk-2"], 0, 11);
-					}
-					else {
-						this->changeTexture((*TMptr)["football-walk-3"], 0, 10);
-					}
-
-				}
-				else if (this->state == "eat") {
-
-					if (this->health > 120) {
-						this->changeTexture((*TMptr)["football-eat"], 0, 10);
-					}
-					else if (this->health > 60 && this->health <= 120) {
-						this->changeTexture((*TMptr)["football-eat-2"], 0, 11);
-					}
-					else {
-						this->changeTexture((*TMptr)["football-eat-3"], 0, 10);
-					}
-
-				}
-
-				this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-				return;
-			}
-
-			// Set DIM texture
-			if (this->state == "walk") {
-
-				if (this->health > 120) {
-					this->changeTexture((*TMptr)["football-walk-dim"], 0, 11);
-				}
-				else if (this->health > 60 && this->health <= 120) {
-					this->changeTexture((*TMptr)["football-walk-2-dim"], 0, 11);
-				}
-				else {
-					this->changeTexture((*TMptr)["football-walk-3-dim"], 0, 10);
-				}
-
-			}
-			else if (this->state == "eat") {
-
-				if (this->health > 120) {
-					this->changeTexture((*TMptr)["football-eat-dim"], 0, 10);
-				}
-				else if (this->health > 60 && this->health <= 120) {
-					this->changeTexture((*TMptr)["football-eat-2-dim"], 0, 11);
-				}
-				else {
-					this->changeTexture((*TMptr)["football-eat-3-dim"], 0, 10);
-				}
-
-			}
-
-			this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-		}
-	}
 
 	void reverseDirection() {
 		if (this->reverseClock.getElapsedTime().asSeconds() > this->reverseDelay) {
 			this->reverseClock.restart();
 			this->speed *= -1;
 			this->reverseDelay = 6 + rand() % 5;
+			this->direction = this->direction == "left" ? "right" : "left";
 		}
 	}
 
@@ -203,5 +135,3 @@ public:
 	}
 
 };
-
-

@@ -14,7 +14,7 @@ public:
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->anim = Animation(166, 144, columns);
 		this->moveClock.restart();
-		this->limit = 60;
+		this->limit = 20;
 		this->anim.setDelay(50);
 		// head
 		this->headSprite.setTexture(this->TMptr->getTexture("spritesheet-head"));
@@ -27,7 +27,7 @@ public:
 
 		if (this->flicker) {
 			// Turn off flicker after 150ms and reset appropriate texture
-			this->sprite.setColor(Color(255, 255, 255, 255 * 1));
+			this->sprite.setColor(Color(255, 255, 255, 255));
 			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
 				this->flicker = false;
 				// Reset texture

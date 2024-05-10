@@ -111,35 +111,22 @@ public:
 	}
 
 	// should be specific for each zombie
-	virtual void handleFlicker() {
-		//if (!this->exists) return;
-		//if (this->flicker) {
-		//	// Turn off flicker after 150ms and reset appropriate texture
-		//	if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
-		//		this->flicker = false;
+	void handleFlicker() {
+		if (!this->exists) return;
 
-		//		// Reset texture
-		//		if (this->state == "walk") {
-		//			this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame());
-		//		}
-		//		else if (this->state == "eat") {
-		//			this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame());
-		//		}
-		//		this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-		//		return;
-		//	}
+		if (this->flicker) {
+			// Turn off flicker after 150ms and reset appropriate texture
+			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
+				this->flicker = false;
+				// Reset texture
+				this->sprite.setColor(Color(255, 255, 255, 255));
+			}
+			else {
+				// Set DIM texture
+				this->sprite.setColor(Color(255, 255, 255, 255 * 0.6));
+			}
 
-		//	// Set texture
-		//	if (this->state == "walk") {
-		//		this->changeTexture((*TMptr)["spritesheet-nZombWalkDim"], this->anim.getFrame());
-		//	}
-		//	else if (this->state == "eat") {
-		//		this->changeTexture((*TMptr)["spritesheet-nZombEatDim"], this->anim.getFrame());
-		//	}
-
-		//	this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-		//}
-
+		}
 	}
 
 	void draw(RenderWindow& window) {
