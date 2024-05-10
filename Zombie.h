@@ -23,6 +23,7 @@ protected:
 	Animation headAnim;
 	Clock headClock;
 	bool headFall = false;
+	bool headOnceFell = false;
 
 	float limit;
 
@@ -72,6 +73,7 @@ public:
 			}
 			if (this->headClock.getElapsedTime().asSeconds() >= 1.205) {
 				this->headFall = false;
+				this->headOnceFell = true;
 			}
 		}
 	}
@@ -90,6 +92,10 @@ public:
 		this->headFall = val;
 		this->headClock.restart();
 		this->headSprite.setPosition(this->xFactor + 50 + this->position[0] * 80, this->yFactor - 10 + this->position[1] * 96);
+	}
+
+	bool getHeadFall() {
+		return this->headOnceFell;
 	}
 
 	// changes sprite texture to ashes

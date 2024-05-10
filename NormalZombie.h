@@ -14,7 +14,7 @@ public:
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->anim = Animation(166, 144, columns);
 		this->moveClock.restart();
-		this->limit = 20;
+		this->limit = 60;
 		this->anim.setDelay(50);
 		// head
 		this->headSprite.setTexture(this->TMptr->getTexture("spritesheet-head"));

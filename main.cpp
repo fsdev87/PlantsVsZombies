@@ -139,6 +139,7 @@ int main()
 
 	SM.loadSound("assets/sounds/zombie/hit.mp3", "hit");
 	SM.getSound("hit")->setVolume(70);
+	SM.getSound("round1")->setVolume(20.0f);
 
 
 	SM.getSound("round1")->setPlayingOffset(sf::Time(sf::seconds(1.05)));
@@ -198,7 +199,7 @@ int main()
 
 	SM.getMainMusic()->play();
 	SM.getMainMusic()->setLoop(true);
-	SM.getMainMusic()->setVolume(40.0f);
+	SM.getMainMusic()->setVolume(10.0f);
 	// using sf::seconds here so It is evident that seconds is from SFML
 	/*SM.getMainMusic()->setPlayingOffset(Time(sf::seconds(30)));*/
 
