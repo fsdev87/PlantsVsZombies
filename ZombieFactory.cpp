@@ -51,7 +51,7 @@ void ZombieFactory::spawnZombie() {
 Zombie** ZombieFactory::getZombies() { return this->zombies; }
 int& ZombieFactory::getZombiesArrayIndex() { return this->zombiesArrayIndex; }
 
-void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers) {
+void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives) {
 	for (int i = 0; i < this->zombiesArrayIndex; i++) {
 		this->zombies[i]->animate();
 		this->zombies[i]->move(plants, plantsArrayIndex);
@@ -60,8 +60,9 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 			if (lawnmowers[(int)position[1]]->getExists() == true) {
 				lawnmowers[(int)position[1]]->activate();
 			}
-			else if (position[0] <= -1) {
+			else if (position[0] <= -1 && zombies[i]->getExist() == true) {
 				zombies[i]->setExist(false);
+				lives->decrementLives();
 			}
 		}
 	}
