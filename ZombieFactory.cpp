@@ -30,8 +30,16 @@ void ZombieFactory::spawnZombie() {
 	this->pos[1] = rand() % 5;
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
-		//this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
-		this->zombies[this->zombiesArrayIndex] = new FootballZombie(this->TMptr->getTexture("football-walk"), 11, this->pos, this->TMptr, this->SMptr);
+		int zombieType = rand() % 2;
+		switch (zombieType) {
+		case 0:
+			this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
+			break;
+		case 1:
+			this->zombies[this->zombiesArrayIndex] = new FootballZombie(this->TMptr->getTexture("football-walk"), 11, this->pos, this->TMptr, this->SMptr);
+			break;
+		}
+
 		this->zombiesArrayIndex++;
 	}
 	else {
@@ -39,7 +47,17 @@ void ZombieFactory::spawnZombie() {
 		if (this->deadIndex != -1) {
 			cout << "dead index is not -1\n";
 			delete[] this->zombies[this->deadIndex];
-			this->zombies[this->deadIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
+			int zombieType = rand() % 2;
+			switch (zombieType) {
+			case 0:
+				this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
+				break;
+			case 1:
+				this->zombies[this->zombiesArrayIndex] = new FootballZombie(this->TMptr->getTexture("football-walk"), 11, this->pos, this->TMptr, this->SMptr);
+				break;
+
+
+			}
 		}
 		else {
 			cout << "Max zombies reached in spawnZombie function" << endl;
@@ -61,7 +79,7 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 			if (lawnmowers[(int)position[1]]->getExists() == true) {
 				lawnmowers[(int)position[1]]->activate();
 			}
-			else if (position[0] <= -1 && zombies[i]->getExist() == true) {
+			else if (position[0] <= -1) {
 				zombies[i]->setExist(false);
 				lives->decrementLives();
 			}

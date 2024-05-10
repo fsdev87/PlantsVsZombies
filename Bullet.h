@@ -56,6 +56,7 @@ public:
 					}
 					else if (zombies[i]->getHealth() == zombies[i]->getLimit()) {
 						zombies[i]->setHeadFall(true);
+
 					}
 					this->bulletClock.restart();
 					cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;
