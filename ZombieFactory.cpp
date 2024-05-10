@@ -30,7 +30,7 @@ void ZombieFactory::spawnZombie() {
 	this->pos[1] = rand() % 5;
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
-		int zombieType = rand() % 2;
+		int zombieType = rand() % 3;
 		switch (zombieType) {
 		case 0:
 			this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
@@ -38,6 +38,8 @@ void ZombieFactory::spawnZombie() {
 		case 1:
 			this->zombies[this->zombiesArrayIndex] = new FootballZombie(this->TMptr->getTexture("football-walk"), 11, this->pos, this->TMptr, this->SMptr);
 			break;
+		case 2:
+			this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
 		}
 
 		this->zombiesArrayIndex++;

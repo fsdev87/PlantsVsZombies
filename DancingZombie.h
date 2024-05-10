@@ -4,7 +4,8 @@
 
 class DancingZombie : public Zombie {
 public:
-	DancingZombie(Texture& tex, int columns, float pos[2], TextureManager* tm) {
+	DancingZombie(Texture& tex, int columns, float pos[2], TextureManager* tm, SoundManager* sm) {
+		this->SMptr = sm;
 		this->TMptr = tm;
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
