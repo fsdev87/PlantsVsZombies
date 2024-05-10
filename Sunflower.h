@@ -29,7 +29,7 @@ public:
 	}
 
 	void generateSun() {
-		if (this->showSunClock.getElapsedTime().asSeconds() < 5.0) return;
+		if (this->showSunClock.getElapsedTime().asSeconds() < 10.0) return;
 		if (this->exists) {
 			this->showSun = true;
 			this->showSunClock.restart();
