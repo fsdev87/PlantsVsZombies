@@ -28,6 +28,25 @@ public:
 	}
 
 
+	void makeDead() {
+		if (this->exists == false && this->ashes != true) {
+			this->changeTexture((*TMptr)["football-die"], 0, 7);
+			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+			this->dead = true, this->deadClock.restart();
+			this->SMptr->playSound("zombie-fall");
+		}
+	}
+
+	void handleDeath(RenderWindow& window) {
+		if (!this->exists && this->dead) {
+			if (this->deadClock.getElapsedTime().asSeconds() > .705) {
+				this->dead = false;
+			}
+			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			window.draw(this->sprite);
+		}
+	}
+
 	void handleFlicker() {
 		if (!this->exists) return;
 

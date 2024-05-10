@@ -23,11 +23,7 @@ protected:
 	Animation headAnim;
 	Clock headClock;
 	bool headFall = false;
-<<<<<<< HEAD
 	bool headOnceFell = false;
-=======
-	bool firstHeadFall = false;
->>>>>>> b3ddf1f78c8d16985308261762d8e373bb3f3627
 
 	float limit;
 
@@ -61,7 +57,6 @@ public:
 	}
 	bool getExist() { return this->exists; }
 
-	bool getHeadFall() { return this->firstHeadFall; }
 	bool getDead() { return this->dead; }
 	virtual float getLimit() { return this->limit; }
 
@@ -79,11 +74,7 @@ public:
 			}
 			if (this->headClock.getElapsedTime().asSeconds() >= 1.205) {
 				this->headFall = false;
-<<<<<<< HEAD
 				this->headOnceFell = true;
-=======
-				this->firstHeadFall = true;
->>>>>>> b3ddf1f78c8d16985308261762d8e373bb3f3627
 			}
 		}
 	}
@@ -100,7 +91,7 @@ public:
 
 	void setHeadFall(bool val) {
 		this->headFall = val;
-		this->firstHeadFall = val;
+		this->headOnceFell = val;
 		this->headClock.restart();
 		this->headSprite.setPosition(this->xFactor + 50 + this->position[0] * 80, this->yFactor - 10 + this->position[1] * 96);
 	}
@@ -108,6 +99,8 @@ public:
 	bool getHeadFall() {
 		return this->headOnceFell;
 	}
+
+	virtual void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies) {}
 
 	// changes sprite texture to ashes
 	// restarts ashes clock
@@ -167,7 +160,7 @@ public:
 		}
 	}
 
-	void makeDead() {
+	virtual void makeDead() {
 		if (this->exists == false && this->ashes != true) {
 			this->changeTexture((*TMptr)["spritesheet-zombieDeath"], 0, 10);
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
@@ -176,7 +169,7 @@ public:
 		}
 	}
 
-	void handleDeath(RenderWindow& window) {
+	virtual void handleDeath(RenderWindow& window) {
 		if (!this->exists && this->dead) {
 			if (this->deadClock.getElapsedTime().asSeconds() > 1.05) {
 				this->dead = false;

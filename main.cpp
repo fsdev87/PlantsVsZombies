@@ -116,6 +116,9 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/dancingdie.png", "dancing-die");
 	TM->addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
 	TM->addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
+
+	TM->addTexture("assets/Spritesheets/football-die.png", "football-die");
+
 }
 
 
@@ -148,7 +151,7 @@ int main()
 
 	SM.loadSound("assets/sounds/zombie/hit.mp3", "hit");
 	SM.getSound("hit")->setVolume(70);
-	SM.getSound("round1")->setVolume(20.0f);
+	SM.getSound("round1")->setVolume(10.0f);
 
 
 	SM.getSound("round1")->setPlayingOffset(sf::Time(sf::seconds(1.05)));
@@ -218,7 +221,7 @@ int main()
 	SM.getMainMusic()->setLoop(true);
 	SM.getMainMusic()->setVolume(10.0f);
 	// using sf::seconds here so It is evident that seconds is from SFML
-	/*SM.getMainMusic()->setPlayingOffset(Time(sf::seconds(30)));*/
+	SM.getMainMusic()->setPlayingOffset(Time(sf::seconds(30)));
 
 	// Lives
 	Life lives;
