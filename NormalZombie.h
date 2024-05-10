@@ -24,62 +24,28 @@ public:
 
 	void handleFlicker() {
 		if (!this->exists) return;
-
-		if (this->flicker) {
-			// Turn off flicker after 150ms and reset appropriate texture
+		if (this->flicker && this->flickerClock.getElapsedTime().asMilliseconds() > 50) {
+			this->flicker = false;
 			this->sprite.setColor(Color(255, 255, 255, 255));
-			if (flickerClock.getElapsedTime().asMilliseconds() > 150) {
-				this->flicker = false;
-				// Reset texture
+		}
+	}
+
+	void checkHealth() {
+		if (this->exists) {
+			if (this->health == this->limit) {
+				setHeadFall(true);
 				if (this->state == "walk") {
-
-					if (this->health > this->limit) {
-						this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame(), 22);
-					}
-					else {
-						this->changeTexture((*(this->TMptr))["spritesheet-headLessWalk"], this->anim.getFrame(), 18);
-					}
-
-				}
-				else if (this->state == "eat") {
-
-					if (this->health > this->limit) {
-						this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame(), 21);
-					}
-					else {
-						this->changeTexture((*TMptr)["spritesheet-headLessEat"], this->anim.getFrame(), 11);
-					}
-
-				}
-
-				this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
-				return;
-			}
-
-			this->sprite.setColor(Color(255, 255, 255, 255 * 0.5));
-			// Set texture
-			if (this->state == "walk") {
-
-				if (this->health > this->limit) {
-					this->changeTexture((*TMptr)["spritesheet-nZombWalk"], this->anim.getFrame(), 22);
+					changeTexture(this->TMptr->getTexture("spritesheet-headLessWalk"), 0, 18);
 				}
 				else {
-					this->changeTexture((*(this->TMptr))["spritesheet-headLessWalk"], this->anim.getFrame(), 18);
+					changeTexture(this->TMptr->getTexture("spritesheet-headLessEat"), 0, 11);
 				}
-
+				this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			}
-			else if (this->state == "eat") {
-
-				if (this->health > this->limit) {
-					this->changeTexture((*TMptr)["spritesheet-nZombEat"], this->anim.getFrame(), 21);
-				}
-				else {
-					this->changeTexture((*TMptr)["spritesheet-headLessEat"], this->anim.getFrame(), 11);
-				}
-
+			else if (this->health == 0) {
+				this->exists = false;
+				makeDead();
 			}
-
-			this->sprite.setTextureRect(IntRect((this->anim.getFrame()) * 166, 0, 166, 144));
 		}
 	}
 
@@ -88,6 +54,8 @@ public:
 
 
 		if (this->moveClock.getElapsedTime().asMilliseconds() < this->moveDelay) return;
+		handleFlicker();
+
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
 				this->state = "eat";
@@ -104,16 +72,18 @@ public:
 
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			if (plants[i]->getExist()) {
-				if (plants[i]->getPosition()[1] == this->position[1]) {
-					float dt = plants[i]->getPosition()[0] - this->position[0];
+				float* plantPos = plants[i]->getPosition();
+
+				if (plantPos[1] == this->position[1]) {
+					float dt = plantPos[0] - this->position[0];
 					if (dt <= 0 && dt >= -0.6875) {
 						this->blocked = true;
 
 						if (this->health > this->limit) {
-							this->changeTexture((*TMptr)["spritesheet-nZombEat"], 0, 21);
+							this->changeTexture(this->TMptr->getTexture("spritesheet-nZombEat"), 0, 21);
 						}
 						else {
-							this->changeTexture((*TMptr)["spritesheet-headLessEat"], 0, 11);
+							this->changeTexture(this->TMptr->getTexture("spritesheet-headLessEat"), 0, 11);
 						}
 
 						this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
@@ -139,10 +109,10 @@ public:
 			this->state = "walk";
 
 			if (this->health > this->limit) {
-				this->changeTexture((*(this->TMptr))["spritesheet-nZombWalk"], 0, 22);
+				this->changeTexture(this->TMptr->getTexture("spritesheet-nZombWalk"), 0, 22);
 			}
 			else {
-				this->changeTexture((*(this->TMptr))["spritesheet-headLessWalk"], 0, 18);
+				this->changeTexture(this->TMptr->getTexture("spritesheet-headLessWalk"), 0, 18);
 			}
 
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));

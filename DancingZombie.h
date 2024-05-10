@@ -30,7 +30,6 @@ public:
 	void move(Plant** plants, int plantsArrayIndex) {
 		if (this->exists == false) return;
 
-
 		if (this->moveClock.getElapsedTime().asMilliseconds() < this->moveDelay) return;
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
@@ -57,7 +56,7 @@ public:
 							this->changeTexture((*TMptr)["dancing-eat-1"], 0, 11);
 						}
 						else {
-							this->changeTexture((*TMptr)["dancing-eat-2"], 0, 11);
+							this->changeTexture((*TMptr)["dancing-eat-2"], 0, 10);
 						}
 
 						this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
@@ -93,7 +92,6 @@ public:
 			this->eatIndex = -1;
 		}
 	}
-
 
 
 	void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies) {

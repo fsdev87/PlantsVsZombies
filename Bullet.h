@@ -39,31 +39,38 @@ public:
 	}
 
 	void move(Zombie** zombies, int zombiesArrayIndex, bool isSnow = false) {
-		if (bulletClock.getElapsedTime().asMilliseconds() <= 5) {
+		if (this->bulletClock.getElapsedTime().asMilliseconds() <= 5) {
 			return;
 		}
+		this->bulletClock.restart();
+
 		if (this->exists) {
 			for (int i = 0; i < zombiesArrayIndex; i++) {
-				if (zombies[i]->getExist() && (this->position[1] == zombies[i]->getPosition()[1]) && (this->position[0] == zombies[i]->getPosition()[0] || this->position[0] == zombies[i]->getPosition()[0] - 0.03125 || this->position[0] == zombies[i]->getPosition()[0] - 0.0625 || this->position[0] == zombies[i]->getPosition()[0] - 0.09375 || this->position[0] == zombies[i]->getPosition()[0] - 0.125 || this->position[0] == zombies[i]->getPosition()[0] - 0.15625 || this->position[0] == zombies[i]->getPosition()[0] - 0.1875 || this->position[0] == zombies[i]->getPosition()[0] - 0.21875 || this->position[0] == zombies[i]->getPosition()[0] - 0.25 || this->position[0] == zombies[i]->getPosition()[0] - 0.28125 || this->position[0] == zombies[i]->getPosition()[0] - 0.3125 || this->position[0] == zombies[i]->getPosition()[0] - 0.34375 || this->position[0] == zombies[i]->getPosition()[0] - 0.375 || this->position[0] == zombies[i]->getPosition()[0] - 0.40625 || this->position[0] == zombies[i]->getPosition()[0] - 0.4375 || this->position[0] == zombies[i]->getPosition()[0] - 0.46875 || this->position[0] == zombies[i]->getPosition()[0] - 0.5 || this->position[0] == zombies[i]->getPosition()[0] - 0.53125 || this->position[0] == zombies[i]->getPosition()[0] - 0.5625)) {
-					this->exists = false;
+				if (zombies[i]->getExist() == true) {
+					float* zombiePos = zombies[i]->getPosition();
+					if ((this->position[1] == zombiePos[1]) && (this->position[0] == zombiePos[0] || this->position[0] == zombiePos[0] - 0.03125 || this->position[0] == zombiePos[0] - 0.0625 || this->position[0] == zombiePos[0] - 0.09375 || this->position[0] == zombiePos[0] - 0.125 || this->position[0] == zombiePos[0] - 0.15625 || this->position[0] == zombiePos[0] - 0.1875 || this->position[0] == zombiePos[0] - 0.21875 || this->position[0] == zombiePos[0] - 0.25 || this->position[0] == zombiePos[0] - 0.28125 || this->position[0] == zombiePos[0] - 0.3125 || this->position[0] == zombiePos[0] - 0.34375 || this->position[0] == zombiePos[0] - 0.375 || this->position[0] == zombiePos[0] - 0.40625 || this->position[0] == zombiePos[0] - 0.4375 || this->position[0] == zombiePos[0] - 0.46875 || this->position[0] == zombiePos[0] - 0.5 || this->position[0] == zombiePos[0] - 0.53125 || this->position[0] == zombiePos[0] - 0.5625)) {
+						this->exists = false;
+						zombies[i]->setFlicker(true);
+						zombies[i]->getSprite().setColor(Color(255, 255, 255, 255 * 0.5));
 
-					zombies[i]->setFlicker(true);
+						zombies[i]->reduceHealth(this->damage);
+						zombies[i]->checkHealth();
 
-					zombies[i]->reduceHealth(this->damage);
-					if (zombies[i]->getHealth() == 0) {
-						zombies[i]->setExist(false);
-						zombies[i]->makeDead();
-					}
-					else if (zombies[i]->getHealth() == zombies[i]->getLimit()) {
-						zombies[i]->setHeadFall(true);
+						/*if (zombies[i]->getHealth() == 0) {
+							zombies[i]->setExist(false);
+							zombies[i]->makeDead();
+						}
+						else if (zombies[i]->getHealth() == zombies[i]->getLimit()) {
+							zombies[i]->setHeadFall(true);
+						}*/
 
+						this->bulletClock.restart();
+						cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;
+						if (isSnow) {
+							zombies[i]->setMoveDelay(350);
+						}
+						return;
 					}
-					this->bulletClock.restart();
-					cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;
-					if (isSnow) {
-						zombies[i]->setMoveDelay(350);
-					}
-					return;
 				}
 			}
 			if (this->position[0] <= 8.5) {
@@ -73,7 +80,6 @@ public:
 				this->exists = false;
 			}
 		}
-		this->bulletClock.restart();
 	}
 
 	void draw(RenderWindow& window) {

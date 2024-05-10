@@ -80,12 +80,6 @@ public:
 	}
 
 	void setFlicker(bool value) {
-		/*if (this->flicker != true) {
-			this->SMptr->getSound("hit")->setPlayingOffset(sf::Time(sf::seconds(0.70)));
-			this->SMptr->getSound("hit")->setVolume(50.0f);
-			this->SMptr->playSound("hit");
-		}*/
-
 		this->flicker = value, this->flickerClock.restart();
 	}
 
@@ -128,9 +122,12 @@ public:
 
 		}
 	}
-
+	//
+	virtual void checkHealth() {}
+	Sprite& getSprite() { return this->sprite; }
+	//
 	void draw(RenderWindow& window) {
-		handleFlicker();
+		//handleFlicker();
 
 
 		if (this->exists) {
@@ -149,7 +146,7 @@ public:
 
 	virtual void makeDead() {
 		if (this->exists == false && this->ashes != true) {
-			this->changeTexture((*TMptr)["spritesheet-zombieDeath"], 0, 10);
+			this->changeTexture(this->TMptr->getTexture("spritesheet-zombieDeath"), 0, 10);
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 			this->dead = true, this->deadClock.restart();
 			this->SMptr->playSound("zombie-fall");

@@ -116,6 +116,7 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/dancingdie.png", "dancing-die");
 	TM->addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
 	TM->addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
+	TM->addTexture("assets/Spritesheets/football-die.png", "football-die");
 
 	TM->addTexture("assets/Spritesheets/football-die.png", "football-die");
 
@@ -178,11 +179,11 @@ int main()
 	Inv.addCard(TM["card-wallnut_dim"], TM["card-wallnut"], "wallnut", 50);
 	Inv.addCard(TM["card-snowpea_dim"], TM["card-snowpea"], "snowpea", 175);
 	Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
-	Inv.addCard(TM["card-threepeater_dim"], TM["card-threepeater"], "threepeater", 250);
+	//Inv.addCard(TM["card-threepeater_dim"], TM["card-threepeater"], "threepeater", 250);
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
 	// Sun things
-	int sunCount = 1000;
+	int sunCount = 10000;
 	Text sunCountText;
 	sunCountText.setFont(FM[0]);
 	sunCountText.setString(to_string(sunCount));

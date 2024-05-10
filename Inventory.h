@@ -98,7 +98,6 @@ public:
 		}
 
 		if (rectIndex < index && cards[rectIndex].getCost() > sunCount) {
-			this->SMptr->playSound("misclick");
 			this->selected = false;
 		}
 
