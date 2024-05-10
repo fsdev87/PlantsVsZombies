@@ -50,8 +50,10 @@ public:
 
 	virtual void setDelay(float f) {}
 	virtual void draw(RenderWindow& window) {
-		if (this->exists)
+		if (this->exists) {
+			this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 			window.draw(this->sprite);
+		}
 	}
 	virtual void shoot(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
@@ -59,6 +61,8 @@ public:
 	virtual void clickSun(int& sunCount, SoundManager* SMptr) {}
 	virtual void moveBullets(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void restartBulletClock() {}
+	virtual void activate(Texture& tex) {}
+	virtual void move(Zombie** zombies, int zombiesArrayIndex) {}
 
 	virtual ~Plant() {}
 };
