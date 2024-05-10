@@ -85,16 +85,24 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Bullets/peabulletexplode.png", "bulletExplode");
 	TM->addTexture("assets/Bullets/peaice.png", "bulletIce");
 
+	// football left textures
 	TM->addTexture("assets/Spritesheets/football-walk.png", "football-walk");
 	TM->addTexture("assets/Spritesheets/football-walk-2.png", "football-walk-2");
 	TM->addTexture("assets/Spritesheets/football-walk-3.png", "football-walk-3");
-
 	TM->addTexture("assets/Spritesheets/football-eat.png", "football-eat");
 	TM->addTexture("assets/Spritesheets/football-eat-2.png", "football-eat-2");
 	TM->addTexture("assets/Spritesheets/football-eat-3.png", "football-eat-3");
 	TM->addTexture("assets/Spritesheets/football-die.png", "football-die");
 
+	// football right textures
+	TM->addTexture("assets/Spritesheets/football-walk-right.png", "football-walk-right");
+	TM->addTexture("assets/Spritesheets/football-walk-right-2.png", "football-walk-right-2");
+	TM->addTexture("assets/Spritesheets/football-walk-right-3.png", "football-walk-right-3");
+	TM->addTexture("assets/Spritesheets/football-eat-right.png", "football-eat-right");
+	TM->addTexture("assets/Spritesheets/football-eat-right-2.png", "football-eat-right-2");
+	TM->addTexture("assets/Spritesheets/football-eat-right-3.png", "football-eat-right-3");
 
+	// dancing textures
 	TM->addTexture("assets/Spritesheets/dancingwalk1.png", "dancing-walk-1");
 	TM->addTexture("assets/Spritesheets/dancingeat1.png", "dancing-eat-1");
 	TM->addTexture("assets/Spritesheets/dancinghead.png", "dancing-head");

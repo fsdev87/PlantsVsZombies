@@ -25,13 +25,14 @@ void ZombieFactory::getZombieDeadIndex() {
 }
 
 void ZombieFactory::spawnZombie() {
-	if (this->spawnClock.getElapsedTime().asSeconds() < 3.5) return;
+	if (this->spawnClock.getElapsedTime().asSeconds() < 6) return;
 
 	this->pos[1] = rand() % 5;
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
 
 		int zombieType = rand() % 3;
+
 		switch (zombieType) {
 		case 0:
 			this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);

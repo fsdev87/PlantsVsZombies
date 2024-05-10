@@ -15,7 +15,7 @@ class ZombieFactory {
 	Zombie** zombies;
 	int deadIndex = -1;
 
-	const int maxZombies = 50;
+	const int maxZombies = 100;
 	int zombiesArrayIndex = 0;
 	const float x = 9;
 	float pos[2] = { x, 0 };

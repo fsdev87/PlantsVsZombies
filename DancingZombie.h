@@ -17,7 +17,7 @@ public:
 		this->limit = 20;
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->anim = Animation(166, 144, columns);
-		this->moveClock.restart();
+		this->moveClock.restart(), this->spawnClock.restart();
 		this->anim.setDelay(70);
 		this->xFactor += 45;
 		// head
@@ -151,7 +151,7 @@ public:
 
 	void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies) {
 		if (this->exists == false) return;
-		if (this->spawnClock.getElapsedTime().asSeconds() < 10) return;
+		if (this->spawnClock.getElapsedTime().asSeconds() < 15) return;
 
 		// on right side of zombie
 		if (zombiesArrayIndex + 1 < maxZombies) {
