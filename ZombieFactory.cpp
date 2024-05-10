@@ -57,7 +57,12 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 		this->zombies[i]->move(plants, plantsArrayIndex);
 		float* position = zombies[i]->getPosition();
 		if (position[0] <= -0.5 && position[0] >= -1) {
-			lawnmowers[(int)position[1]]->activate();
+			if (lawnmowers[(int)position[1]]->getExists() == true) {
+				lawnmowers[(int)position[1]]->activate();
+			}
+			else if (position[0] <= -1) {
+				zombies[i]->setExist(false);
+			}
 		}
 	}
 	spawnZombie();

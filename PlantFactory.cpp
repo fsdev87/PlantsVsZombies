@@ -36,9 +36,13 @@ void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
 			this->plants[i]->generateSun();
 
 			int plantRow = 0;
+			float* plantPos = this->plants[i]->getPosition();
 			for (int j = 0; j < zombiesArrayIndex; j++) {
-				if (zombies[j]->getExist() && (zombies[j]->getPosition()[1] == this->plants[i]->getPosition()[1]) && (zombies[j]->getPosition()[0] <= 9)) {
-					plantRow++;
+				if (zombies[j]->getExist()) {
+					float* zombiePos = zombies[j]->getPosition();
+					if ((zombiePos[1] == plantPos[1]) && (zombiePos[0] >= plantPos[0] && zombiePos[0] <= 9)) {
+						plantRow++;
+					}
 				}
 			}
 			if (plantRow > 0) {
