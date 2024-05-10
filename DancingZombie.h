@@ -5,6 +5,7 @@
 class DancingZombie : public Zombie {
 	Clock spawnClock;
 
+	int spawnIndex[4];
 public:
 	DancingZombie(Texture& tex, int columns, float pos[2], TextureManager* tm, SoundManager* sm) {
 		this->SMptr = sm;
@@ -20,6 +21,7 @@ public:
 		this->moveClock.restart();
 		this->anim.setDelay(70);
 		this->xFactor += 45;
+		for (int i = 0; i < 4; spawnIndex[i++] = -1);
 		// head
 		this->headSprite.setTexture(this->TMptr->getTexture("dancing-head"));
 		this->headSprite.setTextureRect(IntRect(0, 0, 150, 186));
@@ -92,6 +94,19 @@ public:
 			return;
 		}
 
+		if (rand() % 75 == 1) {
+			this->position[0] += (10 * this->speed);
+			if (rand() % 2) {
+				this->position[1] += 1;
+				if (this->position[1] > 4) this->position[1] = 4;
+			}
+			else {
+				this->position[1] -= 1;
+				if (this->position[1] < 0) this->position[1] = 0;
+			}
+		}
+
+
 		this->moveClock.restart();
 		this->position[0] -= this->speed;
 		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
@@ -153,27 +168,38 @@ public:
 		if (this->exists == false) return;
 		if (this->spawnClock.getElapsedTime().asSeconds() < 10) return;
 
+		for (int i = 0; i < 4; i++) {
+			if (spawnIndex[i] != -1) {
+				if (zombies[spawnIndex[i]]->getExist()) {
+					return;
+				}
+			}
+		}
 		// on right side of zombie
 		if (zombiesArrayIndex + 1 < maxZombies) {
 			float pos[2] = { this->position[0] + 1, this->position[1] };
+			spawnIndex[0] = zombiesArrayIndex;
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
 		}
 
 		// on lefet side of zombie
 		if (zombiesArrayIndex + 1 < maxZombies && this->position[0] - 1 >= 0) {
 			float pos[2] = { this->position[0] - 1, this->position[1] };
+			spawnIndex[1] = zombiesArrayIndex;
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
 		}
 
 		// on above
 		if (zombiesArrayIndex + 1 < maxZombies && this->position[1] - 1 >= 0) {
 			float pos[2] = { this->position[0], this->position[1] - 1 };
+			spawnIndex[2] = zombiesArrayIndex;
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
 		}
 
 		// on below
 		if (zombiesArrayIndex + 1 < maxZombies && this->position[1] + 1 <= 4) {
 			float pos[2] = { this->position[0], this->position[1] + 1 };
+			spawnIndex[3] = zombiesArrayIndex;
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
 		}
 

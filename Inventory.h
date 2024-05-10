@@ -61,7 +61,12 @@ public:
 			return;
 		}
 		this->cards[index].setCardTexture(dim, bright, n, cost);
-		this->cards[index].setCardPosition(150 + (index * 59), 9);
+		if (cost == 0) {
+			this->cards[index].setCardPosition(143 + (index * 59), 9);
+		}
+		else {
+			this->cards[index].setCardPosition(150 + (index * 59), 9);
+		}
 
 		this->index++;
 	}
@@ -125,14 +130,21 @@ public:
 	}
 
 	void handlePlacing(int gx, int gy, Plant** plants, int& plantsArrayIndex, int& sunCount) {
+
 		if (!this->selected) return;
 		float pos[2] = { gx, gy };
 
 		int indexInInventory = rectIndex;
+
+
 		if (plantsArrayIndex >= 45) return;
 		// check if already plant is not there
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			if (plants[i]->getExist() && plants[i]->getPosition()[0] == gx && plants[i]->getPosition()[1] == gy) {
+				if (this->cards[indexInInventory].getCost() == 0) {
+					plants[i]->setExist(false);
+				}
+
 				this->selected = false;
 				return;
 			}

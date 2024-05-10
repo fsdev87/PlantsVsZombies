@@ -102,6 +102,8 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
 	TM->addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
 
+	TM->addTexture("assets/Spritesheets/shovel.png", "shovel");
+
 
 }
 
@@ -162,6 +164,7 @@ int main()
 	Inv.addCard(TM["card-wallnut_dim"], TM["card-wallnut"], "wallnut", 50);
 	Inv.addCard(TM["card-snowpea_dim"], TM["card-snowpea"], "snowpea", 175);
 	Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
+	Inv.addCard(TM["shovel"], TM["shovel"], "shovel", 0);
 	//Inv.addCard(TM["card-threepeater_dim"], TM["card-threepeater"], "threepeater", 250);
 	//Inv.addCard(TM["card-chomper"], "chomper");
 
