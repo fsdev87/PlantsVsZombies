@@ -26,6 +26,8 @@ public:
 		this->speed = 0.03125;
 		this->moveClock.restart();
 	}
+	bool getExists() { return this->exists; }
+
 	void activate() {
 		if (this->active) return;
 		this->active = true;
