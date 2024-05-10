@@ -3,8 +3,9 @@
 using namespace std;
 using namespace sf;
 
-PlantFactory::PlantFactory(SoundManager* SM) : plantsArrayIndex(0) {
+PlantFactory::PlantFactory(SoundManager* SM, TextureManager* TM) : plantsArrayIndex(0) {
 	this->SMptr = SM;
+	this->TMptr = TM;
 	this->plants = new Plant * [maxPlants] { nullptr };
 }
 
@@ -29,11 +30,20 @@ void PlantFactory::handleSunClick(int gx, int gy, Text& sunCountText, int& sunCo
 	}
 }
 
+void PlantFactory::handleWallnutClick(int gx, int gy) {
+	for (int i = 0; i < this->plantsArrayIndex; i++) {
+		if (this->plants[i]->getExist() && this->plants[i]->getPosition()[0] == gx && this->plants[i]->getPosition()[1] == gy) {
+			this->plants[i]->activate(this->TMptr->getTexture("spritesheet-wallnut-rolling"));
+		}
+	}
+};
+
 void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
 	for (int i = 0; i < this->plantsArrayIndex && this->plants[i] != nullptr; i++) {
 		if (this->plants[i]->getExist()) {
 			this->plants[i]->animate();
 			this->plants[i]->generateSun();
+
 
 			int plantRow = 0;
 			float* plantPos = this->plants[i]->getPosition();
@@ -54,6 +64,7 @@ void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
 			this->plants[i]->moveBullets(zombies, zombiesArrayIndex);
 			this->plants[i]->explode(zombies, zombiesArrayIndex, SMptr);
 
+			this->plants[i]->move(zombies, zombiesArrayIndex);
 		}
 	}
 }

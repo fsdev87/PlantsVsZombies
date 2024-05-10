@@ -11,8 +11,9 @@ class PlantFactory {
 	int plantsArrayIndex;
 	const int maxPlants = 45;
 	SoundManager* SMptr;
+	TextureManager* TMptr;
 public:
-	PlantFactory(SoundManager* SM);
+	PlantFactory(SoundManager* SM, TextureManager* TMptr);
 	Plant** getPlants();
 	int getPlantsArrayIndex();
 	int& getPlantsArrayIndexByRef();
@@ -22,6 +23,8 @@ public:
 
 	// handles clicking of player on sun
 	void handleSunClick(int gx, int gy, Text& sunCountText, int& sunCount);
+
+	void handleWallnutClick(int gx, int gy);
 
 	void updateEverything(Zombie** zombies, int zombiesArrayIndex);
 

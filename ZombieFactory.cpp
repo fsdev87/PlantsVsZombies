@@ -25,7 +25,7 @@ void ZombieFactory::getZombieDeadIndex() {
 }
 
 void ZombieFactory::spawnZombie() {
-	if (this->spawnClock.getElapsedTime().asSeconds() < 5) return;
+	if (this->spawnClock.getElapsedTime().asSeconds() < 3.5) return;
 
 	this->pos[1] = rand() % 5;
 

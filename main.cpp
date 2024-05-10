@@ -84,6 +84,7 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/bucHeadZombEatDim.png", "spritesheet-bucZEatDim");
 	TM->addTexture("assets/Spritesheets/bucHeadZombWalkDim.png", "spritesheet-bucZWalkDim");
 
+	TM->addTexture("assets/Spritesheets/wallnutrolling.png", "spritesheet-wallnut-rolling");
 	// For all explosion
 	TM->addTexture("assets/Spritesheets/zombash.png", "spritesheet-zombieAshes");
 
@@ -162,7 +163,7 @@ int main()
 			garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 		}
 	}
-	PlantFactory PF(&SM);
+	PlantFactory PF(&SM, &TM);
 	cout << "plant factory created\n";
 	ZombieFactory ZF(&TM, &SM);
 	cout << "zombie factory created\n";
@@ -211,10 +212,12 @@ int main()
 						int gy = (mouseY - gardenCords.topY) / 96;
 						int gx = (mouseX - gardenCords.leftX) / 80;
 
+						cout << "Gx : " << gx << ", Gy: " << gy << endl;
 						PF.handlePlacing(&Inv, gx, gy, sunCount);
 
 						PF.handleSunClick(gx, gy, sunCountText, sunCount);
 
+						PF.handleWallnutClick(gx, gy);
 					}
 
 					// no need to call in if statement
