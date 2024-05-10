@@ -77,6 +77,7 @@ public:
 	void setFlicker(bool value) {
 		if (this->flicker != true) {
 			this->SMptr->getSound("hit")->setPlayingOffset(sf::Time(sf::seconds(0.70)));
+			this->SMptr->getSound("hit")->setVolume(50.0f);
 			this->SMptr->playSound("hit");
 		}
 
