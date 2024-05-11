@@ -3,11 +3,11 @@
 
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include "NormalZombie.h"
 #include "SoundManager.h"
+#include "NormalZombie.h"
 #include "DancingZombie.h"
 #include "FootballZombie.h"
+#include "FlyingZombie.h"
 #include "LawnMower.h"
 #include "Life.h"
 
@@ -17,9 +17,9 @@ class ZombieFactory {
 
 	const int maxZombies = 100;
 	int zombiesArrayIndex = 0;
-	const float x = 14;
+	const float x = 6;
 	float pos[2] = { x, 0 };
-	
+
 	TextureManager* TMptr;
 
 	// Zombie factory has it's own SMptr, just in case

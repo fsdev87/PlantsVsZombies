@@ -46,7 +46,7 @@ public:
 
 		if (this->exists) {
 			for (int i = 0; i < zombiesArrayIndex; i++) {
-				if (zombies[i]->getExist() == true) {
+				if (zombies[i]->getExist() == true && !zombies[i]->isFlying()) {
 					float* zombiePos = zombies[i]->getPosition();
 					if ((this->position[1] == zombiePos[1]) && (this->position[0] == zombiePos[0] || this->position[0] == zombiePos[0] - 0.03125 || this->position[0] == zombiePos[0] - 0.0625 || this->position[0] == zombiePos[0] - 0.09375 || this->position[0] == zombiePos[0] - 0.125 || this->position[0] == zombiePos[0] - 0.15625 || this->position[0] == zombiePos[0] - 0.1875 || this->position[0] == zombiePos[0] - 0.21875 || this->position[0] == zombiePos[0] - 0.25 || this->position[0] == zombiePos[0] - 0.28125 || this->position[0] == zombiePos[0] - 0.3125 || this->position[0] == zombiePos[0] - 0.34375 || this->position[0] == zombiePos[0] - 0.375 || this->position[0] == zombiePos[0] - 0.40625 || this->position[0] == zombiePos[0] - 0.4375 || this->position[0] == zombiePos[0] - 0.46875 || this->position[0] == zombiePos[0] - 0.5 || this->position[0] == zombiePos[0] - 0.53125 || this->position[0] == zombiePos[0] - 0.5625)) {
 						this->exists = false;

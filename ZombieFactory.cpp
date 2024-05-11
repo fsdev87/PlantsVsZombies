@@ -31,7 +31,8 @@ void ZombieFactory::spawnZombie() {
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
 
-		int zombieType = rand() % 3;
+		//int zombieType = rand() % 4;
+		int zombieType = 3;
 
 		switch (zombieType) {
 		case 0:
@@ -42,8 +43,11 @@ void ZombieFactory::spawnZombie() {
 			break;
 		case 2:
 			this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
+			break;
+		case 3:
+			this->zombies[this->zombiesArrayIndex] = new FlyingZombie(this->TMptr->getTexture("flying-zombie"), 11, this->pos, this->TMptr, this->SMptr);
+			break;
 		}
-
 		this->zombiesArrayIndex++;
 	}
 	else {
@@ -51,7 +55,8 @@ void ZombieFactory::spawnZombie() {
 		if (this->deadIndex != -1) {
 			cout << "dead index is not -1\n";
 			delete[] this->zombies[this->deadIndex];
-			int zombieType = rand() % 3;
+			int zombieType = rand() % 4;
+
 			switch (zombieType) {
 			case 0:
 				this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
@@ -61,6 +66,10 @@ void ZombieFactory::spawnZombie() {
 				break;
 			case 2:
 				this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
+				break;
+			case 3:
+				this->zombies[this->zombiesArrayIndex] = new FlyingZombie(this->TMptr->getTexture("flying-zombie"), 11, this->pos, this->TMptr, this->SMptr);
+				break;
 			}
 		}
 		else {

@@ -78,7 +78,7 @@ public:
 			}
 		}
 	}
-
+	virtual bool isFlying() { return false; }
 	void setFlicker(bool value) {
 		this->flicker = value, this->flickerClock.restart();
 	}
@@ -98,21 +98,26 @@ public:
 
 	// changes sprite texture to ashes
 	// restarts ashes clock
-	void setAshes(bool value) {
-		this->changeTexture((*TMptr)["spritesheet-zombieAshes"], 0, 20);
+	virtual void setAshes(bool value) {
+		this->changeTexture(this->TMptr->getTexture("spritesheet-zombieAshes"), 0, 20);
 		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 		this->ashes = value, this->ashesClock.restart();
 	}
 
 	//
-	virtual void checkHealth() = 0;
+	virtual void checkHealth() {}
 	Sprite& getSprite() { return this->sprite; }
 	//
 	void draw(RenderWindow& window) {
 
 		if (this->exists) {
 			// Draw
-			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			if (this->ashes) {
+				this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			}
+			else {
+				this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor - 40 + this->position[1] * 96);
+			}
 			window.draw(this->sprite);
 		}
 
@@ -181,7 +186,7 @@ public:
 
 	// should be specific for each zombie
 	virtual void move(Plant** plants, int plantsArrayIndex) = 0;
-	virtual void eat(Plant* plant) = 0;
+	virtual void eat(Plant* plant) {}
 	virtual ~Zombie() {}
 };
 

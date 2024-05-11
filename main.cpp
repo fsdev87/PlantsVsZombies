@@ -74,8 +74,8 @@ void loadTextures(TextureManager* TM) {
 	TM->addTexture("assets/Spritesheets/head.png", "spritesheet-head");
 	TM->addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
 
-	TM->addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucZEat");
-	TM->addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
+	// Flying Zombie
+	TM->addTexture("assets/Spritesheets/flyingzombie.png", "flying-zombie");
 
 	TM->addTexture("assets/Spritesheets/wallnutrolling.png", "spritesheet-wallnut-rolling");
 	// For all explosion
