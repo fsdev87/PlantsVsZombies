@@ -46,10 +46,10 @@ class Game {
 	Text TimeText;
 	string timeString;
 
-	float roundTimeLimit = 20;
+	float roundTimeLimit = 5;
 
 public:
-	Game() :window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM) {
+	Game() : window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM) {
 		srand((unsigned)time(0));
 		this->RunClock.restart();
 		this->TimeText.setPosition(1300, 550);

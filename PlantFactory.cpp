@@ -29,7 +29,7 @@ void PlantFactory::handleFallingSun(int gx, int gy, FallingSun* sun, Text& sunCo
 	}
 
 	if (gy == ((int)(sun->getPosition()[1]))) {
-		sunCount += 25;
+		sunCount += 50;
 		sunCountText.setString(to_string(sunCount));
 		sun->setExist(false);
 		return;

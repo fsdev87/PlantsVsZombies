@@ -4,8 +4,8 @@
 
 class DancingZombie : public Zombie {
 	Clock spawnClock;
-
 	int spawnIndex[4];
+
 public:
 	DancingZombie(Texture& tex, int columns, float pos[2], TextureManager* tm, SoundManager* sm) {
 		this->SMptr = sm;
@@ -206,6 +206,19 @@ public:
 
 		this->spawnClock.restart();
 
+	}
+
+	virtual void handleAshes(RenderWindow& window) {
+		// show ashes only when this->exists = false i.e zombie is dead
+		if (!this->exists && this->ashes) {
+			if (this->ashesClock.getElapsedTime().asSeconds() > 2.05) {
+				// there are 20 frames, each frame takes 100ms delay, added 0.05 as padding
+				// set ashes to false after 2 seconds so nothing is drawn afterwards
+				this->ashes = false;
+			}
+			this->sprite.setPosition(this->xFactor - 40 + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			window.draw(this->sprite);
+		}
 	}
 
 };

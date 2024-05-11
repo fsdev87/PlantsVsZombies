@@ -39,7 +39,7 @@ public:
 	void clickSun(int& sunCount, SoundManager* SMptr) {
 		if (this->showSun) {
 			this->showSun = false;
-			sunCount += 25;
+			sunCount += 50;
 			SMptr->playSound("sunclick");
 			cout << "Suncount is now: " << sunCount << endl;
 			this->showSunClock.restart();

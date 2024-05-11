@@ -153,7 +153,7 @@ public:
 	}
 
 	// same for each zombie
-	void handleAshes(RenderWindow& window) {
+	virtual void handleAshes(RenderWindow& window) {
 		// show ashes only when this->exists = false i.e zombie is dead
 		if (!this->exists && this->ashes) {
 			if (this->ashesClock.getElapsedTime().asSeconds() > 2.05) {
