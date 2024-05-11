@@ -37,6 +37,16 @@ private:
 	//
 	//int plantsArrayIndex = 0;
 
+	void loadInventory() {
+		this->addCard(this->TMptr->getTexture("card-sunflower_dim"), this->TMptr->getTexture("card-sunflower"), "sunflower", 50);
+		this->addCard(this->TMptr->getTexture("card-peashooter_dim"), this->TMptr->getTexture("card-peashooter"), "peashooter", 100);
+		/*this->addCard(this->TMptr->getTexture("card-repeater_dim"), this->TMptr->getTexture("card-repeater"), "repeater", 200);
+		this->addCard(this->TMptr->getTexture("card-wallnut_dim"), this->TMptr->getTexture("card-wallnut"), "wallnut", 50);
+		this->addCard(this->TMptr->getTexture("card-snowpea_dim"), this->TMptr->getTexture("card-snowpea"), "snowpea", 175);
+		this->addCard(this->TMptr->getTexture("card-cherrybomb_dim"), this->TMptr->getTexture("card-cherrybomb"), "cherrybomb", 150);*/
+		//this->addCard(this->TMptr->getTexture("shovel"), this->TMptr->getTexture("shovel"), "shovel", 0);
+	}
+
 public:
 	Inventory(TextureManager* tm, SoundManager* sm) {
 		this->SMptr = sm;
@@ -50,6 +60,7 @@ public:
 		this->selectedRect.setOutlineColor(Color::Green);
 		this->selectedRect.setFillColor(Color::Transparent);
 
+		loadInventory();
 	}
 
 	bool hasSelectedSomething() { return this->selected; }
@@ -129,7 +140,12 @@ public:
 		}
 	}
 
-	void handlePlacing(int gx, int gy, Plant** plants, int& plantsArrayIndex, int& sunCount) {
+	void handlePlacing(int gx, int gy, Plant** plants, int& plantsArrayIndex, int& sunCount, int round) {
+
+		if (round >= 4 && gx > 2) {
+			this->selected = false;
+			return;
+		}
 
 		if (!this->selected) return;
 		float pos[2] = { gx, gy };

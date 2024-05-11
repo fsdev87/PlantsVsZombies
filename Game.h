@@ -11,10 +11,13 @@
 #include "Life.h"
 #include "Level.h"
 #include "Garden.h"
+#include "Sun.h"
 
-
+#include <cmath>
 
 class Game {
+	// window
+	RenderWindow window;
 	TextureManager TM;
 	SoundManager SM;
 	FontManager FM;
@@ -36,152 +39,161 @@ class Game {
 	Life lives;
 
 	int round;
-private:
-	void loadTextures() {
-		cout << "Loading Textures\n";
-		TM.addTexture("assets/Screens/ChooserBackground.png", "inventory"); // Inventory Background
 
-		TM.addTexture("assets/Background/bgday.jpg", "bgday");
-		TM.addTexture("assets/Background/bgnight.jpg", "bgnight");
-		TM.addTexture("assets/Background/limitedbg.jpg", "limitedbg");
-		TM.addTexture("assets/Background/waterday.jpg", "waterday");
-		TM.addTexture("assets/Background/waternight.jpg", "waternight");
+	FallingSun sun;
 
-		//.All Inventory Cards
-		TM.addTexture("assets/Screens/Cards/card_sunflower.png", "card-sunflower");
-		TM.addTexture("assets/Screens/Cards/card_peashooter.png", "card-peashooter");
-		TM.addTexture("assets/Screens/Cards/card_repeaterpea.png", "card-repeater");
-		TM.addTexture("assets/Screens/Cards/card_wallnut.png", "card-wallnut");
-		TM.addTexture("assets/Screens/Cards/card_snowpea.png", "card-snowpea");
-		TM.addTexture("assets/Screens/Cards/card_cherrybomb.png", "card-cherrybomb");
+	Clock RunClock;
+	Text TimeText;
+	string timeString;
 
-		TM.addTexture("assets/Screens/Cards/card_sunflower_dim.png", "card-sunflower_dim");
-		TM.addTexture("assets/Screens/Cards/card_peashooter_dim.png", "card-peashooter_dim");
-		TM.addTexture("assets/Screens/Cards/card_repeater_dim.png", "card-repeater_dim");
-		TM.addTexture("assets/Screens/Cards/card_wallnut_dim.png", "card-wallnut_dim");
-		TM.addTexture("assets/Screens/Cards/card_snowpea_dim.png", "card-snowpea_dim");
-		TM.addTexture("assets/Screens/Cards/card_cherrybomb_dim.png", "card-cherrybomb_dim");
-		//.M.addTexture("assets/Spritesheets/shovel.png", "shovel");
-		TM.addTexture("assets/Static/sun.png", "icon-sun");
-		//.Spritesheets
-		TM.addTexture("assets/Spritesheets/peashooter.png", "spritesheet-peashooter");
-		TM.addTexture("assets/Spritesheets/wallnut.png", "spritesheet-wallnut");
-		TM.addTexture("assets/Spritesheets/v.png", "spritesheet-cherrybomb");
-		TM.addTexture("assets/Spritesheets/repeater.png", "spritesheet-repeater");
-		TM.addTexture("assets/Spritesheets/snowpea.png", "spritesheet-snowpea");
-		TM.addTexture("assets/Spritesheets/sunflower.png", "spritesheet-sunflower");
-		TM.addTexture("assets/Spritesheets/threepeater.png", "spritesheet-threepeater");
-		TM.addTexture("assets/Spritesheets/lawnmower.png", "spritesheet-lawnmower");
-		TM.addTexture("assets/Spritesheets/lawnmowerIdle.png", "image-lawnmowerIdle");
-		// All are for normal zombie
-		TM.addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
-		TM.addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-nZombWalk");
-		TM.addTexture("assets/Spritesheets/headlesswalk.png", "spritesheet-headLessWalk");
-		TM.addTexture("assets/Spritesheets/headlesseat.png", "spritesheet-headLessEat");
-		TM.addTexture("assets/Spritesheets/normalzombiedie.png", "spritesheet-headLessDeath");
-		TM.addTexture("assets/Spritesheets/head.png", "spritesheet-head");
-		TM.addTexture("assets/Spritesheets/zombdie.png", "spritesheet-zombieDeath");
-
-		TM.addTexture("assets/Spritesheets/bucHeadZombEat.png", "spritesheet-bucZEat");
-		TM.addTexture("assets/Spritesheets/bucHeadZombWalk.png", "spritesheet-bucZWalk");
-
-		TM.addTexture("assets/Spritesheets/wallnutrolling.png", "spritesheet-wallnut-rolling");
-		// For all explosion
-		TM.addTexture("assets/Spritesheets/zombash.png", "spritesheet-zombieAshes");
-
-		// Bullets
-		TM.addTexture("assets/Bullets/peabullet.png", "bullet");
-		TM.addTexture("assets/Bullets/peabulletexplode.png", "bulletExplode");
-		TM.addTexture("assets/Bullets/peaice.png", "bulletIce");
-
-		// football left textures
-		TM.addTexture("assets/Spritesheets/football-walk.png", "football-walk");
-		TM.addTexture("assets/Spritesheets/football-walk-2.png", "football-walk-2");
-		TM.addTexture("assets/Spritesheets/football-walk-3.png", "football-walk-3");
-		TM.addTexture("assets/Spritesheets/football-eat.png", "football-eat");
-		TM.addTexture("assets/Spritesheets/football-eat-2.png", "football-eat-2");
-		TM.addTexture("assets/Spritesheets/football-eat-3.png", "football-eat-3");
-		TM.addTexture("assets/Spritesheets/football-die.png", "football-die");
-
-		// football right textures
-		TM.addTexture("assets/Spritesheets/football-walk-right.png", "football-walk-right");
-		TM.addTexture("assets/Spritesheets/football-walk-right-2.png", "football-walk-right-2");
-		TM.addTexture("assets/Spritesheets/football-walk-right-3.png", "football-walk-right-3");
-		TM.addTexture("assets/Spritesheets/football-eat-right.png", "football-eat-right");
-		TM.addTexture("assets/Spritesheets/football-eat-right-2.png", "football-eat-right-2");
-		TM.addTexture("assets/Spritesheets/football-eat-right-3.png", "football-eat-right-3");
-
-		// dancing textures
-		TM.addTexture("assets/Spritesheets/dancingwalk1.png", "dancing-walk-1");
-		TM.addTexture("assets/Spritesheets/dancingeat1.png", "dancing-eat-1");
-		TM.addTexture("assets/Spritesheets/dancinghead.png", "dancing-head");
-		TM.addTexture("assets/Spritesheets/dancingdie.png", "dancing-die");
-		TM.addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
-		TM.addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
-
-		TM.addTexture("assets/Spritesheets/shovel.png", "shovel");
-
-
-	}
-
-	void loadSounds() {
-		SM.loadSound("assets/sounds/menu/mainmusic.mp3", "mainmusic");
-		SM.loadSound("assets/sounds/plant/cherrybomb.ogg", "cherrybomb-explosion");
-		SM.loadSound("assets/sounds/zombie/zombiefall.ogg", "zombie-fall");
-		SM.loadSound("assets/sounds/menu/sunclick.mp3", "sunclick");
-		SM.loadSound("assets/sounds/menu/misclick.mp3", "misclick");
-		SM.loadSound("assets/sounds/zombie/lowgroan.ogg", "groan1");
-		SM.loadSound("assets/sounds/zombie/lowgroan2.ogg", "groan2");
-		SM.loadSound("assets/sounds/zombie/eating.mp3", "eating");
-		SM.loadSound("assets/sounds/menu/round1.mp3", "round1");
-		SM.loadSound("assets/sounds/zombie/mczombie.mp3", "mczombie");
-		SM.loadSound("assets/sounds/menu/place1.mp3", "place1");
-		SM.loadSound("assets/sounds/menu/place2.mp3", "place2");
-		SM.loadSound("assets/sounds/zombie/zombieattack.mp3", "zombieattack");
-		SM.loadSound("assets/sounds/zombie/zombieroar.mp3", "zombieroar");
-		SM.loadSound("assets/sounds/zombie/hit.mp3", "hit");
-		SM.getSound("hit").setVolume(70);
-		SM.getSound("round1").setVolume(10.0f);
-		SM.getSound("round1").setPlayingOffset(sf::Time(sf::seconds(1.05)));
-	}
-
-	void loadInventory() {
-		Inv.addCard(TM["card-sunflower_dim"], TM["card-sunflower"], "sunflower", 50);
-		Inv.addCard(TM["card-peashooter_dim"], TM["card-peashooter"], "peashooter", 100);
-		Inv.addCard(TM["card-repeater_dim"], TM["card-repeater"], "repeater", 200);
-		Inv.addCard(TM["card-wallnut_dim"], TM["card-wallnut"], "wallnut", 50);
-		Inv.addCard(TM["card-snowpea_dim"], TM["card-snowpea"], "snowpea", 175);
-		Inv.addCard(TM["card-cherrybomb_dim"], TM["card-cherrybomb"], "cherrybomb", 150);
-		Inv.addCard(TM["shovel"], TM["shovel"], "shovel", 0);
-	}
+	float roundTimeLimit = 5;
 
 public:
-	Game() :level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM) {
+	Game() :window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM) {
+		srand((unsigned)time(0));
+		this->RunClock.restart();
+		this->TimeText.setPosition(1300, 550);
+		this->TimeText.setFont(FM[0]);
+		this->TimeText.setFillColor(Color::Black);
+		this->TimeText.setCharacterSize(36);
+
 		this->round = 1;
 
-		loadTextures();
-		loadSounds();
-		loadInventory();
-
-		sunCountText.setFont(FM[0]);
-		sunCountText.setString(to_string(sunCount));
-		sunCountText.setCharacterSize(24);
-		sunCountText.setPosition(86, 62);
-		sunCountText.setFillColor(Color::Black);
+		this->sunCountText.setFont(FM[0]);
+		this->sunCountText.setString(to_string(this->sunCount));
+		this->sunCountText.setCharacterSize(24);
+		this->sunCountText.setPosition(86, 62);
+		this->sunCountText.setFillColor(Color::Black);
 
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 9; j++) {
-				garden[i][j].setSize(Vector2f(80, 96));
-				garden[i][j].setFillColor(((i + j) % 2) == 0 ? Color(255, 255, 255, 50) : Color(255, 255, 255, 100));
-				garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
+				this->garden[i][j].setSize(Vector2f(80, 96));
+				this->garden[i][j].setFillColor(((i + j) % 2) == 0 ? Color(255, 255, 255, 50) : Color(255, 255, 255, 100));
+				this->garden[i][j].setPosition(gardenCords.leftX + j * 80, gardenCords.topY + i * 96);
 			}
 		}
 
 		for (int i = 0; i < 5; i++) {
-			lawnMowerPos[1] = i;
-			lawnmowers[i] = new LawnMower(&TM, lawnMowerPos);
+			this->lawnMowerPos[1] = i;
+			this->lawnmowers[i] = new LawnMower(&TM, this->lawnMowerPos);
 		}
 	}
 
-	void
+	void updateRound() {
+		this->round += 1;
+		this->level.increaseLevel();
+		this->level.reset();
+		this->RunClock.restart();
+
+
+		if (round == 2) {
+			this->Inv.addCard(TM.getTexture("card-repeater_dim"), TM.getTexture("card-repeater"), "repeater", 200);
+			this->background.getSprite().setTexture(TM.getTexture("bgnight"));
+		}
+		else if (round == 3) {
+			this->Inv.addCard(TM.getTexture("card-wallnut_dim"), TM.getTexture("card-wallnut"), "wallnut", 50);
+			this->Inv.addCard(TM.getTexture("card-snowpea_dim"), TM.getTexture("card-snowpea"), "snowpea", 175);
+		}
+		else if (round == 4) {
+			this->Inv.addCard(TM.getTexture("card-cherrybomb_dim"), TM.getTexture("card-cherrybomb"), "cherrybomb", 150);
+			this->Inv.addCard(TM.getTexture("shovel"), TM.getTexture("shovel"), "shovel", 0);
+			this->background.getSprite().setTexture(TM.getTexture("limitedbg"));
+		}
+	}
+
+	void run() {
+		while (this->window.isOpen()) {
+			Event event;
+			while (this->window.pollEvent(event)) {
+				if (event.type == Event::Closed)
+					this->window.close();
+				if (event.type == Event::KeyPressed) {
+					if (event.key.code == Keyboard::Escape) {
+						this->window.close();
+					}
+					else if (event.key.code == Keyboard::C) {
+						system("cls");
+					}
+				}
+				if (event.type == Event::MouseButtonPressed) {
+					if (event.mouseButton.button == Mouse::Left) {
+						int mouseX = event.mouseButton.x;
+						int mouseY = event.mouseButton.y;
+						cout << "Mouse X: " << mouseX << " Mouse Y: " << mouseY << endl;
+						if (gardenCords.valid(mouseX, mouseY)) {
+							cout << "Position on Grid: " << (mouseY - gardenCords.topY) / 96 << ", " << (mouseX - gardenCords.leftX) / 80 << endl;
+
+							// Handle placing of plants
+							int gy = (mouseY - gardenCords.topY) / 96;
+							int gx = (mouseX - gardenCords.leftX) / 80;
+
+							this->PF.handlePlacing(&this->Inv, gx, gy, this->sunCount, this->round);
+							this->PF.handleSunClick(gx, gy, this->sunCountText, this->sunCount);
+							this->PF.handleWallnutClick(gx, gy);
+							this->PF.handleFallingSun(gx, gy, &this->sun, this->sunCountText, this->sunCount);
+						}
+
+						// no need to call in if statement
+						this->Inv.validMouseClick(mouseX, mouseY, this->sunCount);
+					}
+				}
+			}
+
+			this->window.clear();
+
+			this->timeString = to_string(this->RunClock.getElapsedTime().asSeconds());
+
+			if (this->RunClock.getElapsedTime().asSeconds() > this->roundTimeLimit) {
+				this->updateRound();
+			}
+
+			this->TimeText.setString(this->timeString);
+			// Update everything here
+			// check for collisions, animation, shooting, everything
+			this->PF.updateEverything(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
+
+			this->ZF.updateEverything(this->PF.getPlants(), this->PF.getPlantsArrayIndex(), this->lawnmowers, &this->lives, this->round);
+
+			// call all functions of sun
+			this->sun.generate();
+			this->sun.moveSun();
+
+			for (int i = 0; i < 5; i++) {
+				this->lawnmowers[i]->move(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
+				this->lawnmowers[i]->animate();
+			}
+
+			// Draw everything here...
+			this->window.draw(this->background.getSprite());
+
+			if (round == 1 || round >= 4) {
+				for (int i = 0; i < 5; i++) {
+					for (int j = 0; j < 9; j++) {
+						this->window.draw(this->garden[i][j]);
+					}
+				}
+			}
+
+			this->level.move_draw(this->window);
+			this->Inv.drawInventory(this->window, this->sunCount);
+
+			this->PF.draw(this->window);
+			this->ZF.draw(this->window);
+
+			// draw lawn mowers
+			for (int i = 0; i < 5; i++) {
+				this->lawnmowers[i]->draw(this->window);
+			}
+
+			// draw lives
+			this->lives.drawLives(this->window);
+
+			// draw sun
+			this->sun.draw(this->window);
+
+			this->window.draw(this->TimeText);
+			this->window.draw(this->sunCountText);
+			this->window.display();
+		}
+	}
 };

@@ -24,14 +24,15 @@ void ZombieFactory::getZombieDeadIndex() {
 	this->deadIndex = -1;
 }
 
-void ZombieFactory::spawnZombie() {
+void ZombieFactory::spawnZombie(int round) {
 	if (this->spawnClock.getElapsedTime().asSeconds() < 6) return;
 
 	this->pos[1] = rand() % 5;
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
 
-		int zombieType = rand() % 3;
+		if (round > 4) round = 4;
+		int zombieType = rand() % round;
 
 		switch (zombieType) {
 		case 0:
@@ -42,6 +43,10 @@ void ZombieFactory::spawnZombie() {
 			break;
 		case 2:
 			this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
+			break;
+		case 3: // should be flying
+			this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
+			break;
 		}
 
 		this->zombiesArrayIndex++;
@@ -74,7 +79,7 @@ void ZombieFactory::spawnZombie() {
 Zombie** ZombieFactory::getZombies() { return this->zombies; }
 int& ZombieFactory::getZombiesArrayIndex() { return this->zombiesArrayIndex; }
 
-void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives) {
+void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives, int round) {
 	for (int i = 0; i < this->zombiesArrayIndex; i++) {
 		this->zombies[i]->animate();
 		this->zombies[i]->move(plants, plantsArrayIndex);
@@ -92,7 +97,7 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 			}
 		}
 	}
-	spawnZombie();
+	spawnZombie(round);
 }
 
 void ZombieFactory::draw(RenderWindow& window) {

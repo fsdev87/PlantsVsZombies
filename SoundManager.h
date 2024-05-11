@@ -14,13 +14,35 @@ class SoundManager {
 
 	int count;
 	int capacity = 30;
+	void loadSounds() {
+		this->loadSound("assets/sounds/menu/mainmusic.mp3", "mainmusic");
+		this->loadSound("assets/sounds/plant/cherrybomb.ogg", "cherrybomb-explosion");
+		this->loadSound("assets/sounds/zombie/zombiefall.ogg", "zombie-fall");
+		this->loadSound("assets/sounds/menu/sunclick.mp3", "sunclick");
+		this->loadSound("assets/sounds/menu/misclick.mp3", "misclick");
+		this->loadSound("assets/sounds/zombie/lowgroan.ogg", "groan1");
+		this->loadSound("assets/sounds/zombie/lowgroan2.ogg", "groan2");
+		this->loadSound("assets/sounds/zombie/eating.mp3", "eating");
+		this->loadSound("assets/sounds/menu/round1.mp3", "round1");
+		this->loadSound("assets/sounds/zombie/mczombie.mp3", "mczombie");
+		this->loadSound("assets/sounds/menu/place1.mp3", "place1");
+		this->loadSound("assets/sounds/menu/place2.mp3", "place2");
+		this->loadSound("assets/sounds/zombie/zombieattack.mp3", "zombieattack");
+		this->loadSound("assets/sounds/zombie/zombieroar.mp3", "zombieroar");
+		this->loadSound("assets/sounds/zombie/hit.mp3", "hit");
 
+		this->getSound("hit")->setVolume(70);
+		this->getSound("round1")->setVolume(10.0f);
+		this->getSound("round1")->setPlayingOffset(sf::Time(sf::seconds(1.05)));
+	}
 public:
 	SoundManager() {
 		this->names = new string[capacity];
 		this->buffers = new SoundBuffer[capacity];
 		this->sounds = new Sound[capacity];
 		this->count = 0;
+
+		loadSounds();
 	}
 
 	void resize(int n) {

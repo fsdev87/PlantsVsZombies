@@ -19,7 +19,7 @@ class ZombieFactory {
 	int zombiesArrayIndex = 0;
 	const float x = 14;
 	float pos[2] = { x, 0 };
-	
+
 	TextureManager* TMptr;
 
 	// Zombie factory has it's own SMptr, just in case
@@ -33,9 +33,9 @@ public:
 	Zombie** getZombies();
 	int& getZombiesArrayIndex();
 
-	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives);
+	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives, int round);
 
-	void spawnZombie();
+	void spawnZombie(int round);
 	void  getZombieDeadIndex();
 	void draw(RenderWindow& window);
 };
