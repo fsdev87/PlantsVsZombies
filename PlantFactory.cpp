@@ -9,6 +9,8 @@ PlantFactory::PlantFactory(SoundManager* SM, TextureManager* TM) : plantsArrayIn
 	this->plants = new Plant * [maxPlants] { nullptr };
 }
 
+
+
 Plant** PlantFactory::getPlants() { return this->plants; }
 int PlantFactory::getPlantsArrayIndex() { return this->plantsArrayIndex; }
 int& PlantFactory::getPlantsArrayIndexByRef() { return this->plantsArrayIndex; }
@@ -19,6 +21,21 @@ void PlantFactory::handlePlacing(Inventory* Inv, int gx, int gy, int& sunCount) 
 		Inv->handlePlacing(gx, gy, plants, plantsArrayIndex, sunCount);
 	}
 }
+
+void PlantFactory::handleFallingSun(int gx, int gy, FallingSun* sun, Text& sunCountText, int& sunCount) {
+	if (gx != sun->getPosition()[0]) {
+		// not same column
+		return;
+	}
+
+	if (gy == ((int)(sun->getPosition()[1]))) {
+		sunCount += 25;
+		sunCountText.setString(to_string(sunCount));
+		sun->setExist(false);
+		return;
+	}
+
+};
 
 // handles clicking of player on sun
 void PlantFactory::handleSunClick(int gx, int gy, Text& sunCountText, int& sunCount) {
