@@ -28,10 +28,10 @@ void ZombieFactory::spawnZombie(int round) {
 	if (this->spawnClock.getElapsedTime().asSeconds() < 6) return;
 
 	this->pos[1] = rand() % 5;
+	if (round > 4) round = 4;
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
 
-		if (round > 4) round = 4;
 		int zombieType = rand() % round;
 
 		switch (zombieType) {

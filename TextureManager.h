@@ -49,8 +49,10 @@ private:
 		this->addTexture("assets/Background/bgday.jpg", "bgday");
 		this->addTexture("assets/Background/bgnight.jpg", "bgnight");
 		this->addTexture("assets/Background/limitedbg.jpg", "limitedbg");
+		this->addTexture("assets/Background/waterday.jpg", "waterday");
+		this->addTexture("assets/Background/waternight.jpg", "waternight");
 
-		//.All Inventory Cards
+		// this->All Inventory Cards
 		this->addTexture("assets/Screens/Cards/card_sunflower.png", "card-sunflower");
 		this->addTexture("assets/Screens/Cards/card_peashooter.png", "card-peashooter");
 		this->addTexture("assets/Screens/Cards/card_repeaterpea.png", "card-repeater");
@@ -64,9 +66,9 @@ private:
 		this->addTexture("assets/Screens/Cards/card_wallnut_dim.png", "card-wallnut_dim");
 		this->addTexture("assets/Screens/Cards/card_snowpea_dim.png", "card-snowpea_dim");
 		this->addTexture("assets/Screens/Cards/card_cherrybomb_dim.png", "card-cherrybomb_dim");
-		//.M.addTexture("assets/Spritesheets/shovel.png", "shovel");
+		this->addTexture("assets/Spritesheets/shovel.png", "shovel");
 		this->addTexture("assets/Static/sun.png", "icon-sun");
-		//.Spritesheets
+		//this->Spritesheets
 		this->addTexture("assets/Spritesheets/peashooter.png", "spritesheet-peashooter");
 		this->addTexture("assets/Spritesheets/wallnut.png", "spritesheet-wallnut");
 		this->addTexture("assets/Spritesheets/v.png", "spritesheet-cherrybomb");
@@ -121,6 +123,8 @@ private:
 		this->addTexture("assets/Spritesheets/dancingdie.png", "dancing-die");
 		this->addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
 		this->addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
+
+		this->addTexture("assets/Spritesheets/flyingzombie.png", "flying-zombie");
 
 		this->addTexture("assets/Spritesheets/shovel.png", "shovel");
 
