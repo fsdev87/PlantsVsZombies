@@ -108,16 +108,12 @@ public:
 	virtual void checkHealth() {}
 	Sprite& getSprite() { return this->sprite; }
 	//
-	void draw(RenderWindow& window) {
+	virtual void draw(RenderWindow& window) {
 
 		if (this->exists) {
 			// Draw
-			if (this->ashes) {
-				this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
-			}
-			else {
-				this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor - 40 + this->position[1] * 96);
-			}
+			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+
 			window.draw(this->sprite);
 		}
 

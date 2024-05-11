@@ -31,8 +31,8 @@ void ZombieFactory::spawnZombie() {
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
 
-		//int zombieType = rand() % 4;
-		int zombieType = 3;
+		int zombieType = rand() % 4;
+		//int zombieType = 3;
 
 		switch (zombieType) {
 		case 0:
@@ -90,12 +90,16 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 
 		this->zombies[i]->spawnZombie(this->zombies, this->zombiesArrayIndex, maxZombies);
 
-		float* position = zombies[i]->getPosition();
-		if (position[0] <= -0.5 && position[0] >= -1) {
+		float* position = this->zombies[i]->getPosition();
+		float first = -0.5, last = -1;
+		if (this->zombies[i]->isFlying()) {
+			first = 0, last = -0.5;
+		}
+		if (position[0] <= first) {
 			if (lawnmowers[(int)position[1]]->getExists() == true) {
 				lawnmowers[(int)position[1]]->activate();
 			}
-			else if (zombies[i]->getExist() && position[0] <= -1) {
+			else if (zombies[i]->getExist() && position[0] <= last) {
 				zombies[i]->setExist(false);
 				lives->decrementLives();
 			}
