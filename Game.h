@@ -11,7 +11,7 @@
 #include "Life.h"
 #include "Level.h"
 #include "Garden.h"
-#include "Sun.h"
+#include "FallingSun.h"
 
 #include <cmath>
 
@@ -46,7 +46,7 @@ class Game {
 	Text TimeText;
 	string timeString;
 
-	float roundTimeLimit = 5;
+	float roundTimeLimit = 20;
 
 public:
 	Game() :window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM) {
@@ -166,11 +166,9 @@ public:
 			// Draw everything here...
 			this->window.draw(this->background.getSprite());
 
-			if (round == 1 || round >= 4) {
-				for (int i = 0; i < 5; i++) {
-					for (int j = 0; j < 9; j++) {
-						this->window.draw(this->garden[i][j]);
-					}
+			for (int i = 0; i < 5; i++) {
+				for (int j = 0; j < 9; j++) {
+					this->window.draw(this->garden[i][j]);
 				}
 			}
 

@@ -3,11 +3,11 @@
 
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include "NormalZombie.h"
 #include "SoundManager.h"
+#include "NormalZombie.h"
 #include "DancingZombie.h"
 #include "FootballZombie.h"
+#include "FlyingZombie.h"
 #include "LawnMower.h"
 #include "Life.h"
 

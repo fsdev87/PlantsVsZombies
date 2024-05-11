@@ -44,11 +44,10 @@ void ZombieFactory::spawnZombie(int round) {
 		case 2:
 			this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
 			break;
-		case 3: // should be flying
-			this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
+		case 3:
+			this->zombies[this->zombiesArrayIndex] = new FlyingZombie(this->TMptr->getTexture("flying-zombie"), 11, this->pos, this->TMptr, this->SMptr);
 			break;
 		}
-
 		this->zombiesArrayIndex++;
 	}
 	else {
@@ -56,7 +55,8 @@ void ZombieFactory::spawnZombie(int round) {
 		if (this->deadIndex != -1) {
 			cout << "dead index is not -1\n";
 			delete[] this->zombies[this->deadIndex];
-			int zombieType = rand() % 3;
+			int zombieType = rand() % 4;
+
 			switch (zombieType) {
 			case 0:
 				this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
@@ -66,6 +66,10 @@ void ZombieFactory::spawnZombie(int round) {
 				break;
 			case 2:
 				this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
+				break;
+			case 3:
+				this->zombies[this->zombiesArrayIndex] = new FlyingZombie(this->TMptr->getTexture("flying-zombie"), 11, this->pos, this->TMptr, this->SMptr);
+				break;
 			}
 		}
 		else {
@@ -86,12 +90,16 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 
 		this->zombies[i]->spawnZombie(this->zombies, this->zombiesArrayIndex, maxZombies);
 
-		float* position = zombies[i]->getPosition();
-		if (position[0] <= -0.5 && position[0] >= -1) {
+		float* position = this->zombies[i]->getPosition();
+		float first = -0.5, last = -1;
+		if (this->zombies[i]->isFlying()) {
+			first = 0, last = -0.5;
+		}
+		if (position[0] <= first) {
 			if (lawnmowers[(int)position[1]]->getExists() == true) {
 				lawnmowers[(int)position[1]]->activate();
 			}
-			else if (zombies[i]->getExist() && position[0] <= -1) {
+			else if (zombies[i]->getExist() && position[0] <= last) {
 				zombies[i]->setExist(false);
 				lives->decrementLives();
 			}
