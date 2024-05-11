@@ -4,7 +4,7 @@
 #include <ctime>
 using namespace sf;
 
-class Sun {
+class FallingSun {
 private:
 	Sprite sprite;
 	Texture texture;
@@ -13,19 +13,25 @@ private:
 	float sunDelay = 5 + rand() % 3;
 	float position[2];
 	bool exists;
-	float speed = 0.03125;
+	float speed = 0.015625;
 	float xFactor = 260;
 	float yFactor = 90;
 
 public:
-	Sun() {
+	FallingSun() {
 		srand(time(0));
 		this->texture.loadFromFile("assets/Static/sun.png");
 		this->sprite = Sprite(this->texture);
 		this->position[0] = rand() % 9; // randomly in the grid
-		this->position[1] = -2;
+		this->position[1] = 0;
 		this->sunClock.restart(), this->moveClock.restart();
 		this->exists = false;
+
+		this->yFactor = 20;
+	}
+
+	float* getPosition() {
+		return this->position;
 	}
 
 	void generate() {
@@ -37,7 +43,7 @@ public:
 			this->sunClock.restart();
 			this->sunDelay = 5 + rand() % 3;
 			this->exists = true;
-			this->position[0] = rand() % 9, this->position[1] = -2;
+			this->position[0] = rand() % 9, this->position[1] = 0;
 		}
 	}
 
@@ -54,6 +60,8 @@ public:
 		}
 		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 	}
+
+	void setExist(bool val) { this->exists = val; }
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {

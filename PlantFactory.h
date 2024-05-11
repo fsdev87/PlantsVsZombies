@@ -5,6 +5,7 @@
 #include <iostream>
 #include "SoundManager.h"
 #include "Inventory.h"
+#include "Sun.h"
 
 class PlantFactory {
 	Plant** plants;
@@ -25,6 +26,8 @@ public:
 	void handleSunClick(int gx, int gy, Text& sunCountText, int& sunCount);
 
 	void handleWallnutClick(int gx, int gy);
+
+	void handleFallingSun(int gx, int gy, FallingSun* sun, Text& sunCountText, int& sunCount);
 
 	void updateEverything(Zombie** zombies, int zombiesArrayIndex);
 
