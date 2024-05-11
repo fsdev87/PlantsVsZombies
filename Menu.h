@@ -14,7 +14,7 @@ class Menu {
 	Sprite backgroundSprite;
 	TextureManager* TMptr;
 	FontManager* FMptr;
-
+	Sprite highScoreSprite;
 	int index = 0;
 
 	bool inmenu = true;
@@ -33,6 +33,11 @@ public:
 		shadow[1].setString("Resume");
 		shadow[2].setString("HighScores");
 		shadow[3].setString("Exit");
+
+		this->highScoreSprite.setTexture(this->TMptr->getTexture("highscorebg"));
+		this->highScoreSprite.setScale(0.73, 0.73);
+		this->highScoreSprite.setPosition(0, 0);
+		this->highScoreSprite.setColor(Color(0, 0, 0, 255 * 0.4));
 
 		for (int i = 0; i < 4; i++) {
 			float xFactor = 580;
@@ -108,6 +113,9 @@ public:
 		cout << "quit: " << quit << endl;
 	}
 
+	Sprite& getHSSprite() {
+		return this->highScoreSprite;
+	}
 	void display(RenderWindow& window) {
 
 		window.draw(backgroundSprite);

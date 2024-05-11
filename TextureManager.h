@@ -52,6 +52,11 @@ private:
 		this->addTexture("assets/Background/waterday.jpg", "waterday");
 		this->addTexture("assets/Background/waternight.jpg", "waternight");
 		this->addTexture("assets/Screens/MainMenu.png", "mainmenu");
+		this->addTexture("assets/Screens/highscorebg.jpg", "highscorebg");
+
+		this->addTexture("assets/Screens/gold.png", "gold");
+		this->addTexture("assets/Screens/silver.png", "silver");
+		this->addTexture("assets/Screens/bronze.png", "bronze");
 
 		// this->All Inventory Cards
 		this->addTexture("assets/Screens/Cards/card_sunflower.png", "card-sunflower");
