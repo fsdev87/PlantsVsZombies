@@ -22,7 +22,7 @@ using namespace sf;
 #include "DancingZombie.h"
 #include "LawnMower.h"
 #include "Life.h"
-#include "Sun.h"
+#include "FallingSun.h"
 
 #include "PlantFactory.h"
 #include "SoundManager.h"
@@ -225,7 +225,7 @@ int main()
 	Life lives;
 
 	// Sun
-	Sun sun;
+	FallingSun sun;
 
 	while (window.isOpen())
 	{

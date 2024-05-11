@@ -5,7 +5,7 @@
 #include <iostream>
 #include "SoundManager.h"
 #include "Inventory.h"
-#include "Sun.h"
+#include "FallingSun.h"
 
 class PlantFactory {
 	Plant** plants;

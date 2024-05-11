@@ -21,7 +21,7 @@ public:
 		this->anim = Animation(166, 144, columns);
 		this->moveClock.restart(), this->reverseClock.restart();
 		this->anim.setDelay(80);
-		this->reverseDelay = 20;
+		this->reverseDelay = 20 + rand() % 10;
 		this->xFactor += 30;
 		// head
 		this->headSprite.setTexture(this->TMptr->getTexture("spritesheet-head"));
@@ -116,9 +116,11 @@ public:
 		if (this->reverseClock.getElapsedTime().asSeconds() > this->reverseDelay) {
 			this->reverseClock.restart();
 			this->speed *= -1;
-			this->reverseDelay = 6 + rand() % 5;
+
 			if (this->direction == "left") {
 				this->direction = "right";
+				this->reverseDelay = 5 + rand() % 2;
+
 				if (this->health > 120) {
 					changeTexture(this->TMptr->getTexture("football-walk-right"), 0, 11);
 				}
@@ -128,10 +130,12 @@ public:
 				else {
 					changeTexture(this->TMptr->getTexture("football-walk-right-3"), 0, 10);
 				}
-				//this->xFactor -= 60;
+
 			}
 			else {
 				this->direction = "left";
+				this->reverseDelay = 12 + rand() % 5;
+
 				if (this->health > 120) {
 					changeTexture(this->TMptr->getTexture("football-walk"), 0, 11);
 				}
@@ -141,7 +145,7 @@ public:
 				else {
 					changeTexture(this->TMptr->getTexture("football-walk-3"), 0, 10);
 				}
-				//this->xFactor += 60;
+
 			}
 			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 		}
