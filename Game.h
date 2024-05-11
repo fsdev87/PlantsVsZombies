@@ -63,7 +63,7 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	float remainingTime = 12;
+	float remainingTime = 120;
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
