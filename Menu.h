@@ -85,7 +85,7 @@ public:
 		if (this->menuIndex > 3) this->menuIndex = 0;
 	}
 
-	void handleEnter(bool& showMenu, bool& showHighScores, bool& quit, bool& hasStarted, ZombieFactory* ZF, FallingSun* sun) {
+	void handleEnter(bool& showMenu, bool& showHighScores, bool& quit, bool& hasStarted, bool& restarted, ZombieFactory* ZF, FallingSun* sun) {
 		switch (this->menuIndex) {
 		case 0:
 			showMenu = false;
@@ -98,7 +98,10 @@ public:
 			sun->restartGenerateClock();
 			return;
 		case 1:
-
+			if (hasStarted) {
+				showMenu = false;
+				restarted = true;
+			}
 			return;
 		case 2:
 			showHighScores = true;

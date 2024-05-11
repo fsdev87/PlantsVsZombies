@@ -28,7 +28,7 @@ class Game {
 	Background background;
 	Inventory Inv;
 
-	int sunCount = 10000;
+	int sunCount = 100;
 	Text sunCountText;
 
 
@@ -52,7 +52,7 @@ class Game {
 	bool showMenu = true;
 	bool showHighScores = false;
 	bool quit = false;
-
+	bool restarted = false;
 	bool hasStarted = false;
 
 
@@ -75,9 +75,6 @@ public:
 		levels[1] = nullptr;
 		levels[2] = nullptr;
 		levels[3] = nullptr;
-		// levels[1] = new ZombieOutskirts(&FM, &SM);
-		// levels[1] = new SunflowerField(&FM, &SM);
-		// levels[3] = new NightTimeField
 
 		medals[0].setTexture(this->TM.getTexture("gold"));
 		medals[1].setTexture(this->TM.getTexture("silver"));
@@ -108,11 +105,39 @@ public:
 
 	}
 
-	void updateRound() {
-		this->runClock->restart();
-		this->levelIndex += 1;
+	void restartGame() {
+		this->restarted = false, this->showMenu = false, this->showHighScores = false; // maybe redundant work
+		if (this->levels[0] != nullptr) delete this->levels[0];
+		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+		if (this->levels[1] != nullptr) delete this->levels[1];
+		levels[1] = nullptr;
+		if (this->levels[2] != nullptr) delete this->levels[2];
+		levels[2] = nullptr;
+		if (this->levels[3] != nullptr) delete this->levels[3];
+		levels[3] = nullptr;
+		this->levelIndex = 0;
+
 		this->remainingTime = 120;
 		this->TimeText.setFillColor(Color::Black);
+		this->sunCount = 100;
+		this->PF.reset();
+		this->ZF.reset();
+		this->lives = Life();
+		this->sun = FallingSun();
+
+		for (int i = 0; i < 5; i++) {
+			this->lawnMowerPos[1] = i;
+			this->lawnmowers[i] = new LawnMower(&TM, this->lawnMowerPos);
+
+		}
+	}
+
+	void updateRound() {
+		this->runClock->restart();
+		this->levelIndex++;
+		this->remainingTime = 120;
+		this->TimeText.setFillColor(Color::Black);
+		this->sun.reset();
 
 		if (this->levelIndex > 3) this->window.close();
 
@@ -134,7 +159,7 @@ public:
 
 
 	void updateEverything() {
-		levels[levelIndex]->updateEverything(timeString, runClock, &PF, &ZF, lawnmowers, lives, sun);
+		levels[levelIndex]->updateEverything(&PF, &ZF, lawnmowers, lives, sun);
 		calculateTime();
 		this->TimeText.setString("TIME: " + this->timeString);
 
@@ -237,9 +262,12 @@ public:
 					}
 					else if (event.key.code == Keyboard::Return) {
 						if (this->showMenu) {
-							this->menu.handleEnter(this->showMenu, this->showHighScores, this->quit, this->hasStarted, &ZF, &sun);
-							if (!this->showMenu) {
+							this->menu.handleEnter(this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
+							if (!this->showMenu && !this->restarted) { // resume or start mode
 								this->runClock = new Clock();
+							}
+							else if (this->restarted) {
+								restartGame();
 							}
 							else if (this->showHighScores) {
 								initHighScores();
@@ -259,30 +287,8 @@ public:
 							this->menu.handleDown();
 						}
 					}
-
-					/*if (this->menu.inMenu()) {
-						if (event.key.code == Keyboard::Up) {
-							this->menu.handleUp();
-						}
-						else if (event.key.code == Keyboard::Down) {
-							this->menu.handleDown();
-						}
-						else if (event.key.code == Keyboard::Enter) {
-							this->menu.handleEnter(this->hasStarted, this->play, this->showHighScores, this->resume, this->quit);
-							if (!this->hasStarted) {
-								this->runClock.restart();
-							}
-							if (this->quit) {
-								window.close();
-							}
-							if (this->showHighScores) {
-								this->initHighScores();
-							}
-
-						}
-					}*/
 				}
-				if (event.type == Event::MouseButtonPressed) {
+				else if (event.type == Event::MouseButtonPressed) {
 					if (!this->showMenu && !this->showHighScores) {
 						if (event.mouseButton.button == Mouse::Left) {
 							int mouseX = event.mouseButton.x;
@@ -334,12 +340,7 @@ public:
 
 		}
 
-
-
-
-
 	}
-
 
 	void calculateTime() {
 		if (this->runClock == nullptr) return;

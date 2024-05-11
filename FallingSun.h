@@ -72,9 +72,10 @@ public:
 		}
 	}
 
-	/*void doEverything(RenderWindow& window) {
-		generate();
-		moveSun();
-		draw(window);
-	}*/
+	void reset() {
+		this->position[0] = rand() % 9; // randomly in the grid
+		this->position[1] = 0;
+		this->sunClock.restart(), this->moveClock.restart();
+		this->exists = false;
+	}
 };

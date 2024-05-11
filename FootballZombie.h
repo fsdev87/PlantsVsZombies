@@ -31,7 +31,6 @@ public:
 
 
 
-
 	void makeDead() {
 		if (this->exists == false && this->ashes != true) {
 			this->changeTexture(this->TMptr->getTexture("football-die"), 0, 7);

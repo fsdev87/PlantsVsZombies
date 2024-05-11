@@ -55,8 +55,7 @@ public:
 		Inventory* Inv, int& sunCount, PlantFactory* PF, ZombieFactory* ZF, LawnMower** lawnmowers, Life& lives,
 		FallingSun* sun, Text& sunCountText) = 0;
 
-	void updateEverything(string& timeString, Clock* runClock, PlantFactory* PF, ZombieFactory* ZF,
-		LawnMower** lawnmowers, Life& lives, FallingSun& sun) {
+	void updateEverything(PlantFactory* PF, ZombieFactory* ZF, LawnMower** lawnmowers, Life& lives, FallingSun& sun) {
 
 		// Update everything here
 		// check for collisions, animation, shooting, everything
@@ -100,4 +99,5 @@ public:
 			window.draw(levelText);
 		}
 	}
+	virtual ~Level() {}
 };
