@@ -33,6 +33,8 @@ public:
 	Zombie** getZombies();
 	int& getZombiesArrayIndex();
 
+	void restartSpawnClock();
+
 	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives, int round);
 
 	void spawnZombie(int round);

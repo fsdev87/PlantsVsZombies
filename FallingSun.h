@@ -34,6 +34,8 @@ public:
 		return this->position;
 	}
 
+	void restartGenerateClock() { this->sunClock.restart(); }
+
 	void generate() {
 		if (this->exists) {
 			this->sunClock.restart();

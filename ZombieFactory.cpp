@@ -82,6 +82,7 @@ void ZombieFactory::spawnZombie(int round) {
 
 Zombie** ZombieFactory::getZombies() { return this->zombies; }
 int& ZombieFactory::getZombiesArrayIndex() { return this->zombiesArrayIndex; }
+void ZombieFactory::restartSpawnClock() { this->spawnClock.restart(); }
 
 void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives, int round) {
 	for (int i = 0; i < this->zombiesArrayIndex; i++) {

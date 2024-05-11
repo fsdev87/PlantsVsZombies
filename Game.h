@@ -3,7 +3,7 @@
 #include "PlantFactory.h"
 #include "SoundManager.h"
 #include "ZombieFactory.h"
-
+#include "fstream"
 #include "FontManager.h"
 #include "TextureManager.h"
 #include "Background.h"
@@ -12,7 +12,7 @@
 #include "Level.h"
 #include "Garden.h"
 #include "FallingSun.h"
-
+#include "Menu.h"
 #include <cmath>
 
 class Game {
@@ -42,16 +42,41 @@ class Game {
 
 	FallingSun sun;
 
-	Clock RunClock;
+
 	Text TimeText;
 	string timeString;
 
-	float roundTimeLimit = 120;
+	Menu menu;
+
+
+	bool showMenu = true;
+	bool showHighScores = false;
+	bool quit = false;
+
+	bool hasStarted = false;
+
+
+	int highScores[10] = {};
+	Text HighScores[10], heading;
+	Sprite medals[3];
+
+	// time handling things
+	float gameTime;
+	Clock* runClock = nullptr;
+	float remainingTime = 120;
 
 public:
-	Game() : window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM) {
+	Game() : window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM) {
+		medals[0].setTexture(this->TM.getTexture("gold"));
+		medals[1].setTexture(this->TM.getTexture("silver"));
+		medals[2].setTexture(this->TM.getTexture("bronze"));
+
+		medals[0].setScale(0.2, 0.2);
+		medals[1].setScale(0.15, 0.15);
+		medals[2].setScale(0.12, 0.12);
+
 		srand((unsigned)time(0));
-		this->RunClock.restart();
+		//this->runClock.restart();
 		this->TimeText.setPosition(1230, 550);
 		this->TimeText.setFont(FM[0]);
 		this->TimeText.setFillColor(Color::Black);
@@ -77,6 +102,10 @@ public:
 			this->lawnMowerPos[1] = i;
 			this->lawnmowers[i] = new LawnMower(&TM, this->lawnMowerPos);
 		}
+
+		//// time
+		//this->minutes = 1;
+		//this->seconds = 59;
 	}
 
 	void updateRound() {
@@ -84,7 +113,7 @@ public:
 		this->round += 1;
 		this->level.increaseLevel();
 		this->level.reset();
-		this->RunClock.restart();
+		//this->runClock.restart();
 
 
 		if (round == 2) {
@@ -102,7 +131,130 @@ public:
 		}
 	}
 
+	void drawEverything() {
+		this->window.draw(this->background.getSprite());
+
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 9; j++) {
+				this->window.draw(this->garden[i][j]);
+			}
+		}
+
+		this->level.move_draw(this->window);
+		this->Inv.drawInventory(this->window, this->sunCount);
+
+		this->PF.draw(this->window);
+		this->ZF.draw(this->window);
+
+		// draw lawn mowers
+		for (int i = 0; i < 5; i++) {
+			this->lawnmowers[i]->draw(this->window);
+		}
+
+		// draw lives
+		this->lives.drawLives(this->window);
+
+		// draw sun
+		this->sun.draw(this->window);
+
+		this->window.draw(this->TimeText);
+		this->window.draw(this->sunCountText);
+	}
+
+	void updateEverything() {
+
+		calculateTime();
+		this->TimeText.setString("TIME: " + this->timeString);
+
+		if (this->gameTime <= 0) {
+			this->updateRound();
+		}
+
+		// Update everything here
+		// check for collisions, animation, shooting, everything
+		this->PF.updateEverything(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
+
+		this->ZF.updateEverything(this->PF.getPlants(), this->PF.getPlantsArrayIndex(), this->lawnmowers, &this->lives, this->round);
+
+		// call all functions of sun
+		this->sun.generate();
+		this->sun.moveSun();
+
+		for (int i = 0; i < 5; i++) {
+			this->lawnmowers[i]->move(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
+			this->lawnmowers[i]->animate();
+		}
+	}
+
+	void sortScores() {
+		bool swapped;
+		for (int i = 0; i < 9; i++) {
+			swapped = false;
+			for (int j = 0; j < 10 - i - 1; j++) {
+				if (this->highScores[j] < this->highScores[j + 1]) {
+					swap(this->highScores[j], this->highScores[j + 1]);
+					swapped = true;
+				}
+			}
+
+			if (swapped == false)
+				break;
+		}
+	}
+
+
+	void initHighScores() {
+		ifstream scores("highscores.txt");
+		if (!scores.is_open()) {
+			cerr << "error" << endl;
+			return;
+		}
+		for (int i = 0; i < 10; i++) {
+			scores >> highScores[i];
+		}
+		scores.close();
+
+		sortScores();
+		heading.setFont(FM[0]);
+		heading.setCharacterSize(120);
+		heading.setFillColor(Color::White);
+		heading.setString("TOP 10 HIGHSCORES");
+		heading.setPosition(30, -10);
+		int pos = 110;
+		for (int i = 0; i < 10; i++) {
+			if (i == 0 || i == 1 || i == 2) {
+				medals[i].setPosition(420, pos + i * 4);
+				HighScores[i].setCharacterSize(48);
+			}
+			else {
+				HighScores[i].setCharacterSize(40);
+			}
+
+			HighScores[i].setFont(FM[0]);
+			if (i < 9) HighScores[i].setString(to_string(0) + to_string(i + 1) + ". -------------------------- " + to_string(highScores[i]));
+			else HighScores[i].setString(to_string(i + 1) + ". -------------------------- " + to_string(highScores[i]));
+			HighScores[i].setFillColor(Color{ 255,240, (Uint8)(230 - (Uint8)(20 * i)) });
+			HighScores[i].setPosition(40, pos);
+			if (i == 0) {
+				pos += 65;
+			}
+			else if (i == 1) {
+				pos += 60;
+			}
+			else if (i == 2) {
+				pos += 55;
+			}
+			else {
+				pos += 40;
+			}
+
+		}
+	}
+
 	void run() {
+
+		// resume remains
+
 		while (this->window.isOpen()) {
 			Event event;
 			while (this->window.pollEvent(event)) {
@@ -110,104 +262,143 @@ public:
 					this->window.close();
 				if (event.type == Event::KeyPressed) {
 					if (event.key.code == Keyboard::Escape) {
-						this->window.close();
+						if (this->showHighScores) {
+							this->showHighScores = false;
+						}
+						else {
+							if (!this->showMenu) {
+								this->showMenu = true;
+								this->remainingTime = this->remainingTime - this->runClock->getElapsedTime().asSeconds();
+								delete this->runClock;
+								this->runClock = nullptr;
+							}
+						}
+						/*
+						this->menu.setInMenu(true);
+						this->pausedTime.restart();
+						this->menu.handleEnter(this->hasStarted, this->play, this->showHighScores, this->resume, this->quit, 0);*/
 					}
 					else if (event.key.code == Keyboard::C) {
 						system("cls");
 					}
+					else if (event.key.code == Keyboard::Return) {
+						if (this->showMenu) {
+							this->menu.handleEnter(this->showMenu, this->showHighScores, this->quit, this->hasStarted, &ZF, &sun);
+							if (!this->showMenu) {
+								this->runClock = new Clock();
+							}
+							else if (this->showHighScores) {
+								initHighScores();
+							}
+							else if (this->quit) {
+								this->window.close();
+							}
+						}
+					}
+					else if (event.key.code == Keyboard::Up) {
+						if (this->showMenu && !this->showHighScores) {
+							this->menu.handleUp();
+						}
+					}
+					else if (event.key.code == Keyboard::Down) {
+						if (this->showMenu && !this->showHighScores) {
+							this->menu.handleDown();
+						}
+					}
+
+					/*if (this->menu.inMenu()) {
+						if (event.key.code == Keyboard::Up) {
+							this->menu.handleUp();
+						}
+						else if (event.key.code == Keyboard::Down) {
+							this->menu.handleDown();
+						}
+						else if (event.key.code == Keyboard::Enter) {
+							this->menu.handleEnter(this->hasStarted, this->play, this->showHighScores, this->resume, this->quit);
+							if (!this->hasStarted) {
+								this->runClock.restart();
+							}
+							if (this->quit) {
+								window.close();
+							}
+							if (this->showHighScores) {
+								this->initHighScores();
+							}
+
+						}
+					}*/
 				}
 				if (event.type == Event::MouseButtonPressed) {
-					if (event.mouseButton.button == Mouse::Left) {
-						int mouseX = event.mouseButton.x;
-						int mouseY = event.mouseButton.y;
-						cout << "Mouse X: " << mouseX << " Mouse Y: " << mouseY << endl;
-						if (gardenCords.valid(mouseX, mouseY)) {
-							cout << "Position on Grid: " << (mouseY - gardenCords.topY) / 96 << ", " << (mouseX - gardenCords.leftX) / 80 << endl;
+					if (!this->showMenu && !this->showHighScores) {
+						if (event.mouseButton.button == Mouse::Left) {
+							int mouseX = event.mouseButton.x;
+							int mouseY = event.mouseButton.y;
 
-							// Handle placing of plants
-							int gy = (mouseY - gardenCords.topY) / 96;
-							int gx = (mouseX - gardenCords.leftX) / 80;
+							if (gardenCords.valid(mouseX, mouseY)) {
+								cout << "Position on Grid: " << (mouseY - gardenCords.topY) / 96 << ", " << (mouseX - gardenCords.leftX) / 80 << endl;
 
-							this->PF.handlePlacing(&this->Inv, gx, gy, this->sunCount, this->round);
-							this->PF.handleSunClick(gx, gy, this->sunCountText, this->sunCount);
-							this->PF.handleWallnutClick(gx, gy);
-							this->PF.handleFallingSun(gx, gy, &this->sun, this->sunCountText, this->sunCount);
+								// Handle placing of plants
+								int gy = (mouseY - gardenCords.topY) / 96;
+								int gx = (mouseX - gardenCords.leftX) / 80;
+
+								this->PF.handlePlacing(&this->Inv, gx, gy, this->sunCount, this->round);
+								this->PF.handleSunClick(gx, gy, this->sunCountText, this->sunCount);
+								this->PF.handleWallnutClick(gx, gy);
+								this->PF.handleFallingSun(gx, gy, &this->sun, this->sunCountText, this->sunCount);
+							}
+
+							// no need to call in if statement
+
+							this->Inv.validMouseClick(mouseX, mouseY, this->sunCount);
 						}
-
-						// no need to call in if statement
-						this->Inv.validMouseClick(mouseX, mouseY, this->sunCount);
 					}
 				}
 			}
 
-			this->window.clear();
-			// calculating time
-			calculateTime();
 
 
-			if (this->RunClock.getElapsedTime().asSeconds() > this->roundTimeLimit) {
-				this->updateRound();
-			}
-
-			this->TimeText.setString("TIME: " + this->timeString);
-			// Update everything here
-			// check for collisions, animation, shooting, everything
-			this->PF.updateEverything(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
-
-			this->ZF.updateEverything(this->PF.getPlants(), this->PF.getPlantsArrayIndex(), this->lawnmowers, &this->lives, this->round);
-
-			// call all functions of sun
-			this->sun.generate();
-			this->sun.moveSun();
-
-			for (int i = 0; i < 5; i++) {
-				this->lawnmowers[i]->move(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
-				this->lawnmowers[i]->animate();
-			}
-
-			// Draw everything here...
-			this->window.draw(this->background.getSprite());
-
-			for (int i = 0; i < 5; i++) {
-				for (int j = 0; j < 9; j++) {
-					this->window.draw(this->garden[i][j]);
+			if (this->showMenu) {
+				this->window.clear();
+				this->menu.display(this->window);
+				if (this->showHighScores) {
+					this->window.draw(this->menu.getHSSprite());
+					this->window.draw(this->heading);
+					for (int i = 0; i < 10; i++) {
+						if (i < 3) {
+							this->window.draw(medals[i]);
+						}
+						this->window.draw(this->HighScores[i]);
+					}
 				}
+				this->window.display();
 			}
 
-			this->level.move_draw(this->window);
-			this->Inv.drawInventory(this->window, this->sunCount);
-
-			this->PF.draw(this->window);
-			this->ZF.draw(this->window);
-
-			// draw lawn mowers
-			for (int i = 0; i < 5; i++) {
-				this->lawnmowers[i]->draw(this->window);
+			else {
+				this->window.clear();
+				this->updateEverything();
+				this->drawEverything();
+				this->window.display();
 			}
 
-			// draw lives
-			this->lives.drawLives(this->window);
 
-			// draw sun
-			this->sun.draw(this->window);
 
-			this->window.draw(this->TimeText);
-			this->window.draw(this->sunCountText);
-			this->window.display();
 		}
 	}
 
 	void calculateTime() {
-		float time = 120.f - this->RunClock.getElapsedTime().asSeconds();
-		string minutes = "0" + to_string((int)(time) / 60);
+		if (this->runClock == nullptr) return;
+		this->gameTime = this->remainingTime - this->runClock->getElapsedTime().asSeconds();
+
+		string minutes = "0" + to_string((int)(this->gameTime) / 60);
 		string seconds = "";
-		if (((int)(time) % 60) / 10 == 0) {
+		if (((int)(this->gameTime) % 60) / 10 == 0) {
 			seconds += '0';
 		}
-		seconds += to_string((int)(time) % 60);
+		seconds += to_string((int)(this->gameTime) % 60);
 		this->timeString = minutes + ":" + seconds;
-		if ((int)(time) / 60 == 0 && (int)(time) % 60 == 10) {
+		if ((int)(this->gameTime) / 60 == 0 && (int)(this->gameTime) % 60 == 10) {
 			this->TimeText.setFillColor(Color::Red);
 		}
 	}
+
 };
