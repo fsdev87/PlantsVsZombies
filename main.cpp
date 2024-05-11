@@ -22,6 +22,7 @@ using namespace sf;
 #include "DancingZombie.h"
 #include "LawnMower.h"
 #include "Life.h"
+#include "Sun.h"
 
 #include "PlantFactory.h"
 #include "SoundManager.h"
@@ -114,6 +115,8 @@ void loadTextures(TextureManager* TM) {
 
 
 }
+
+
 
 
 int main()
@@ -221,6 +224,8 @@ int main()
 	// Lives
 	Life lives;
 
+	// Sun
+	Sun sun;
 
 	while (window.isOpen())
 	{
@@ -272,6 +277,10 @@ int main()
 
 		ZF.updateEverything(PF.getPlants(), PF.getPlantsArrayIndex(), lawnmowers, &lives);
 
+		// call all functions of sun
+		sun.generate();
+		sun.moveSun();
+
 		for (int i = 0; i < 5; i++) {
 			lawnmowers[i]->move(ZF.getZombies(), ZF.getZombiesArrayIndex());
 			lawnmowers[i]->animate();
@@ -303,6 +312,9 @@ int main()
 
 		// draw lives
 		lives.drawLives(window);
+
+		// draw sun
+		sun.draw(window);
 
 		window.draw(sunCountText);
 		window.display();

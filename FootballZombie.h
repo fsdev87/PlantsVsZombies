@@ -21,7 +21,7 @@ public:
 		this->anim = Animation(166, 144, columns);
 		this->moveClock.restart(), this->reverseClock.restart();
 		this->anim.setDelay(80);
-		this->reverseDelay = 6 + rand() % 5;
+		this->reverseDelay = 20;
 		this->xFactor += 30;
 		// head
 		this->headSprite.setTexture(this->TMptr->getTexture("spritesheet-head"));

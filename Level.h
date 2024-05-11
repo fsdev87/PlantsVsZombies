@@ -24,7 +24,7 @@ public:
 		this->SMptr = SM;
 		this->levelText.setFont(FM->operator[](2));
 		this->levelText.setCharacterSize(120);
-		this->levelText.setString("ROUND 1");
+		this->levelText.setString("LEVEL 1");
 		this->levelText.setFillColor(Color(16, 12, 12));
 		this->levelPosition[0] = -250, levelPosition[1] = 250;
 		this->levelText.setPosition(levelPosition[0], levelPosition[1]);

@@ -86,7 +86,7 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 			if (lawnmowers[(int)position[1]]->getExists() == true) {
 				lawnmowers[(int)position[1]]->activate();
 			}
-			else if (position[0] <= -1) {
+			else if (zombies[i]->getExist() && position[0] <= -1) {
 				zombies[i]->setExist(false);
 				lives->decrementLives();
 			}

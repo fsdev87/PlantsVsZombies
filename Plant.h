@@ -51,7 +51,7 @@ public:
 	virtual void setDelay(float f) {}
 	virtual void draw(RenderWindow& window) {
 		if (this->exists) {
-			this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
+			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 			window.draw(this->sprite);
 		}
 	}
