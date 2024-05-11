@@ -147,6 +147,10 @@ public:
 			return;
 		}
 
+		if (round == 1) {
+			if (gy == 0 || gy == 4) return;
+		}
+
 		if (!this->selected) return;
 		float pos[2] = { gx, gy };
 

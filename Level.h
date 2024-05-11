@@ -7,7 +7,7 @@ using namespace std;
 using namespace sf;
 
 class Level {
-private:
+protected:
 	string str;
 	Text levelText;
 	float levelPosition[2];
@@ -15,13 +15,19 @@ private:
 	float speed;
 	bool midWay;
 	Clock levelClock;
-	int level;
 	bool exists;
-	SoundManager* SMptr;
 
+	SoundManager* SMptr;
+	FontManager* FMptr;
+	TextureManager* TMptr;
+
+	int round;
 public:
-	Level(FontManager* FM, SoundManager* SM) {
+	Level(TextureManager* TM, FontManager* FM, SoundManager* SM) {
 		this->SMptr = SM;
+		this->FMptr = FM;
+		this->TMptr = TM;
+
 		this->levelText.setFont(FM->operator[](2));
 		this->levelText.setCharacterSize(120);
 		this->levelText.setString("LEVEL 1");
@@ -30,7 +36,6 @@ public:
 		this->levelText.setPosition(levelPosition[0], levelPosition[1]);
 		this->speed = 50;
 		this->midWay = false;
-		this->level = 1;
 		this->exists = true;
 		//this->SMptr->playSound("round1");
 
@@ -43,9 +48,37 @@ public:
 		this->exists = true;
 	}
 	void increaseLevel() {
-		this->level++;
-		this->levelText.setString("ROUND " + to_string(level));
+		this->levelText.setString("LEVEL " + to_string(round));
 	}
+
+	virtual void drawEverything(RenderWindow& window, Background& background,
+		Inventory* Inv, int& sunCount, PlantFactory* PF, ZombieFactory* ZF, LawnMower** lawnmowers, Life& lives,
+		FallingSun* sun, Text& sunCountText) = 0;
+
+	void updateEverything(string& timeString, Clock* runClock, PlantFactory* PF, ZombieFactory* ZF,
+		LawnMower** lawnmowers, Life& lives, FallingSun& sun) {
+
+		// Update everything here
+		// check for collisions, animation, shooting, everything
+		PF->updateEverything(ZF->getZombies(), ZF->getZombiesArrayIndex());
+
+		ZF->updateEverything(PF->getPlants(), PF->getPlantsArrayIndex(), lawnmowers, &lives, this->round);
+
+		// call all functions of sun
+		sun.generate();
+		sun.moveSun();
+
+		for (int i = 0; i < 5; i++) {
+			lawnmowers[i]->move(ZF->getZombies(), ZF->getZombiesArrayIndex());
+			lawnmowers[i]->animate();
+		}
+	}
+
+	void resetEverything(PlantFactory* PF, ZombieFactory* ZF) {
+		PF->reset();
+		ZF->reset();
+	}
+
 	void move_draw(RenderWindow& window) {
 
 		if (this->exists) {

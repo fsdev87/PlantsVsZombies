@@ -13,6 +13,19 @@ ZombieFactory::ZombieFactory(TextureManager* tm, SoundManager* SMptr) {
 	this->spawnClock.restart();
 }
 
+void ZombieFactory::reset() {
+	for (int i = 0; i < this->zombiesArrayIndex; i++) {
+		if (this->zombies[i]) {
+			delete[] zombies[i];
+		}
+		this->zombies[i] = nullptr;
+	}
+
+	this->deadIndex = -1;
+	this->zombiesArrayIndex = 0;
+	this->spawnClock.restart();
+}
+
 void ZombieFactory::getZombieDeadIndex() {
 	for (int i = 0; i < this->zombiesArrayIndex; i++) {
 		if (this->zombies[i]->getExist() == false) {
@@ -27,7 +40,12 @@ void ZombieFactory::getZombieDeadIndex() {
 void ZombieFactory::spawnZombie(int round) {
 	if (this->spawnClock.getElapsedTime().asSeconds() < 6) return;
 
-	this->pos[1] = rand() % 5;
+	if (round != 1) {
+		this->pos[1] = rand() % 5;
+	}
+	else {
+		this->pos[1] = 1 + rand() % 3;
+	}
 	if (round > 4) round = 4;
 
 	if (this->zombiesArrayIndex < this->maxZombies) {
