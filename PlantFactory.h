@@ -20,7 +20,7 @@ public:
 	int& getPlantsArrayIndexByRef();
 
 	// Handle placing of plant from inventory
-	void handlePlacing(Inventory* Inv, int gx, int gy, int& sunCount);
+	void handlePlacing(Inventory* Inv, int gx, int gy, int& sunCount, int round);
 
 	// handles clicking of player on sun
 	void handleSunClick(int gx, int gy, Text& sunCountText, int& sunCount);

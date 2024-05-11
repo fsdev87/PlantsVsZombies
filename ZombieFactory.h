@@ -33,9 +33,9 @@ public:
 	Zombie** getZombies();
 	int& getZombiesArrayIndex();
 
-	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives);
+	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives, int round);
 
-	void spawnZombie();
+	void spawnZombie(int round);
 	void  getZombieDeadIndex();
 	void draw(RenderWindow& window);
 };
