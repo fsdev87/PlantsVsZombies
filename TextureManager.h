@@ -51,6 +51,7 @@ private:
 		this->addTexture("assets/Background/limitedbg.jpg", "limitedbg");
 		this->addTexture("assets/Background/waterday.jpg", "waterday");
 		this->addTexture("assets/Background/waternight.jpg", "waternight");
+		this->addTexture("assets/Screens/MainMenu.png", "mainmenu");
 
 		// this->All Inventory Cards
 		this->addTexture("assets/Screens/Cards/card_sunflower.png", "card-sunflower");

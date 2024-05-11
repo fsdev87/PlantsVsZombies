@@ -32,7 +32,7 @@ public:
 		this->midWay = false;
 		this->level = 1;
 		this->exists = true;
-		this->SMptr->playSound("round1");
+		//this->SMptr->playSound("round1");
 
 	}
 	void reset() {

@@ -12,7 +12,7 @@
 #include "Level.h"
 #include "Garden.h"
 #include "FallingSun.h"
-
+#include "Menu.h"
 #include <cmath>
 
 class Game {
@@ -46,10 +46,16 @@ class Game {
 	Text TimeText;
 	string timeString;
 
+	Menu menu;
+
 	float roundTimeLimit = 5;
 
+	bool play = false, showHighScores = false, resume = false, quit = false;
+
+	bool hasStarted = false;
+
 public:
-	Game() : window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM) {
+	Game() : window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM) {
 		srand((unsigned)time(0));
 		this->RunClock.restart();
 		this->TimeText.setPosition(1300, 550);
@@ -101,7 +107,67 @@ public:
 		}
 	}
 
+	void drawEverything() {
+		this->window.draw(this->background.getSprite());
+
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 9; j++) {
+				this->window.draw(this->garden[i][j]);
+			}
+		}
+
+		this->level.move_draw(this->window);
+		this->Inv.drawInventory(this->window, this->sunCount);
+
+		this->PF.draw(this->window);
+		this->ZF.draw(this->window);
+
+		// draw lawn mowers
+		for (int i = 0; i < 5; i++) {
+			this->lawnmowers[i]->draw(this->window);
+		}
+
+		// draw lives
+		this->lives.drawLives(this->window);
+
+		// draw sun
+		this->sun.draw(this->window);
+
+		this->window.draw(this->TimeText);
+		this->window.draw(this->sunCountText);
+	}
+
+	void updateEverything() {
+		this->timeString = to_string(this->RunClock.getElapsedTime().asSeconds());
+
+		if (this->RunClock.getElapsedTime().asSeconds() > this->roundTimeLimit) {
+			this->updateRound();
+		}
+
+		this->TimeText.setString(this->timeString);
+		// Update everything here
+		// check for collisions, animation, shooting, everything
+		this->PF.updateEverything(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
+
+		this->ZF.updateEverything(this->PF.getPlants(), this->PF.getPlantsArrayIndex(), this->lawnmowers, &this->lives, this->round);
+
+		// call all functions of sun
+		this->sun.generate();
+		this->sun.moveSun();
+
+		for (int i = 0; i < 5; i++) {
+			this->lawnmowers[i]->move(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
+			this->lawnmowers[i]->animate();
+		}
+	}
+
 	void run() {
+		if (this->showHighScores) {
+			//menu.showHighScores();
+		}
+
+		// resume remains
+
 		while (this->window.isOpen()) {
 			Event event;
 			while (this->window.pollEvent(event)) {
@@ -109,17 +175,33 @@ public:
 					this->window.close();
 				if (event.type == Event::KeyPressed) {
 					if (event.key.code == Keyboard::Escape) {
-						this->window.close();
+						this->menu.setInMenu(true);
+						this->menu.handleEnter(this->hasStarted, this->play, this->showHighScores, this->resume, this->quit, 0);
 					}
 					else if (event.key.code == Keyboard::C) {
 						system("cls");
+					}
+
+					if (this->menu.inMenu()) {
+						if (event.key.code == Keyboard::Up) {
+							this->menu.handleUp();
+						}
+						else if (event.key.code == Keyboard::Down) {
+							this->menu.handleDown();
+						}
+						else if (event.key.code == Keyboard::Enter) {
+							this->menu.handleEnter(this->hasStarted, this->play, this->showHighScores, this->resume, this->quit);
+							if (this->quit) {
+								window.close();
+							}
+						}
 					}
 				}
 				if (event.type == Event::MouseButtonPressed) {
 					if (event.mouseButton.button == Mouse::Left) {
 						int mouseX = event.mouseButton.x;
 						int mouseY = event.mouseButton.y;
-						cout << "Mouse X: " << mouseX << " Mouse Y: " << mouseY << endl;
+
 						if (gardenCords.valid(mouseX, mouseY)) {
 							cout << "Position on Grid: " << (mouseY - gardenCords.topY) / 96 << ", " << (mouseX - gardenCords.leftX) / 80 << endl;
 
@@ -127,70 +209,36 @@ public:
 							int gy = (mouseY - gardenCords.topY) / 96;
 							int gx = (mouseX - gardenCords.leftX) / 80;
 
-							this->PF.handlePlacing(&this->Inv, gx, gy, this->sunCount, this->round);
-							this->PF.handleSunClick(gx, gy, this->sunCountText, this->sunCount);
-							this->PF.handleWallnutClick(gx, gy);
-							this->PF.handleFallingSun(gx, gy, &this->sun, this->sunCountText, this->sunCount);
+							if (this->play || (this->play == 0 && this->resume == 1)) {
+								this->PF.handlePlacing(&this->Inv, gx, gy, this->sunCount, this->round);
+								this->PF.handleSunClick(gx, gy, this->sunCountText, this->sunCount);
+								this->PF.handleWallnutClick(gx, gy);
+								this->PF.handleFallingSun(gx, gy, &this->sun, this->sunCountText, this->sunCount);
+							}
 						}
 
 						// no need to call in if statement
-						this->Inv.validMouseClick(mouseX, mouseY, this->sunCount);
+						if (this->play || (this->play == 0 && this->resume == 1))
+							this->Inv.validMouseClick(mouseX, mouseY, this->sunCount);
 					}
 				}
 			}
 
 			this->window.clear();
 
-			this->timeString = to_string(this->RunClock.getElapsedTime().asSeconds());
-
-			if (this->RunClock.getElapsedTime().asSeconds() > this->roundTimeLimit) {
-				this->updateRound();
-			}
-
-			this->TimeText.setString(this->timeString);
-			// Update everything here
-			// check for collisions, animation, shooting, everything
-			this->PF.updateEverything(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
-
-			this->ZF.updateEverything(this->PF.getPlants(), this->PF.getPlantsArrayIndex(), this->lawnmowers, &this->lives, this->round);
-
-			// call all functions of sun
-			this->sun.generate();
-			this->sun.moveSun();
-
-			for (int i = 0; i < 5; i++) {
-				this->lawnmowers[i]->move(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
-				this->lawnmowers[i]->animate();
-			}
+			if (this->play || (this->play == 0 && this->resume == 1))
+				this->updateEverything();
 
 			// Draw everything here...
-			this->window.draw(this->background.getSprite());
 
-			for (int i = 0; i < 5; i++) {
-				for (int j = 0; j < 9; j++) {
-					this->window.draw(this->garden[i][j]);
-				}
+			if (this->menu.inMenu()) {
+				this->menu.display(window);
 			}
 
-			this->level.move_draw(this->window);
-			this->Inv.drawInventory(this->window, this->sunCount);
-
-			this->PF.draw(this->window);
-			this->ZF.draw(this->window);
-
-			// draw lawn mowers
-			for (int i = 0; i < 5; i++) {
-				this->lawnmowers[i]->draw(this->window);
+			if (this->play || (this->play == 0 && this->resume == 1)) {
+				this->drawEverything();
 			}
 
-			// draw lives
-			this->lives.drawLives(this->window);
-
-			// draw sun
-			this->sun.draw(this->window);
-
-			this->window.draw(this->TimeText);
-			this->window.draw(this->sunCountText);
 			this->window.display();
 		}
 	}
