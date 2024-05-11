@@ -46,13 +46,13 @@ class Game {
 	Text TimeText;
 	string timeString;
 
-	float roundTimeLimit = 5;
+	float roundTimeLimit = 120;
 
 public:
 	Game() : window(VideoMode(1400, 600), "game"), level(&FM, &SM), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM) {
 		srand((unsigned)time(0));
 		this->RunClock.restart();
-		this->TimeText.setPosition(1300, 550);
+		this->TimeText.setPosition(1230, 550);
 		this->TimeText.setFont(FM[0]);
 		this->TimeText.setFillColor(Color::Black);
 		this->TimeText.setCharacterSize(36);
@@ -80,6 +80,7 @@ public:
 	}
 
 	void updateRound() {
+		this->TimeText.setFillColor(Color::Black);
 		this->round += 1;
 		this->level.increaseLevel();
 		this->level.reset();
@@ -140,14 +141,15 @@ public:
 			}
 
 			this->window.clear();
+			// calculating time
+			calculateTime();
 
-			this->timeString = to_string(this->RunClock.getElapsedTime().asSeconds());
 
 			if (this->RunClock.getElapsedTime().asSeconds() > this->roundTimeLimit) {
 				this->updateRound();
 			}
 
-			this->TimeText.setString(this->timeString);
+			this->TimeText.setString("TIME: " + this->timeString);
 			// Update everything here
 			// check for collisions, animation, shooting, everything
 			this->PF.updateEverything(this->ZF.getZombies(), this->ZF.getZombiesArrayIndex());
@@ -192,6 +194,20 @@ public:
 			this->window.draw(this->TimeText);
 			this->window.draw(this->sunCountText);
 			this->window.display();
+		}
+	}
+
+	void calculateTime() {
+		float time = 120.f - this->RunClock.getElapsedTime().asSeconds();
+		string minutes = "0" + to_string((int)(time) / 60);
+		string seconds = "";
+		if (((int)(time) % 60) / 10 == 0) {
+			seconds += '0';
+		}
+		seconds += to_string((int)(time) % 60);
+		this->timeString = minutes + ":" + seconds;
+		if ((int)(time) / 60 == 0 && (int)(time) % 60 == 10) {
+			this->TimeText.setFillColor(Color::Red);
 		}
 	}
 };

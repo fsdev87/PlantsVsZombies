@@ -13,7 +13,7 @@ private:
 	float sunDelay = 5 + rand() % 3;
 	float position[2];
 	bool exists;
-	float speed = 0.015625;
+	float speed = 0.03125;
 	float xFactor = 260;
 	float yFactor = 90;
 
@@ -62,6 +62,7 @@ public:
 	}
 
 	void setExist(bool val) { this->exists = val; }
+	bool getExist() { return this->exists; }
 
 	void draw(RenderWindow& window) {
 		if (this->exists) {

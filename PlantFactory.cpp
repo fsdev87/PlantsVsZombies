@@ -9,8 +9,6 @@ PlantFactory::PlantFactory(SoundManager* SM, TextureManager* TM) : plantsArrayIn
 	this->plants = new Plant * [maxPlants] { nullptr };
 }
 
-
-
 Plant** PlantFactory::getPlants() { return this->plants; }
 int PlantFactory::getPlantsArrayIndex() { return this->plantsArrayIndex; }
 int& PlantFactory::getPlantsArrayIndexByRef() { return this->plantsArrayIndex; }
@@ -23,6 +21,7 @@ void PlantFactory::handlePlacing(Inventory* Inv, int gx, int gy, int& sunCount, 
 }
 
 void PlantFactory::handleFallingSun(int gx, int gy, FallingSun* sun, Text& sunCountText, int& sunCount) {
+	if (!sun->getExist()) return;
 	if (gx != sun->getPosition()[0]) {
 		// not same column
 		return;
@@ -32,6 +31,7 @@ void PlantFactory::handleFallingSun(int gx, int gy, FallingSun* sun, Text& sunCo
 		sunCount += 50;
 		sunCountText.setString(to_string(sunCount));
 		sun->setExist(false);
+		this->SMptr->playSound("sunclick");
 		return;
 	}
 
