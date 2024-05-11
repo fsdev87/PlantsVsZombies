@@ -53,6 +53,7 @@ private:
 		this->addTexture("assets/Background/waternight.jpg", "waternight");
 		this->addTexture("assets/Screens/MainMenu.png", "mainmenu");
 		this->addTexture("assets/Screens/highscorebg.jpg", "highscorebg");
+		this->addTexture("assets/Background/row.jpg", "bgfirst");
 
 		this->addTexture("assets/Screens/gold.png", "gold");
 		this->addTexture("assets/Screens/silver.png", "silver");

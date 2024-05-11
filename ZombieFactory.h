@@ -35,6 +35,8 @@ public:
 
 	void updateEverything(Plant** plants, int plantsArrayIndex, LawnMower** lawnmowers, Life* lives, int round);
 
+	void reset();
+
 	void spawnZombie(int round);
 	void  getZombieDeadIndex();
 	void draw(RenderWindow& window);

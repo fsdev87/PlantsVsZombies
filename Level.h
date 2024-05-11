@@ -7,7 +7,7 @@ using namespace std;
 using namespace sf;
 
 class Level {
-private:
+protected:
 	string str;
 	Text levelText;
 	float levelPosition[2];
@@ -17,11 +17,18 @@ private:
 	Clock levelClock;
 	int level;
 	bool exists;
-	SoundManager* SMptr;
 
+	SoundManager* SMptr;
+	FontManager* FMptr;
+	TextureManager* TMptr;
+
+	int round;
 public:
-	Level(FontManager* FM, SoundManager* SM) {
+	Level(TextureManager* TM, FontManager* FM, SoundManager* SM) {
 		this->SMptr = SM;
+		this->FMptr = FM;
+		this->TMptr = TM;
+
 		this->levelText.setFont(FM->operator[](2));
 		this->levelText.setCharacterSize(120);
 		this->levelText.setString("LEVEL 1");
@@ -30,7 +37,6 @@ public:
 		this->levelText.setPosition(levelPosition[0], levelPosition[1]);
 		this->speed = 50;
 		this->midWay = false;
-		this->level = 1;
 		this->exists = true;
 		//this->SMptr->playSound("round1");
 
@@ -44,8 +50,22 @@ public:
 	}
 	void increaseLevel() {
 		this->level++;
-		this->levelText.setString("ROUND " + to_string(level));
+		this->levelText.setString("ROUND " + to_string(round));
 	}
+
+	virtual void drawEverything(RenderWindow& window, Background& background,
+		Inventory* Inv, int& sunCount, PlantFactory* PF, ZombieFactory* ZF, LawnMower** lawnmowers, Life& lives,
+		FallingSun* sun, Text& TimeText, Text& sunCountText) {}
+
+	virtual void updateEverything(string& timeString, Clock& RunClock, float roundTimeLimit, Text& TimeText, PlantFactory* PF, ZombieFactory* ZF,
+		LawnMower** lawnmowers, Life& lives, FallingSun& sun
+	) {}
+
+	void resetEverything(PlantFactory* PF, ZombieFactory* ZF) {
+		PF->reset();
+		ZF->reset();
+	}
+
 	void move_draw(RenderWindow& window) {
 
 		if (this->exists) {

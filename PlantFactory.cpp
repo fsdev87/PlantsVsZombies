@@ -9,6 +9,14 @@ PlantFactory::PlantFactory(SoundManager* SM, TextureManager* TM) : plantsArrayIn
 	this->plants = new Plant * [maxPlants] { nullptr };
 }
 
+void PlantFactory::reset() {
+	for (int i = 0; i < this->plantsArrayIndex; i++) {
+		delete[] plants[i];
+	}
+	delete plants;
+	this->plantsArrayIndex = 0;
+	this->plants = new Plant * [maxPlants] { nullptr };
+}
 
 
 Plant** PlantFactory::getPlants() { return this->plants; }
