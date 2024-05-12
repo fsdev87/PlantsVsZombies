@@ -27,7 +27,7 @@ public:
 		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
 		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
 
-
+		file.write(reinterpret_cast<char*>(&moveDelay), sizeof(float));
 
 		file.write(reinterpret_cast<char*>(&health), sizeof(int));
 		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
@@ -56,6 +56,7 @@ public:
 	void readEverything(ifstream& file) {
 		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
 		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&moveDelay), sizeof(float));
 		file.read(reinterpret_cast<char*>(&health), sizeof(int));
 		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
 		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
@@ -80,7 +81,34 @@ public:
 		file.read(reinterpret_cast<char*>(&headFall), sizeof(bool));
 		file.read(reinterpret_cast<char*>(&headOnceFell), sizeof(bool));
 
-
+		if (this->blocked) {
+			if (this->health <= this->limit) {
+				this->sprite = Sprite(this->TMptr->getTexture("spritesheet-headLessEat"));
+				this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+			}
+			else {
+				this->sprite = Sprite(this->TMptr->getTexture("spritesheet-nZombEat"));
+				this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+			}
+		}
+		if (!this->blocked) {
+			if (this->health <= this->limit) {
+				this->sprite = Sprite(this->TMptr->getTexture("spritesheet-headLessWalk"));
+				this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+			}
+			else {
+				this->sprite = Sprite(this->TMptr->getTexture("spritesheet-nZombWalk"));
+				this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+			}
+		}
+		if (this->dead) {
+			this->sprite = Sprite(this->TMptr->getTexture("spritesheet-headLessDeath"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+		}
+		if (this->ashes) {
+			this->sprite = Sprite(this->TMptr->getTexture("spritesheet-zombieAshes"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+		}
 	}
 
 	void checkHealth() {

@@ -213,7 +213,7 @@ public:
 			types[tempIndex] = "repeater";
 		}
 		else if (indexInInventory == 3 && sunCount >= 50) {
-			plants[tempIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
+			plants[tempIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos, this->TMptr);
 			types[tempIndex] = "wallnut";
 		}
 		else if (indexInInventory == 4 && sunCount >= 175) {

@@ -13,7 +13,7 @@ private:
 	Texture deadTexture;
 
 public:
-	Wallnut(Texture& tex, int columns, float pos[2]) {
+	Wallnut(Texture& tex, int columns, float pos[2], TextureManager* tm) {
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
@@ -22,6 +22,7 @@ public:
 		this->exists = true;
 		this->active = false;
 		this->moveClock.restart();
+		this->TMptr = tm;
 		this->anim = Animation(71, 71, columns);
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 		this->halfTexture.loadFromFile("assets/Spritesheets/wallnut-half.png");
@@ -55,6 +56,21 @@ public:
 
 		file.read(reinterpret_cast<char*>(&half), sizeof(bool));
 		this->anim.readEverything(file);
+
+		if (this->active) {
+			this->sprite = Sprite(this->TMptr->getTexture("spritesheet-wallnut-rolling"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 71, 0, 71, 71));
+			this->anim.setDelay(60.f);
+			this->moveClock.restart();
+		}
+		if (this->dead) {
+			this->sprite = Sprite(this->TMptr->getTexture("wallnut-dead"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 71, 0, 71, 71));
+		}
+		if (this->half) {
+			this->sprite = Sprite(this->TMptr->getTexture("wallnut-half"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 71, 0, 71, 71));
+		}
 	}
 
 	void activate(Texture& tex) {

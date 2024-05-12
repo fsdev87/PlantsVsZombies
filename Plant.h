@@ -23,7 +23,7 @@ protected:
 	float xFactor, yFactor;
 	Clock eatClock;
 	Animation anim;
-
+	TextureManager* TMptr;
 
 public:
 	Plant() {

@@ -38,13 +38,15 @@ public:
 	void saveEverything(ofstream& file) {
 		file.write(reinterpret_cast<char*>(&frame), sizeof(int));
 		file.write(reinterpret_cast<char*>(&columns), sizeof(int));
+		file.write(reinterpret_cast<char*>(&delay), sizeof(float));
 	}
 
 	void readEverything(ifstream& file) {
 		file.read(reinterpret_cast<char*>(&frame), sizeof(int));
-		this->frame = frame;
+
 		file.read(reinterpret_cast<char*>(&columns), sizeof(int));
-		this->columns = columns;
+
+		file.read(reinterpret_cast<char*>(&delay), sizeof(float));
 	}
 
 	void setFrame(int f) { this->frame = f; this->animClock.restart(); }

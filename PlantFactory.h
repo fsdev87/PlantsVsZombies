@@ -61,7 +61,7 @@ public:
 				plants[i] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
 			}
 			else if (this->types[i] == "wallnut") {
-				plants[i] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
+				plants[i] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos, this->TMptr);
 			}
 			else if (this->types[i] == "cherrybomb") {
 				plants[i] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 18, pos);

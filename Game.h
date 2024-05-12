@@ -296,7 +296,7 @@ public:
 			//Inv.addCard(this->TM.getTexture("card-wallnut_dim"), this->TM.getTexture("card-wallnut"), "wallnut", 50);
 			cout << "Level was full garden\n";
 			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
-			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score, 1 };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 2) {
 			// Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);

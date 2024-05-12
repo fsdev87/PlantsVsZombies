@@ -107,6 +107,15 @@ public:
 
 		file.read(reinterpret_cast<char*>(&danceDelay), sizeof(float));
 
+		if (this->dead) {
+			this->sprite = Sprite(this->TMptr->getTexture("dancing-die"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+		}
+		if (this->ashes) {
+			this->sprite = Sprite(this->TMptr->getTexture("spritesheet-zombieAshes"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+		}
+
 	}
 
 	virtual void animate() {
