@@ -57,11 +57,18 @@ class Game {
 	bool quit = false;
 	bool restarted = false;
 	bool hasStarted = false;
+	bool showInstructions = false;
 	bool gameOver = false;
 
 	int highScores[10] = {};
 	Text HighScores[10], heading;
 	Sprite medals[3];
+
+	Text instructionHeading, instructionHeadingShadow, Instructions[10], pageNumber;
+	int instructionStartIndex = 0;
+	int instructionEndIndex = 3;
+	int pageNo = 1;
+	Sprite instructionDecoration[6];
 
 	// time handling things
 	float gameTime;
@@ -104,7 +111,6 @@ public:
 		for (int i = 0; i < 5; i++) {
 			this->lawnMowerPos[1] = i;
 			this->lawnmowers[i] = new LawnMower(&TM, this->lawnMowerPos);
-
 		}
 
 	}
@@ -201,6 +207,8 @@ public:
 
 
 	void initHighScores() {
+
+		this->menu.getHSSprite().setColor(Color(0, 0, 0, 255 * 0.4));
 		ifstream scores("highscores.txt");
 		if (!scores.is_open()) {
 			cerr << "error" << endl;
@@ -248,6 +256,110 @@ public:
 		}
 	}
 
+	void initInstructions() {
+
+
+
+		this->instructionDecoration[0].setTexture(this->TM.getTexture("deco-w"));
+		this->instructionDecoration[0].setRotation(10.0f);
+
+		this->instructionDecoration[1].setTexture(this->TM.getTexture("deco-p"));
+		this->instructionDecoration[1].setRotation(6.0f);
+
+		this->instructionDecoration[2].setTexture(this->TM.getTexture("deco-r"));
+
+		this->instructionDecoration[5].setTexture(this->TM.getTexture("deco-fz"));
+		this->instructionDecoration[4].setRotation(5.0f);
+		this->instructionDecoration[4].setTexture(this->TM.getTexture("deco-dz"));
+
+		this->instructionDecoration[3].setTexture(this->TM.getTexture("deco-z"));
+		this->instructionDecoration[3].setRotation(10.0f);
+
+
+		this->menu.getHSSprite().setColor(Color(0, 0, 0, 255 * 0.6));
+		this->instructionHeading.setFont(FM[1]);
+		this->instructionHeading.setCharacterSize(110);
+		this->instructionHeading.setFillColor(Color::Green);
+		this->instructionHeading.setString("INSTRUCTIONS");
+		this->instructionHeading.setPosition(30, -10);
+
+		this->instructionHeadingShadow.setFont(FM[1]);
+		this->instructionHeadingShadow.setCharacterSize(111);
+		this->instructionHeadingShadow.setFillColor(Color(0, 0, 0, 150));
+		this->instructionHeadingShadow.setString("INSTRUCTIONS");
+		this->instructionHeadingShadow.setPosition(30, -5);
+
+		this->pageNumber.setFont(FM[1]);
+		this->pageNumber.setCharacterSize(80);
+		this->pageNumber.setFillColor(Color::White);
+		this->pageNumber.setString(to_string(this->pageNo));
+		this->pageNumber.setPosition(1300, 500);
+
+		for (int i = 0; i < 10; i++) {
+			this->Instructions[i].setFont(FM[3]);
+			this->Instructions[i].setCharacterSize(58);
+			this->Instructions[i].setFillColor(Color::White);
+		}
+
+		this->Instructions[0].setPosition(30, 100);
+		this->Instructions[0].setString("1. Place defensive plants strategically to \nfend off zombies.");
+		this->instructionDecoration[0].setPosition(800, 20);
+
+		this->Instructions[1].setPosition(30, 240);
+		this->Instructions[1].setString("2. Utilize offensive plants like Peashooter\n to launch counterattacks\n against enemy forces.");
+		this->instructionDecoration[1].setPosition(1000, 280);
+
+		this->Instructions[2].setPosition(30, 435);
+		this->Instructions[2].setString("3. Collect resources to unlock \nmore plants and abilities.");
+		this->instructionDecoration[2].setPosition(950, 470);
+
+		this->Instructions[3].setPosition(30, 100);
+		this->Instructions[3].setString("4. Deploy support units to assist your main \nforces during battles.");
+		this->instructionDecoration[3].setPosition(300, 50);
+
+		this->Instructions[4].setPosition(30, 240);
+		this->Instructions[4].setString("5. Use special abilities wisely to turn \nthe tide of difficult encounters.");
+		this->instructionDecoration[4].setPosition(850, 180);
+
+		this->Instructions[5].setPosition(30, 380);
+		this->Instructions[5].setString("6. Defend your base or territory from \nincoming enemy waves.");
+		this->instructionDecoration[5].setPosition(960, 450);
+
+		/*Instructions[6].setString();
+		Instructions[7].setString("Complete missions and challenges to earn rewards and progress in the game.");
+		Instructions[8].setString("Upgrade your structures and defenses to withstand stronger enemy assaults.");
+		Instructions[9].setString("Manage your resources efficiently to maintain a strong and balanced army.");
+		Instructions[10].setString("Strategize your moves carefully to outsmart and defeat your opponents.");*/
+
+
+	}
+
+	void updateInstructions(int positive = 1) {
+		if (positive == -1) {
+			this->pageNo -= 1;
+			if (this->pageNo < 1) {
+				this->pageNo = 1;
+				return;
+			}
+			this->instructionStartIndex -= 3;
+
+
+			this->instructionEndIndex -= 3;
+
+		}
+		else if (positive) {
+			this->pageNo += 1;
+			if (this->pageNo > 2) {
+				this->pageNo = 2;
+				return;
+			}
+			this->instructionStartIndex += 3;
+			this->instructionEndIndex += 3;
+		}
+		this->pageNumber.setString(to_string(this->pageNo));
+
+	}
+
 
 	void run() {
 
@@ -261,6 +373,9 @@ public:
 					if (event.key.code == Keyboard::Escape) {
 						if (this->showHighScores) {
 							this->showHighScores = false;
+						}
+						else if (this->showInstructions) {
+							this->showInstructions = false;
 						}
 						else {
 							if (!this->showMenu) {
@@ -276,7 +391,7 @@ public:
 					}
 					else if (event.key.code == Keyboard::Return) {
 						if (this->showMenu) {
-							this->menu.handleEnter(this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
+							this->menu.handleEnter(this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
 							if (!this->showMenu && !this->restarted) { // resume or start mode
 								this->runClock = new Clock();
 							}
@@ -285,6 +400,9 @@ public:
 							}
 							else if (this->showHighScores) {
 								initHighScores();
+							}
+							else if (this->showInstructions) {
+								initInstructions();
 							}
 							else if (this->quit) {
 								this->window.close();
@@ -299,13 +417,23 @@ public:
 						}
 					}
 					else if (event.key.code == Keyboard::Up) {
-						if (this->showMenu && !this->showHighScores) {
+						if (this->showMenu && !this->showHighScores && !this->showInstructions) {
 							this->menu.handleUp();
 						}
 					}
 					else if (event.key.code == Keyboard::Down) {
-						if (this->showMenu && !this->showHighScores) {
+						if (this->showMenu && !this->showHighScores && !this->showInstructions) {
 							this->menu.handleDown();
+						}
+					}
+					else if (event.key.code == Keyboard::Right) {
+						if (this->showInstructions) {
+							updateInstructions();
+						}
+					}
+					else if (event.key.code == Keyboard::Left) {
+						if (this->showInstructions) {
+							updateInstructions(-1);
 						}
 					}
 				}
@@ -349,6 +477,19 @@ public:
 						}
 						this->window.draw(this->HighScores[i]);
 					}
+				}
+				else if (this->showInstructions) {
+					this->window.draw(this->menu.getHSSprite());
+					this->window.draw(this->instructionHeadingShadow);
+					this->window.draw(this->instructionHeading);
+
+					for (int i = this->instructionStartIndex; i < this->instructionEndIndex; i++) {
+						this->window.draw(this->instructionDecoration[i]);
+						this->window.draw(this->Instructions[i]);
+					}
+
+					this->window.draw(this->pageNumber);
+
 				}
 				this->window.display();
 			}

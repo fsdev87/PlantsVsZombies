@@ -55,6 +55,14 @@ private:
 		this->addTexture("assets/Screens/highscorebg.jpg", "highscorebg");
 		this->addTexture("assets/Background/row.jpg", "bgfirst");
 
+
+		this->addTexture("assets/Screens/decoration/DancingZombie.png", "deco-dz");
+		this->addTexture("assets/Screens/decoration/FootballZombie.png", "deco-fz");
+		this->addTexture("assets/Screens/decoration/Zombie.png", "deco-z");
+		this->addTexture("assets/Screens/decoration/Peashooter.png", "deco-p");
+		this->addTexture("assets/Screens/decoration/Wallnut.png", "deco-w");
+		this->addTexture("assets/Screens/decoration/Repeater.png", "deco-r");
+
 		this->addTexture("assets/Screens/gold.png", "gold");
 		this->addTexture("assets/Screens/silver.png", "silver");
 		this->addTexture("assets/Screens/bronze.png", "bronze");
