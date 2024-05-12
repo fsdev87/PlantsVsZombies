@@ -13,7 +13,7 @@
 #include "FallingSun.h"
 #include "Menu.h"
 #include <cmath>
-
+#include <sstream>
 #include "BeginnersGarden.h"
 #include "FullGarden.h"
 #include "NightGarden.h"
@@ -40,6 +40,9 @@ class Game {
 	Text pressEnterS;
 	//
 
+	// score
+	int score = 0;
+
 	int sunCount = 100;
 	Text sunCountText;
 
@@ -61,7 +64,8 @@ class Game {
 	Menu menu;
 
 
-	bool showMenu = true;
+	//bool showMenu = true;
+	bool showMenu = false;
 	bool showHighScores = false;
 	bool quit = false;
 	bool restarted = false;
@@ -70,6 +74,7 @@ class Game {
 	bool gameOver = true;
 
 	int highScores[10] = {};
+	string names[10] = {};
 	Text HighScores[10], heading;
 	Sprite medals[3];
 
@@ -153,6 +158,8 @@ public:
 		this->pressEnterS.setString("Press enter to continue.");
 		this->pressEnterS.setFillColor(Color::Green);
 
+		initHighScores();
+
 	}
 
 	void restartGame() {
@@ -170,6 +177,7 @@ public:
 		this->Inv.reset();
 
 		this->playerName = "";
+		this->score = 0;
 
 		for (int i = 0; i < 5; i++) {
 			this->lawnMowerPos[1] = i;
@@ -238,6 +246,7 @@ public:
 			for (int j = 0; j < 10 - i - 1; j++) {
 				if (this->highScores[j] < this->highScores[j + 1]) {
 					swap(this->highScores[j], this->highScores[j + 1]);
+					swap(this->names[j], this->names[j + 1]);
 					swapped = true;
 				}
 			}
@@ -256,10 +265,18 @@ public:
 			cerr << "error" << endl;
 			return;
 		}
-		for (int i = 0; i < 10; i++) {
-			scores >> highScores[i];
+		ifstream playerNames("names.txt");
+		if (!playerNames.is_open()) {
+			cerr << "error" << endl;
+			return;
 		}
+		for (int i = 0; i < 10; i++) {
+			scores >> this->highScores[i];
+			playerNames >> this->names[i];
+		}
+
 		scores.close();
+		playerNames.close();
 
 		sortScores();
 		heading.setFont(FM[0]);
@@ -278,8 +295,8 @@ public:
 			}
 
 			HighScores[i].setFont(FM[0]);
-			if (i < 9) HighScores[i].setString(to_string(0) + to_string(i + 1) + ". -------------------------- " + to_string(highScores[i]));
-			else HighScores[i].setString(to_string(i + 1) + ". -------------------------- " + to_string(highScores[i]));
+			if (i < 9) HighScores[i].setString(to_string(0) + to_string(i + 1) + ". " + this->names[i] + " " + to_string(this->highScores[i]));
+			else HighScores[i].setString(to_string(i + 1) + ". " + this->names[i] + " " + to_string(this->highScores[i]));
 			HighScores[i].setFillColor(Color{ 255,240, (Uint8)(230 - (Uint8)(20 * i)) });
 			HighScores[i].setPosition(40, pos);
 			if (i == 0) {
@@ -453,6 +470,28 @@ public:
 						}
 						else if (this->gameOver) {
 							this->gameOver = false;
+							// highscores updating
+							this->highScores[9] = this->score;
+							this->names[9] = this->playerName;
+							sortScores();
+							ofstream scores("highscores.txt");
+							ofstream playerNames("names.txt");
+							if (!scores.is_open()) {
+								cerr << "Error" << endl;
+								return;
+							}
+							if (!playerNames.is_open()) {
+								cerr << "Error" << endl;
+								return;
+							}
+
+							for (int i = 0; i < 10; i++) {
+								scores << this->highScores[i] << endl;
+								playerNames << this->names[i] << endl;
+							}
+							scores.close();
+							playerNames.close();
+
 							restartGame();
 							this->showMenu = true;
 							this->menu.reset();
