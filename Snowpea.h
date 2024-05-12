@@ -40,9 +40,9 @@ public:
 		}
 	}
 
-	void moveBullets(Zombie** zombies, int zombiesArrayIndex) {
+	void moveBullets(Zombie** zombies, int zombiesArrayIndex, Scoreboard* scoreboard) {
 		if (this->exists) {
-			this->bullet.move(zombies, zombiesArrayIndex, true);
+			this->bullet.move(zombies, zombiesArrayIndex, true, scoreboard);
 		}
 	}
 

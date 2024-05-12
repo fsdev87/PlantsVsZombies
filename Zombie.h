@@ -40,7 +40,7 @@ protected:
 
 	SoundManager* SMptr;
 
-
+	string type;
 public:
 	Zombie() {
 		this->xFactor = 185;
@@ -49,6 +49,8 @@ public:
 	}
 	/*float getSpeed() { return this->speed; }
 	void setSpeed(float val) { this->speed = val; }*/
+
+	string getType() { return this->type; }
 
 	void setAnimDelay(float val) { this->anim.setDelay(val); }
 	void setMoveDelay(float val) { this->moveDelay = val; }

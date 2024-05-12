@@ -13,6 +13,7 @@
 #include "FallingSun.h"
 #include "Menu.h"
 #include <cmath>
+#include "Scoreboard.h"
 
 #include "BeginnersGarden.h"
 #include "FullGarden.h"
@@ -67,7 +68,7 @@ class Game {
 	bool restarted = false;
 	bool hasStarted = false;
 	bool showInstructions = false;
-	bool gameOver = true;
+	bool gameOver = false;
 
 	int highScores[10] = {};
 	Text HighScores[10], heading;
@@ -87,11 +88,14 @@ class Game {
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
+
+	Scoreboard score;
+
 public:
-	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM) {
+	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM), score(&FM) {
 
 
-		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		levels[1] = nullptr;
 		levels[2] = nullptr;
 		levels[3] = nullptr;
@@ -177,7 +181,7 @@ public:
 		}
 
 		if (this->levels[0] != nullptr) delete this->levels[0];
-		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		if (this->levels[1] != nullptr) delete this->levels[1];
 		levels[1] = nullptr;
 		if (this->levels[2] != nullptr) delete this->levels[2];
@@ -199,19 +203,20 @@ public:
 		if (this->levelIndex > 3) this->window.close();
 
 		if (levels[levelIndex] == nullptr && levelIndex == 1) {
-			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 2) {
-			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 3) {
-			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 	}
 
 	void drawEverything() {
 		levels[levelIndex]->drawEverything(this->window, this->background, &Inv, sunCount, &PF, &ZF, lawnmowers, lives, &sun, sunCountText);
 		this->window.draw(this->TimeText);
+		this->score.draw(this->window);
 	}
 
 

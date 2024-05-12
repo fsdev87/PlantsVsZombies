@@ -14,7 +14,7 @@ class NightGarden : public Level {
 	RectangleShape garden[5][9];
 
 public:
-	NightGarden(Background& background, PlantFactory* PF, ZombieFactory* ZF, Inventory* Inv, TextureManager* TM, FontManager* FM, SoundManager* SM, Clock* runClock, Text* sunCountText, int& sunCount, LawnMower** lawnmowers, float* lawnMowerPos) : Level(TM, FM, SM) {
+	NightGarden(Background& background, PlantFactory* PF, ZombieFactory* ZF, Inventory* Inv, TextureManager* TM, FontManager* FM, SoundManager* SM, Clock* runClock, Text* sunCountText, int& sunCount, LawnMower** lawnmowers, float* lawnMowerPos, Scoreboard* scoreboard) : Level(TM, FM, SM, scoreboard) {
 
 		this->resetEverything(PF, ZF);
 

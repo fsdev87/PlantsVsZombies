@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "FontManager.h"
 #include "SoundManager.h"
+#include "Scoreboard.h"
 using namespace std;
 using namespace sf;
 
@@ -20,13 +21,14 @@ protected:
 	SoundManager* SMptr;
 	FontManager* FMptr;
 	TextureManager* TMptr;
-
+	Scoreboard* SBptr;
 	int round;
 public:
-	Level(TextureManager* TM, FontManager* FM, SoundManager* SM) {
+	Level(TextureManager* TM, FontManager* FM, SoundManager* SM, Scoreboard* scoreboard) {
 		this->SMptr = SM;
 		this->FMptr = FM;
 		this->TMptr = TM;
+		this->SBptr = scoreboard;
 
 		this->levelText.setFont(FM->operator[](2));
 		this->levelText.setCharacterSize(120);
@@ -59,7 +61,7 @@ public:
 
 		// Update everything here
 		// check for collisions, animation, shooting, everything
-		PF->updateEverything(ZF->getZombies(), ZF->getZombiesArrayIndex());
+		PF->updateEverything(ZF->getZombies(), ZF->getZombiesArrayIndex(), this->SBptr);
 
 		ZF->updateEverything(PF->getPlants(), PF->getPlantsArrayIndex(), lawnmowers, &lives, this->round);
 

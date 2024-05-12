@@ -6,7 +6,7 @@
 #include <ctime>
 
 #include "SoundManager.h"
-
+#include "Scoreboard.h"
 #include "iostream"
 using namespace std;
 using namespace sf;
@@ -59,9 +59,9 @@ public:
 	}
 	virtual void shoot(Zombie** zombies, int zombiesArrayIndex) {}
 	virtual void generateSun() {}
-	virtual void explode(Zombie** zombies, int zombiesArrayIndex, SoundManager* SMptr) {}
+	virtual void explode(Zombie** zombies, int zombiesArrayIndex, SoundManager* SMptr, Scoreboard* scoreboard) {}
 	virtual void clickSun(int& sunCount, SoundManager* SMptr) {}
-	virtual void moveBullets(Zombie** zombies, int zombiesArrayIndex) {}
+	virtual void moveBullets(Zombie** zombies, int zombiesArrayIndex, Scoreboard* scoreboard) {}
 	virtual void restartBulletClock() {}
 	virtual void activate(Texture& tex) {}
 	virtual void move(Zombie** zombies, int zombiesArrayIndex) {}

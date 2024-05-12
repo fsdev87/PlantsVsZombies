@@ -6,6 +6,7 @@ public:
 	NormalZombie(Texture& tex, int columns, float pos[2], TextureManager* TM, SoundManager* SM) {
 		this->SMptr = SM;
 		this->TMptr = TM;
+		this->type = "normal";
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 		this->speed = 0.0625;

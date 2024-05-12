@@ -14,6 +14,7 @@ class DancingZombie : public Zombie {
 
 public:
 	DancingZombie(Texture& tex, int columns, float pos[2], TextureManager* tm, SoundManager* sm) {
+		this->type = "dancing";
 		this->SMptr = sm;
 		this->TMptr = tm;
 		this->sprite.setTexture(tex);

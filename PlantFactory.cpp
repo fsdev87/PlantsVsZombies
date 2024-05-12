@@ -69,7 +69,7 @@ void PlantFactory::handleWallnutClick(int gx, int gy) {
 	}
 };
 
-void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
+void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex, Scoreboard* scoreboard) {
 	for (int i = 0; i < this->plantsArrayIndex && this->plants[i] != nullptr; i++) {
 		if (this->plants[i]->getExist() || plants[i]->getDead()) {
 			this->plants[i]->animate();
@@ -92,8 +92,8 @@ void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
 			else {
 				this->plants[i]->restartBulletClock();
 			}
-			this->plants[i]->moveBullets(zombies, zombiesArrayIndex);
-			this->plants[i]->explode(zombies, zombiesArrayIndex, SMptr);
+			this->plants[i]->moveBullets(zombies, zombiesArrayIndex, scoreboard);
+			this->plants[i]->explode(zombies, zombiesArrayIndex, SMptr, scoreboard);
 
 			this->plants[i]->move(zombies, zombiesArrayIndex);
 		}
