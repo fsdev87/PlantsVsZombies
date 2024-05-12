@@ -29,7 +29,11 @@ class Game {
 	Background background;
 	Inventory Inv;
 
+	// gameover things
 	GameOver gameover;
+	string playerName = "";
+	Text nameText;
+	//
 
 	int sunCount = 100;
 	Text sunCountText;
@@ -52,13 +56,14 @@ class Game {
 	Menu menu;
 
 
-	bool showMenu = true;
+	//bool showMenu = true;
+	bool showMenu = false;
 	bool showHighScores = false;
 	bool quit = false;
 	bool restarted = false;
 	bool hasStarted = false;
 	bool showInstructions = false;
-	bool gameOver = false;
+	bool gameOver = true;
 
 	int highScores[10] = {};
 	Text HighScores[10], heading;
@@ -113,6 +118,13 @@ public:
 			this->lawnmowers[i] = new LawnMower(&TM, this->lawnMowerPos);
 		}
 
+		// name text
+		this->nameText.setFont(this->FM[0]);
+		this->nameText.setCharacterSize(50);
+		this->nameText.setPosition(600, 500);
+		this->nameText.setString(this->playerName);
+		this->nameText.setFillColor(Color::White);
+
 	}
 
 	void restartGame() {
@@ -128,6 +140,8 @@ public:
 		this->lives.reset();
 		this->sun.reset();
 		this->Inv.reset();
+
+		this->playerName = "";
 
 		for (int i = 0; i < 5; i++) {
 			this->lawnMowerPos[1] = i;
@@ -367,8 +381,9 @@ public:
 		while (this->window.isOpen()) {
 			Event event;
 			while (this->window.pollEvent(event)) {
-				if (event.type == Event::Closed)
+				if (event.type == Event::Closed) {
 					this->window.close();
+				}
 				if (event.type == Event::KeyPressed) {
 					if (event.key.code == Keyboard::Escape) {
 						if (this->showHighScores) {
@@ -437,6 +452,24 @@ public:
 						}
 					}
 				}
+				else if (event.type == Event::TextEntered) {
+					if (this->gameOver) {
+						if (event.text.unicode < 128 && event.text.unicode != 8) { // shouldn't be backspace
+							this->playerName += static_cast<char>(event.text.unicode);
+							this->nameText.setString(this->playerName);
+						}
+						else if (event.text.unicode == 8) { // backspace pressed
+							if (this->playerName.length() > 0) {
+								string temp = this->playerName;
+								this->playerName = "";
+								for (int i = 0; i < temp.length() - 1; i++) {
+									this->playerName += temp[i];
+								}
+								this->nameText.setString(this->playerName);
+							}
+						}
+					}
+				}
 				else if (event.type == Event::MouseButtonPressed) {
 					if (!this->showMenu && !this->showHighScores) {
 						if (event.mouseButton.button == Mouse::Left) {
@@ -496,6 +529,7 @@ public:
 			else if (this->gameOver) {
 				this->window.clear();
 				this->gameover.draw(this->window);
+				this->window.draw(this->nameText);
 				this->window.display();
 			}
 			else {
