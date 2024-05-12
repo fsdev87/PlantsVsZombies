@@ -27,6 +27,22 @@ public:
 		this->speed = 0.0625;
 	}
 
+
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		this->sprite.setPosition(305 + this->position[0] * 80, 95 + this->position[1] * 96);
+
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->exists = exists;
+	}
+
 	void changeSprite(Texture& tex) {
 		this->sprite = Sprite(tex);
 	}

@@ -5,6 +5,7 @@
 using namespace sf;
 using namespace std;
 
+
 class Background {
 	Sprite backgroundSprite;
 public:

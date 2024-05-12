@@ -30,6 +30,21 @@ public:
 		this->yFactor = 20;
 	}
 
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&sunDelay), sizeof(float));
+	}
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&sunDelay), sizeof(float));
+	}
+
 	float* getPosition() {
 		return this->position;
 	}

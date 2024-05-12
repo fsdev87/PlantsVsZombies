@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "FontManager.h"
+#include <fstream>
 #include "SoundManager.h"
 #include "Scoreboard.h"
 using namespace std;
@@ -9,7 +10,6 @@ using namespace sf;
 
 class Level {
 protected:
-	string str;
 	Text levelText;
 	float levelPosition[2];
 	const float middle1 = 450, middle2 = 620;
@@ -42,6 +42,29 @@ public:
 		//this->SMptr->playSound("round1");
 
 	}
+
+
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&levelPosition[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&levelPosition[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&speed), sizeof(float));
+
+		file.write(reinterpret_cast<char*>(&midWay), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&levelPosition[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&levelPosition[1]), sizeof(float));
+		this->levelText.setPosition(levelPosition[0], levelPosition[1]);
+
+
+		file.read(reinterpret_cast<char*>(&speed), sizeof(float));
+
+		file.read(reinterpret_cast<char*>(&midWay), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+	}
+
 	void reset() {
 		this->levelPosition[0] = -250, levelPosition[1] = 250;
 		this->levelText.setPosition(levelPosition[0], levelPosition[1]);

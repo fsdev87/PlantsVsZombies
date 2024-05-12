@@ -31,6 +31,12 @@ public:
 		this->yFactor = 90;
 		this->eatClock.restart();
 	}
+
+
+	virtual void saveEverything(ofstream& file) = 0;
+	virtual void readEverything(ifstream& file) = 0;
+
+
 	float* getPosition() {
 		return this->position;
 	}

@@ -54,15 +54,19 @@ void ZombieFactory::spawnZombie(int round) {
 
 		switch (zombieType) {
 		case 0:
+			this->types[this->zombiesArrayIndex] = "normal";
 			this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
 			break;
 		case 1:
+			this->types[this->zombiesArrayIndex] = "football";
 			this->zombies[this->zombiesArrayIndex] = new FootballZombie(this->TMptr->getTexture("football-walk"), 11, this->pos, this->TMptr, this->SMptr);
 			break;
 		case 2:
+			this->types[this->zombiesArrayIndex] = "dancing";
 			this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
 			break;
 		case 3:
+			this->types[this->zombiesArrayIndex] = "flying";
 			this->zombies[this->zombiesArrayIndex] = new FlyingZombie(this->TMptr->getTexture("flying-zombie"), 11, this->pos, this->TMptr, this->SMptr);
 			break;
 		}
@@ -77,15 +81,19 @@ void ZombieFactory::spawnZombie(int round) {
 
 			switch (zombieType) {
 			case 0:
+				this->types[this->zombiesArrayIndex] = "normal";
 				this->zombies[this->zombiesArrayIndex] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, this->pos, this->TMptr, this->SMptr);
 				break;
 			case 1:
+				this->types[this->zombiesArrayIndex] = "football";
 				this->zombies[this->zombiesArrayIndex] = new FootballZombie(this->TMptr->getTexture("football-walk"), 11, this->pos, this->TMptr, this->SMptr);
 				break;
 			case 2:
+				this->types[this->zombiesArrayIndex] = "dancing";
 				this->zombies[this->zombiesArrayIndex] = new DancingZombie(this->TMptr->getTexture("dancing-walk-1"), 21, this->pos, this->TMptr, this->SMptr);
 				break;
 			case 3:
+				this->types[this->zombiesArrayIndex] = "flying";
 				this->zombies[this->zombiesArrayIndex] = new FlyingZombie(this->TMptr->getTexture("flying-zombie"), 11, this->pos, this->TMptr, this->SMptr);
 				break;
 			}

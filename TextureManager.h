@@ -46,6 +46,8 @@ private:
 		cout << "Loading Textures\n";
 		this->addTexture("assets/Screens/ChooserBackground.png", "inventory"); // Inventory Background
 
+		this->addTexture("assets/Background/levelbg.png", "levelbg");
+
 		this->addTexture("assets/Background/bgday.jpg", "bgday");
 		this->addTexture("assets/Background/bgnight.jpg", "bgnight");
 		this->addTexture("assets/Background/limitedbg.jpg", "limitedbg");

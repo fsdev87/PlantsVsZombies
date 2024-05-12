@@ -24,6 +24,35 @@ public:
 		//this->startClock.restart();
 	}
 
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&health), sizeof(int));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->anim.saveEverything(file);
+
+		this->bullet.saveEverything(file);
+
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
+
+		file.read(reinterpret_cast<char*>(&health), sizeof(int));
+		this->health = health;
+
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->exists = exists;
+
+		this->anim.readEverything(file);
+
+
+		this->bullet.readEverything(file);
+
+	}
+
 
 	void shoot(Zombie** zomb, int zombiesArrayIndex) {
 		/*if (this->startClock.getElapsedTime().asSeconds() < 2) {

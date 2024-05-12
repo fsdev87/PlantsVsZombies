@@ -36,6 +36,78 @@ public:
 		this->headAnim = Animation(150, 186, 9);
 	}
 
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&health), sizeof(int));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->anim.saveEverything(file);
+
+		this->headAnim.saveEverything(file);
+
+		file.write(reinterpret_cast<char*>(&speed), sizeof(float));
+		file.write(reinterpret_cast<char*>(&moveDelay), sizeof(float));
+		file.write(reinterpret_cast<char*>(&limit), sizeof(float));
+
+		file.write(reinterpret_cast<char*>(&state), sizeof(string));
+
+		file.write(reinterpret_cast<char*>(&eatIndex), sizeof(int));
+
+		file.write(reinterpret_cast<char*>(&flicker), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&ashes), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&dead), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&blocked), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&headFall), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&headOnceFell), sizeof(bool));
+
+
+		// own
+		file.write(reinterpret_cast<char*>(&spawnIndex[0]), sizeof(int));
+		file.write(reinterpret_cast<char*>(&spawnIndex[1]), sizeof(int));
+		file.write(reinterpret_cast<char*>(&spawnIndex[2]), sizeof(int));
+		file.write(reinterpret_cast<char*>(&spawnIndex[3]), sizeof(int));
+
+		file.write(reinterpret_cast<char*>(&danceDelay), sizeof(float));
+
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+
+		file.read(reinterpret_cast<char*>(&health), sizeof(int));
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->anim.readEverything(file);
+
+		this->headAnim.readEverything(file);
+
+		file.read(reinterpret_cast<char*>(&speed), sizeof(float));
+		file.read(reinterpret_cast<char*>(&moveDelay), sizeof(float));
+		file.read(reinterpret_cast<char*>(&limit), sizeof(float));
+
+		file.read(reinterpret_cast<char*>(&state), sizeof(string));
+
+		file.read(reinterpret_cast<char*>(&eatIndex), sizeof(int));
+
+		file.read(reinterpret_cast<char*>(&flicker), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&ashes), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&dead), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&blocked), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&headFall), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&headOnceFell), sizeof(bool));
+
+
+		// own
+		file.read(reinterpret_cast<char*>(&spawnIndex[0]), sizeof(int));
+		file.read(reinterpret_cast<char*>(&spawnIndex[1]), sizeof(int));
+		file.read(reinterpret_cast<char*>(&spawnIndex[2]), sizeof(int));
+		file.read(reinterpret_cast<char*>(&spawnIndex[3]), sizeof(int));
+
+		file.read(reinterpret_cast<char*>(&danceDelay), sizeof(float));
+
+	}
+
 	virtual void animate() {
 		this->anim.animate(this->sprite);
 		if (this->headFall) {

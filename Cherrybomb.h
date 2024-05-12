@@ -20,6 +20,38 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 	}
 
+
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&health), sizeof(int));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->anim.saveEverything(file);
+
+		file.write(reinterpret_cast<char*>(&columns), sizeof(int));
+
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
+
+		file.read(reinterpret_cast<char*>(&health), sizeof(int));
+		this->health = health;
+
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->exists = exists;
+
+		this->anim.readEverything(file);
+
+		file.read(reinterpret_cast<char*>(&columns), sizeof(int));
+		this->columns = columns;
+
+
+
+	}
+
 	virtual void explode(Zombie** zombies, int zombiesArrayIndex, SoundManager* SMptr, Scoreboard* scoreboard) {
 		if (this->exists) {
 			int frame = this->anim.getFrame();

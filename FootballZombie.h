@@ -30,7 +30,69 @@ public:
 		this->headAnim = Animation(150, 186, 12);
 	}
 
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&health), sizeof(int));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 
+		this->anim.saveEverything(file);
+
+		this->headAnim.saveEverything(file);
+
+		file.write(reinterpret_cast<char*>(&speed), sizeof(float));
+		file.write(reinterpret_cast<char*>(&moveDelay), sizeof(float));
+		file.write(reinterpret_cast<char*>(&limit), sizeof(float));
+
+		file.write(reinterpret_cast<char*>(&state), sizeof(string));
+
+		file.write(reinterpret_cast<char*>(&eatIndex), sizeof(int));
+
+		file.write(reinterpret_cast<char*>(&flicker), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&ashes), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&dead), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&blocked), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&headFall), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&headOnceFell), sizeof(bool));
+
+		// own
+		file.write(reinterpret_cast<char*>(&reverseDelay), sizeof(float));
+		file.write(reinterpret_cast<char*>(&direction), sizeof(string));
+
+
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&health), sizeof(int));
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->anim.readEverything(file);
+
+		this->headAnim.readEverything(file);
+
+		file.read(reinterpret_cast<char*>(&speed), sizeof(float));
+		file.read(reinterpret_cast<char*>(&moveDelay), sizeof(float));
+		file.read(reinterpret_cast<char*>(&limit), sizeof(float));
+
+		file.read(reinterpret_cast<char*>(&state), sizeof(string));
+
+		file.read(reinterpret_cast<char*>(&eatIndex), sizeof(int));
+
+		file.read(reinterpret_cast<char*>(&flicker), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&ashes), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&dead), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&blocked), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&headFall), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&headOnceFell), sizeof(bool));
+
+		// own
+		file.read(reinterpret_cast<char*>(&reverseDelay), sizeof(float));
+		file.read(reinterpret_cast<char*>(&direction), sizeof(string));
+
+
+	}
 
 	void makeDead() {
 		if (this->exists == false && this->ashes != true) {

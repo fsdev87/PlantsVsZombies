@@ -27,7 +27,7 @@ int& PlantFactory::getPlantsArrayIndexByRef() { return this->plantsArrayIndex; }
 // Handle placing of plant from inventory
 void PlantFactory::handlePlacing(Inventory* Inv, int gx, int gy, int& sunCount, int round) {
 	if (Inv->hasSelectedSomething()) {
-		Inv->handlePlacing(gx, gy, plants, plantsArrayIndex, sunCount, round);
+		Inv->handlePlacing(gx, gy, plants, plantsArrayIndex, sunCount, round, this->types);
 	}
 }
 

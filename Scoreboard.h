@@ -19,6 +19,18 @@ public:
 		rect.setFillColor(Color(191, 105, 44, 245));
 		rect.setPosition(5, 540);
 	}
+
+	void saveEverything(ofstream& file) {
+
+		file.write(reinterpret_cast<char*>(&score), sizeof(int));
+
+	}
+
+	void readEverything(ifstream& file) {
+
+		file.read(reinterpret_cast<char*>(&score), sizeof(int));
+
+	}
 	void addScore(int n) {
 		this->score += n;
 		this->scoreText.setString("Score: " + to_string(this->score));

@@ -26,6 +26,25 @@ public:
 		this->speed = 0.03125;
 		this->moveClock.restart();
 	}
+
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&active), sizeof(bool));
+		this->anim.saveEverything(file);
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&active), sizeof(bool));
+		this->anim.readEverything(file);
+	}
+
 	bool getExists() { return this->exists; }
 
 	void activate() {

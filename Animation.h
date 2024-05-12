@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
 using namespace sf;
 using namespace std;
 
@@ -32,6 +33,18 @@ public:
 			this->animClock.restart();
 		}
 		if (this->frame >= this->columns) this->frame = 0;
+	}
+
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&frame), sizeof(int));
+		file.write(reinterpret_cast<char*>(&columns), sizeof(int));
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&frame), sizeof(int));
+		this->frame = frame;
+		file.read(reinterpret_cast<char*>(&columns), sizeof(int));
+		this->columns = columns;
 	}
 
 	void setFrame(int f) { this->frame = f; this->animClock.restart(); }

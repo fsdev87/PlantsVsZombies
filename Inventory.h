@@ -63,6 +63,19 @@ public:
 		loadInventory();
 	}
 
+
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&index), sizeof(int));
+		file.write(reinterpret_cast<char*>(&rectIndex), sizeof(int));
+		file.write(reinterpret_cast<char*>(&selected), sizeof(bool));
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&index), sizeof(int));
+		file.read(reinterpret_cast<char*>(&rectIndex), sizeof(int));
+		file.read(reinterpret_cast<char*>(&selected), sizeof(bool));
+	}
+
 	bool hasSelectedSomething() { return this->selected; }
 
 	void addCard(Texture& dim, Texture& bright, string n, int cost) {
@@ -144,7 +157,7 @@ public:
 		}
 	}
 
-	void handlePlacing(int gx, int gy, Plant** plants, int& plantsArrayIndex, int& sunCount, int round) {
+	void handlePlacing(int gx, int gy, Plant** plants, int& plantsArrayIndex, int& sunCount, int round, string* types) {
 
 		if (round >= 4 && gx > 2) {
 			this->selected = false;
@@ -184,18 +197,30 @@ public:
 		}
 
 		// only place the plant if the sunCount amount is sufficient
-		if (indexInInventory == 0 && sunCount >= 50)
+		if (indexInInventory == 0 && sunCount >= 50) {
 			plants[tempIndex] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("icon-sun"), 18, pos);
-		else if (indexInInventory == 1 && sunCount >= 100)
+			types[tempIndex] = "sunflower";
+		}
+		else if (indexInInventory == 1 && sunCount >= 100) {
 			plants[tempIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
-		else if (indexInInventory == 2 && sunCount >= 200)
+			types[tempIndex] = "peashooer";
+		}
+		else if (indexInInventory == 2 && sunCount >= 200) {
 			plants[tempIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
-		else if (indexInInventory == 3 && sunCount >= 50)
+			types[tempIndex] = "repeater";
+		}
+		else if (indexInInventory == 3 && sunCount >= 50) {
 			plants[tempIndex] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
-		else if (indexInInventory == 4 && sunCount >= 175)
+			types[tempIndex] = "wallnut";
+		}
+		else if (indexInInventory == 4 && sunCount >= 175) {
 			plants[tempIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
-		else if (indexInInventory == 5 && sunCount >= 150)
+			types[tempIndex] = "snowpea";
+		}
+		else if (indexInInventory == 5 && sunCount >= 150) {
 			plants[tempIndex] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 18, pos);
+			types[tempIndex] = "cherrybomb";
+		}
 		// otherwise say insufficient amount
 		this->SMptr->playSound("place2");
 

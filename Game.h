@@ -20,6 +20,7 @@
 #include "NightGarden.h"
 #include "LimitedGarden.h"
 #include "GameOver.h"
+#include "NextLevel.h"
 
 class Game {
 	// window
@@ -43,11 +44,16 @@ class Game {
 
 	// win things
 	Sprite winSprite;
-
 	//
 
+	// level delay things
+	NextLevel NL;
+	float levelDelay = 5;
+	Clock levelDelayClock;
+	bool nextLevel = false;
 
-	int sunCount = 100;
+
+	int sunCount = 1000;
 	Text sunCountText;
 
 
@@ -62,11 +68,10 @@ class Game {
 	FallingSun sun;
 
 
-	Text TimeText;
 	string timeString;
+	Text TimeText;
 
 	Menu menu;
-
 
 	bool showMenu = true;
 	bool showHighScores = false;
@@ -92,7 +97,7 @@ class Game {
 	float gameTime;
 	Clock* runClock = nullptr;
 	float remainingTime = 120;
-	//float remainingTime = 12; // for testing
+	//float remainingTime = 5; // for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -100,8 +105,9 @@ class Game {
 
 	Scoreboard score;
 
+
 public:
-	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM) {
+	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM), NL(&TM) {
 
 
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
@@ -173,6 +179,102 @@ public:
 		this->winSprite.setPosition(0, 0);
 	}
 
+
+	void saveEverything() {
+
+		cout << "Opened file to write\n";
+		ofstream file;
+		file.open("saved.dat", ios::out | ios::binary);
+
+		file.write(reinterpret_cast<char*>(&levelIndex), sizeof(int));
+
+		file.write(reinterpret_cast<char*>(&sunCount), sizeof(int));
+
+		file.write(reinterpret_cast<char*>(&showMenu), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&showHighScores), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&quit), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&restarted), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&hasStarted), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&showInstructions), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&gameOver), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&hasWon), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&nextLevel), sizeof(bool));
+
+		file.write(reinterpret_cast<char*>(&gameTime), sizeof(float));
+		file.write(reinterpret_cast<char*>(&remainingTime), sizeof(float));
+
+		PF.saveEverything(file);
+		ZF.saveEverything(file);
+		score.saveEverything(file);
+		Inv.saveEverything(file);
+		for (int i = 0; i < 5; i++) lawnmowers[i]->saveEverything(file);
+		lives.saveEverything(file);
+
+		sun.saveEverything(file);
+
+		levels[levelIndex]->saveEverything(file);
+
+		file.close();
+
+		cout << "Finished writing\n";
+
+	}
+
+	void readEverything() {
+		cout << "Opening to read\n";
+		ifstream file;
+		file.open("saved.dat", ios::in | ios::binary);
+
+		cout << "Reading game.h primitive data types\n";
+		file.read(reinterpret_cast<char*>(&levelIndex), sizeof(int));
+
+		file.read(reinterpret_cast<char*>(&sunCount), sizeof(int));
+		this->sunCount = sunCount;
+		this->sunCountText.setString(to_string(this->sunCount));
+
+		file.read(reinterpret_cast<char*>(&showMenu), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&showHighScores), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&quit), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&restarted), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&hasStarted), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&showInstructions), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&gameOver), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&hasWon), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&nextLevel), sizeof(bool));
+
+		file.read(reinterpret_cast<char*>(&gameTime), sizeof(float));
+		file.read(reinterpret_cast<char*>(&remainingTime), sizeof(float));
+
+
+		cout << "Reading plant factory\n";
+		PF.readEverything(file);
+
+		cout << "Reading zombie factory\n";
+		ZF.readEverything(file);
+
+		cout << "Reading scores\n";
+		score.readEverything(file);
+
+		cout << "Reading inventory\n";
+		Inv.readEverything(file);
+
+		cout << "Reading lawnmowers\n";
+		for (int i = 0; i < 5; i++) lawnmowers[i]->readEverything(file);
+
+		cout << "Reading lives\n";
+		lives.readEverything(file);
+		// 
+		cout << "Reading suns\n";
+		sun.readEverything(file);
+		// 
+		cout << "Reading levels\n";
+		levels[levelIndex]->readEverything(file);
+
+		file.close();
+		cout << "Finished reading\n";
+
+	}
+
 	void restartGame() {
 		this->restarted = false, this->showMenu = false, this->showHighScores = false; // maybe redundant work
 		this->hasWon = false;
@@ -211,15 +313,11 @@ public:
 		this->runClock->restart();
 		this->levelIndex++;
 		this->remainingTime = 120;
-		//this->remainingTime = 10; //for testing
+		//this->remainingTime = 5; //for testing
 		this->TimeText.setFillColor(Color::Black);
 		this->sun.reset();
 		this->sunCount = 100;
 
-		/*if (this->levelIndex > 3) {
-			this->hasWon = true;
-			return;
-		}*/
 
 		if (levels[levelIndex] == nullptr && levelIndex == 1) {
 			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
@@ -251,6 +349,9 @@ public:
 		}
 
 		if (this->gameTime <= 0) {
+			this->nextLevel = true;
+			this->levelDelayClock.restart();
+
 			this->updateRound();
 		}
 
@@ -455,9 +556,11 @@ public:
 							this->showInstructions = false;
 						}
 						else {
-							if (!this->showMenu) {
+							if (!this->showMenu && !this->nextLevel) {
 								this->showMenu = true;
-								this->remainingTime = this->remainingTime - this->runClock->getElapsedTime().asSeconds();
+								if (this->runClock) {
+									this->remainingTime = this->remainingTime - this->runClock->getElapsedTime().asSeconds();
+								}
 								if (this->runClock) delete this->runClock;
 								this->runClock = nullptr;
 							}
@@ -465,6 +568,12 @@ public:
 					}
 					else if (event.key.code == Keyboard::C) {
 						system("cls");
+					}
+					else if (event.key.code == Keyboard::W) {
+						saveEverything();
+					}
+					else if (event.key.code == Keyboard::S) {
+						readEverything();
 					}
 					else if (event.key.code == Keyboard::Return) {
 						if (this->showMenu) {
@@ -585,7 +694,7 @@ public:
 			}
 
 
-			if (this->showMenu && !this->gameOver && !this->hasWon) {
+			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel) {
 				this->window.clear();
 				this->menu.display(this->window);
 				if (this->showHighScores) {
@@ -629,6 +738,25 @@ public:
 				this->window.draw(this->pressEnter);
 
 				this->window.display();
+			}
+			else if (this->nextLevel) {
+				if (this->levelIndex > 3) {
+					this->nextLevel = false;
+				}
+				else {
+					if (this->levelDelayClock.getElapsedTime().asSeconds() < this->levelDelay) {
+						this->window.clear();
+						this->NL.drawLevel(this->window, this->levelIndex);
+						this->window.display();
+						this->PF.reset();
+						this->ZF.reset();
+						this->sun.reset();
+						this->runClock->restart();
+					}
+					else {
+						this->nextLevel = false;
+					}
+				}
 			}
 			else {
 				this->window.clear();

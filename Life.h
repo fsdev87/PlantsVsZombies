@@ -25,6 +25,14 @@ public:
 		this->lifeText.setFillColor(Color::Black);
 	}
 
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&lifeIndex), sizeof(int));
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&lifeIndex), sizeof(int));
+	}
+
 	void decrementLives() {
 		if (this->lifeIndex == 0) return;
 		this->lifeIndex--;

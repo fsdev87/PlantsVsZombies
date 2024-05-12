@@ -50,6 +50,9 @@ public:
 	/*float getSpeed() { return this->speed; }
 	void setSpeed(float val) { this->speed = val; }*/
 
+	virtual void saveEverything(ofstream& file) = 0;
+	virtual void readEverything(ifstream& file) = 0;
+
 	string getType() { return this->type; }
 
 	void setAnimDelay(float val) { this->anim.setDelay(val); }

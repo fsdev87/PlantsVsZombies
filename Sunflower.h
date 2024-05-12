@@ -28,6 +28,33 @@ public:
 
 	}
 
+	void saveEverything(ofstream& file) {
+		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&health), sizeof(int));
+		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->anim.saveEverything(file);
+
+		file.write(reinterpret_cast<char*>(&showSun), sizeof(bool));
+	}
+
+	void readEverything(ifstream& file) {
+		file.read(reinterpret_cast<char*>(&position[0]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
+		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
+		this->sunSprite.setPosition(xFactor + 30 + position[0] * 80, yFactor + position[1] * 96 - 10);
+
+		file.read(reinterpret_cast<char*>(&health), sizeof(int));
+		this->health = health;
+
+		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+		this->exists = exists;
+
+		this->anim.readEverything(file);
+
+		file.read(reinterpret_cast<char*>(&showSun), sizeof(bool));
+	}
+
 	void generateSun() {
 		if (this->showSunClock.getElapsedTime().asSeconds() < 10.0) return;
 		if (this->exists) {
