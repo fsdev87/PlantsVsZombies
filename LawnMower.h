@@ -42,7 +42,7 @@ public:
 		//cout << "Animating" << endl;
 	}
 
-	void move(Zombie** zombies, int zombiesArrayIndex) {
+	void move(Zombie** zombies, int zombiesArrayIndex, Scoreboard* scoreboard) {
 		if (!this->active) return;
 		if (moveClock.getElapsedTime().asMilliseconds() <= 5) {
 			return;
@@ -54,6 +54,7 @@ public:
 					if (!zombies[i]->getHeadFall()) zombies[i]->setHeadFall(true);
 					zombies[i]->setExist(false);
 					zombies[i]->makeDead();
+					scoreboard->addScore(20);
 					this->moveClock.restart();
 
 					return;

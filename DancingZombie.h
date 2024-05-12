@@ -200,7 +200,7 @@ public:
 
 	void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies) {
 		if (this->exists == false) return;
-		if (this->spawnClock.getElapsedTime().asSeconds() < 15) return;
+		if (this->spawnClock.getElapsedTime().asSeconds() < 8) return;
 
 		for (int i = 0; i < 4; i++) {
 			if (spawnIndex[i] != -1) {

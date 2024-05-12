@@ -64,7 +64,7 @@ public:
 	virtual void moveBullets(Zombie** zombies, int zombiesArrayIndex, Scoreboard* scoreboard) {}
 	virtual void restartBulletClock() {}
 	virtual void activate(Texture& tex) {}
-	virtual void move(Zombie** zombies, int zombiesArrayIndex) {}
+	virtual void move(Zombie** zombies, int zombiesArrayIndex, Scoreboard* scoreboard) {}
 
 	virtual ~Plant() {}
 };

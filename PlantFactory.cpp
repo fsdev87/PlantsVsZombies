@@ -95,7 +95,7 @@ void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex, Sco
 			this->plants[i]->moveBullets(zombies, zombiesArrayIndex, scoreboard);
 			this->plants[i]->explode(zombies, zombiesArrayIndex, SMptr, scoreboard);
 
-			this->plants[i]->move(zombies, zombiesArrayIndex);
+			this->plants[i]->move(zombies, zombiesArrayIndex, scoreboard);
 		}
 	}
 }

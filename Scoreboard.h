@@ -15,13 +15,23 @@ public:
 		this->scoreText.setString("Score: " + to_string(this->score));
 		this->scoreText.setFillColor(Color::White);
 
-		rect.setSize(Vector2f(225, 60));
-		rect.setFillColor(Color(191, 105, 44, 255));
+		rect.setSize(Vector2f(245, 60));
+		rect.setFillColor(Color(191, 105, 44, 245));
 		rect.setPosition(5, 540);
 	}
 	void addScore(int n) {
 		this->score += n;
 		this->scoreText.setString("Score: " + to_string(this->score));
+
+		if (this->score > 100) {
+			rect.setSize(Vector2f(260, 60));
+		}
+		else if (this->score > 1000) {
+			rect.setSize(Vector2f(280, 60));
+		}
+		else if (this->score > 10000) {
+			rect.setScale(Vector2f(300, 60));
+		}
 	}
 
 	int getScore() { return this->score; }

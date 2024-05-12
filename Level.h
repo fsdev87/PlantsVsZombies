@@ -70,7 +70,7 @@ public:
 		sun.moveSun();
 
 		for (int i = 0; i < 5; i++) {
-			lawnmowers[i]->move(ZF->getZombies(), ZF->getZombiesArrayIndex());
+			lawnmowers[i]->move(ZF->getZombies(), ZF->getZombiesArrayIndex(), this->SBptr);
 			lawnmowers[i]->animate();
 		}
 	}

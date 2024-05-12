@@ -50,7 +50,7 @@ public:
 	}
 
 
-	void move(Zombie** zombies, int zombiesArrayIndex) {
+	void move(Zombie** zombies, int zombiesArrayIndex, Scoreboard* scoreboard) {
 		if (!this->active) return;
 		if (this->moveClock.getElapsedTime().asMilliseconds() <= 20) {
 			return;
@@ -62,6 +62,7 @@ public:
 					if (!zombies[i]->getHeadFall()) zombies[i]->setHeadFall(true);
 					zombies[i]->setExist(false);
 					zombies[i]->makeDead();
+					scoreboard->addScore(20);
 					this->moveClock.restart();
 
 					return;
