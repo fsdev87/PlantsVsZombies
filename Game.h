@@ -13,7 +13,8 @@
 #include "FallingSun.h"
 #include "Menu.h"
 #include <cmath>
-#include <sstream>
+#include "Scoreboard.h"
+
 #include "BeginnersGarden.h"
 #include "FullGarden.h"
 #include "NightGarden.h"
@@ -40,8 +41,11 @@ class Game {
 	Text pressEnterS;
 	//
 
-	// score
-	int score = 0;
+	// win things
+	Sprite winSprite;
+
+	//
+
 
 	int sunCount = 100;
 	Text sunCountText;
@@ -64,14 +68,14 @@ class Game {
 	Menu menu;
 
 
-	//bool showMenu = true;
-	bool showMenu = false;
+	bool showMenu = true;
 	bool showHighScores = false;
 	bool quit = false;
 	bool restarted = false;
 	bool hasStarted = false;
 	bool showInstructions = false;
-	bool gameOver = true;
+	bool gameOver = false;
+	bool hasWon = false;
 
 	int highScores[10] = {};
 	string names[10] = {};
@@ -92,11 +96,14 @@ class Game {
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
+
+	Scoreboard score;
+
 public:
-	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM) {
+	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM), score(&FM) {
 
 
-		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		levels[1] = nullptr;
 		levels[2] = nullptr;
 		levels[3] = nullptr;
@@ -160,10 +167,14 @@ public:
 
 		initHighScores();
 
+		// win screen
+		this->winSprite = Sprite(this->TM.getTexture("win"));
+		this->winSprite.setPosition(0, 0);
 	}
 
 	void restartGame() {
 		this->restarted = false, this->showMenu = false, this->showHighScores = false; // maybe redundant work
+		this->hasWon = false;
 
 		this->menu.setMenuIndex(0);
 		this->remainingTime = 120;
@@ -177,7 +188,7 @@ public:
 		this->Inv.reset();
 
 		this->playerName = "";
-		this->score = 0;
+		this->score.resetScore();
 
 		for (int i = 0; i < 5; i++) {
 			this->lawnMowerPos[1] = i;
@@ -185,7 +196,7 @@ public:
 		}
 
 		if (this->levels[0] != nullptr) delete this->levels[0];
-		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		if (this->levels[1] != nullptr) delete this->levels[1];
 		levels[1] = nullptr;
 		if (this->levels[2] != nullptr) delete this->levels[2];
@@ -199,43 +210,50 @@ public:
 		this->runClock->restart();
 		this->levelIndex++;
 		this->remainingTime = 120;
-		//this->remainingTime = 60; //for testing
+		//this->remainingTime = 10; //for testing
 		this->TimeText.setFillColor(Color::Black);
 		this->sun.reset();
 		this->sunCount = 100;
 
-		if (this->levelIndex > 3) this->window.close();
+		/*if (this->levelIndex > 3) {
+			this->hasWon = true;
+			return;
+		}*/
 
 		if (levels[levelIndex] == nullptr && levelIndex == 1) {
-			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 2) {
-			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 3) {
-			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
+			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 	}
 
 	void drawEverything() {
+		if (this->hasWon || this->levelIndex > 3) return;
 		levels[levelIndex]->drawEverything(this->window, this->background, &Inv, sunCount, &PF, &ZF, lawnmowers, lives, &sun, sunCountText);
 		this->window.draw(this->TimeText);
+		this->score.draw(this->window);
 	}
 
 
 	void updateEverything() {
+		if (this->hasWon || this->levelIndex > 3) return;
 		levels[levelIndex]->updateEverything(&PF, &ZF, lawnmowers, lives, sun);
 		calculateTime();
 		this->TimeText.setString("TIME: " + this->timeString);
-
-		if (this->gameTime <= 0) {
-			this->updateRound();
-		}
 
 		if (this->lives.livesGone()) {
 			//this->gameover.restartClock();
 			this->gameOver = true;
 		}
+
+		if (this->gameTime <= 0) {
+			this->updateRound();
+		}
+
 	}
 
 
@@ -295,8 +313,8 @@ public:
 			}
 
 			HighScores[i].setFont(FM[0]);
-			if (i < 9) HighScores[i].setString(to_string(0) + to_string(i + 1) + ". " + this->names[i] + " " + to_string(this->highScores[i]));
-			else HighScores[i].setString(to_string(i + 1) + ". " + this->names[i] + " " + to_string(this->highScores[i]));
+			if (i < 9) HighScores[i].setString(to_string(0) + to_string(i + 1) + ". " + this->names[i] + " ----------- " + to_string(this->highScores[i]));
+			else HighScores[i].setString(to_string(i + 1) + ". " + this->names[i] + " ----------- " + to_string(this->highScores[i]));
 			HighScores[i].setFillColor(Color{ 255,240, (Uint8)(230 - (Uint8)(20 * i)) });
 			HighScores[i].setPosition(40, pos);
 			if (i == 0) {
@@ -468,10 +486,12 @@ public:
 								this->window.close();
 							}
 						}
-						else if (this->gameOver) {
-							this->gameOver = false;
+						else if (this->gameOver || this->hasWon) {
+							if (this->gameOver) this->gameOver = false;
+							else if (this->hasWon) this->hasWon = false;
+
 							// highscores updating
-							this->highScores[9] = this->score;
+							this->highScores[9] = this->score.getScore();
 							this->names[9] = this->playerName;
 							sortScores();
 							ofstream scores("highscores.txt");
@@ -519,7 +539,7 @@ public:
 					}
 				}
 				else if (event.type == Event::TextEntered) {
-					if (this->gameOver) {
+					if (this->gameOver || this->hasWon) {
 						if (event.text.unicode < 128 && event.text.unicode != 8 && event.text.unicode != 27 && this->playerName.length() < 15) { // shouldn't be backspace
 							this->playerName += static_cast<char>(event.text.unicode);
 							this->nameText.setString(this->playerName);
@@ -564,7 +584,7 @@ public:
 			}
 
 
-			if (this->showMenu && !this->gameOver) {
+			if (this->showMenu && !this->gameOver && !this->hasWon) {
 				this->window.clear();
 				this->menu.display(this->window);
 				if (this->showHighScores) {
@@ -592,9 +612,14 @@ public:
 				}
 				this->window.display();
 			}
-			else if (this->gameOver) {
+			else if (this->gameOver || this->hasWon) {
 				this->window.clear();
-				this->gameover.draw(this->window);
+				if (this->gameOver) {
+					this->gameover.draw(this->window);
+				}
+				else if (this->hasWon) {
+					this->window.draw(this->winSprite);
+				}
 				this->window.draw(this->nameText);
 				this->window.draw(this->enterNameS);
 				this->window.draw(this->pressEnterS);
@@ -606,6 +631,9 @@ public:
 			}
 			else {
 				this->window.clear();
+				if (this->levelIndex > 3) {
+					this->hasWon = true;
+				}
 				this->updateEverything();
 				this->drawEverything();
 				this->window.display();

@@ -6,6 +6,7 @@
 #include "SoundManager.h"
 #include "Inventory.h"
 #include "FallingSun.h"
+#include "Scoreboard.h"
 
 class PlantFactory {
 	Plant** plants;
@@ -32,7 +33,7 @@ public:
 
 	void handleFallingSun(int gx, int gy, FallingSun* sun, Text& sunCountText, int& sunCount);
 
-	void updateEverything(Zombie** zombies, int zombiesArrayIndex);
+	void updateEverything(Zombie** zombies, int zombiesArrayIndex, Scoreboard* scoreboard);
 
 	void draw(RenderWindow& window);
 

@@ -146,6 +146,7 @@ private:
 
 		this->addTexture("assets/Spritesheets/shovel.png", "shovel");
 
+		this->addTexture("assets/Screens/win.png", "win");
 
 	}
 

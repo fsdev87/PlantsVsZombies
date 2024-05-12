@@ -1,5 +1,6 @@
 #pragma once
 #include "Exploder.h"
+#include "Scoreboard.h"
 
 class Cherrybomb : public Exploder {
 	int columns;
@@ -19,7 +20,7 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 	}
 
-	virtual void explode(Zombie** zombies, int zombiesArrayIndex, SoundManager* SMptr) {
+	virtual void explode(Zombie** zombies, int zombiesArrayIndex, SoundManager* SMptr, Scoreboard* scoreboard) {
 		if (this->exists) {
 			int frame = this->anim.getFrame();
 			if (frame == (this->columns - 10)) { // is the last frame
@@ -27,6 +28,7 @@ public:
 				for (int i = 0; i < zombiesArrayIndex; i++) {
 					if (zombies[i]->getExist() && abs(zombies[i]->getPosition()[0] - this->position[0]) <= 1.5 && abs(zombies[i]->getPosition()[1] - this->position[1]) <= 1) {
 						zombies[i]->setExist(false);
+						scoreboard->addScore(50);
 						zombies[i]->setAshes(true);
 					}
 				}

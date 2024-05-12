@@ -10,6 +10,7 @@ private:
 public:
 	FootballZombie(Texture& tex, int columns, float pos[2], TextureManager* TM, SoundManager* SM) {
 		this->SMptr = SM;
+		this->type = "football";
 		this->TMptr = TM;
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));

@@ -3,6 +3,7 @@
 #include "TextureManager.h"
 #include "Animation.h"
 #include "Zombie.h"
+#include "Scoreboard.h"
 using namespace sf;
 
 class Bullet {
@@ -38,7 +39,7 @@ public:
 		this->position[1] = y;
 	}
 
-	void move(Zombie** zombies, int zombiesArrayIndex, bool isSnow = false) {
+	void move(Zombie** zombies, int zombiesArrayIndex, bool isSnow = false, Scoreboard* scoreboard = nullptr) {
 		if (this->bulletClock.getElapsedTime().asMilliseconds() <= 5) {
 			return;
 		}
@@ -55,6 +56,19 @@ public:
 
 						zombies[i]->reduceHealth(this->damage);
 						zombies[i]->checkHealth();
+
+						if (zombies[i]->getType() == "dancing") {
+							scoreboard->addScore(50);
+						}
+						else if (zombies[i]->getType() == "football") {
+							scoreboard->addScore(20);
+						}
+						else if (zombies[i]->getType() == "normal") {
+							scoreboard->addScore(10);
+						}
+						else {
+							scoreboard->addScore(0);
+						}
 
 						this->bulletClock.restart();
 						cout << "Zombie " << i << " health: " << zombies[i]->getHealth() << endl;

@@ -16,7 +16,7 @@ class LimitedGarden : public Level {
 public:
 
 
-	LimitedGarden(Background& background, PlantFactory* PF, ZombieFactory* ZF, Inventory* Inv, TextureManager* TM, FontManager* FM, SoundManager* SM, Clock* runClock, Text* sunCountText, int& sunCount, LawnMower** lawnmowers, float* lawnMowerPos) :Level(TM, FM, SM) {
+	LimitedGarden(Background& background, PlantFactory* PF, ZombieFactory* ZF, Inventory* Inv, TextureManager* TM, FontManager* FM, SoundManager* SM, Clock* runClock, Text* sunCountText, int& sunCount, LawnMower** lawnmowers, float* lawnMowerPos, Scoreboard* scoreboard) :Level(TM, FM, SM, scoreboard) {
 
 		this->resetEverything(PF, ZF);
 

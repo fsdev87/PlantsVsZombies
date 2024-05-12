@@ -7,6 +7,7 @@ class FlyingZombie : public Zombie {
 public:
 	FlyingZombie(Texture& tex, int columns, float pos[2], TextureManager* TM, SoundManager* SM) {
 		this->SMptr = SM;
+		this->type = "flying";
 		this->TMptr = TM;
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 88, 140));

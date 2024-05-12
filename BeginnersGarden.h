@@ -9,7 +9,7 @@ class BeginnersGarden : public Level {
 	RectangleShape garden[5][9];
 
 public:
-	BeginnersGarden(Background& background, TextureManager* TM, FontManager* FM, SoundManager* SM, Clock* runClock, Text* sunCountText, int& sunCount, LawnMower** lawnmowers, float* lawnMowerPos) :Level(TM, FM, SM) {
+	BeginnersGarden(Background& background, TextureManager* TM, FontManager* FM, SoundManager* SM, Clock* runClock, Text* sunCountText, int& sunCount, LawnMower** lawnmowers, float* lawnMowerPos, Scoreboard* scoreboard) :Level(TM, FM, SM, scoreboard) {
 		this->round = 1;
 
 		background.getSprite().setTexture(this->TMptr->getTexture("bgfirst"));
