@@ -62,7 +62,6 @@ public:
 			}
 			else if (this->types[i] == "wallnut") {
 				plants[i] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos);
-
 			}
 			else if (this->types[i] == "cherrybomb") {
 				plants[i] = new Cherrybomb(this->TMptr->getTexture("spritesheet-cherrybomb"), 18, pos);

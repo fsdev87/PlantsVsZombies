@@ -31,6 +31,7 @@ public:
 		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
 		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
 		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
+
 		file.write(reinterpret_cast<char*>(&active), sizeof(bool));
 		this->anim.saveEverything(file);
 	}
@@ -41,7 +42,9 @@ public:
 		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
 
 		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
+
 		file.read(reinterpret_cast<char*>(&active), sizeof(bool));
+		this->exists = this->exists && !this->active;
 		this->anim.readEverything(file);
 	}
 

@@ -63,8 +63,10 @@ public:
 		loadInventory();
 	}
 
+	int getIndex() { return this->index; }
 
 	void saveEverything(ofstream& file) {
+		cout << "Saving inv index;" << index << endl;
 		file.write(reinterpret_cast<char*>(&index), sizeof(int));
 		file.write(reinterpret_cast<char*>(&rectIndex), sizeof(int));
 		file.write(reinterpret_cast<char*>(&selected), sizeof(bool));
@@ -72,6 +74,7 @@ public:
 
 	void readEverything(ifstream& file) {
 		file.read(reinterpret_cast<char*>(&index), sizeof(int));
+		cout << "Reading inv index;" << index << endl;
 		file.read(reinterpret_cast<char*>(&rectIndex), sizeof(int));
 		file.read(reinterpret_cast<char*>(&selected), sizeof(bool));
 	}

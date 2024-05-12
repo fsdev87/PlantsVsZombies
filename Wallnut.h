@@ -33,11 +33,11 @@ public:
 		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
 		file.write(reinterpret_cast<char*>(&health), sizeof(int));
 		file.write(reinterpret_cast<char*>(&exists), sizeof(bool));
-		this->anim.saveEverything(file);
 
 		file.write(reinterpret_cast<char*>(&active), sizeof(bool));
 		file.write(reinterpret_cast<char*>(&dead), sizeof(bool));
 		file.write(reinterpret_cast<char*>(&half), sizeof(bool));
+		this->anim.saveEverything(file);
 	}
 
 	void readEverything(ifstream& file) {
@@ -45,22 +45,16 @@ public:
 		file.read(reinterpret_cast<char*>(&position[1]), sizeof(float));
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 
+
 		file.read(reinterpret_cast<char*>(&health), sizeof(int));
-		this->health = health;
-
 		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
-		this->exists = exists;
-
-		this->anim.readEverything(file);
 
 		file.read(reinterpret_cast<char*>(&active), sizeof(bool));
-		this->active = active;
 
 		file.read(reinterpret_cast<char*>(&dead), sizeof(bool));
-		this->dead = dead;
 
 		file.read(reinterpret_cast<char*>(&half), sizeof(bool));
-		this->half = half;
+		this->anim.readEverything(file);
 	}
 
 	void activate(Texture& tex) {

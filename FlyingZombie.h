@@ -56,6 +56,8 @@ public:
 		file.read(reinterpret_cast<char*>(&health), sizeof(int));
 		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
 		this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+		this->headSprite.setPosition(this->xFactor + 50 + this->position[0] * 80, this->yFactor - 10 + this->position[1] * 96);
+
 
 		this->anim.readEverything(file);
 

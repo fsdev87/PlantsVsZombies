@@ -23,6 +23,7 @@ public:
 	void saveEverything(ofstream& file) {
 
 		file.write(reinterpret_cast<char*>(&score), sizeof(int));
+		this->scoreText.setString("Score: " + to_string(this->score));
 
 	}
 
@@ -39,10 +40,10 @@ public:
 			rect.setSize(Vector2f(260, 60));
 		}
 		else if (this->score > 1000) {
-			rect.setSize(Vector2f(280, 60));
+			rect.setSize(Vector2f(350, 60));
 		}
 		else if (this->score > 10000) {
-			rect.setScale(Vector2f(300, 60));
+			rect.setScale(Vector2f(380, 60));
 		}
 	}
 

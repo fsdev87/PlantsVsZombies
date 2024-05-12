@@ -69,7 +69,8 @@ public:
 			else if (types[i] == "flying") {
 				zombies[i] = new FlyingZombie(this->TMptr->getTexture("flying-zombie"), 11, this->pos, this->TMptr, this->SMptr);
 			}
-			zombies[i]->readEverything(file);
+			if (zombies[i])
+				zombies[i]->readEverything(file);
 		}
 	}
 

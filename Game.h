@@ -53,7 +53,7 @@ class Game {
 	bool nextLevel = false;
 
 
-	int sunCount = 1000;
+	int sunCount = 100;
 	Text sunCountText;
 
 
@@ -82,6 +82,10 @@ class Game {
 	bool gameOver = false;
 	bool hasWon = false;
 
+	bool saveGame = false;
+	bool loadGame = false;
+
+
 	int highScores[10] = {};
 	string names[10] = {};
 	Text HighScores[10], heading;
@@ -96,8 +100,8 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	float remainingTime = 120;
-	//float remainingTime = 5; // for testing
+	//float remainingTime = 120;
+	float remainingTime = 5; // for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -206,11 +210,12 @@ public:
 		PF.saveEverything(file);
 		ZF.saveEverything(file);
 		score.saveEverything(file);
-		Inv.saveEverything(file);
+		//Inv.saveEverything(file);
 		for (int i = 0; i < 5; i++) lawnmowers[i]->saveEverything(file);
 		lives.saveEverything(file);
 
 		sun.saveEverything(file);
+
 
 		levels[levelIndex]->saveEverything(file);
 
@@ -241,6 +246,11 @@ public:
 		file.read(reinterpret_cast<char*>(&gameOver), sizeof(bool));
 		file.read(reinterpret_cast<char*>(&hasWon), sizeof(bool));
 		file.read(reinterpret_cast<char*>(&nextLevel), sizeof(bool));
+		this->showMenu = false;
+		this->hasStarted = true;
+
+		if (!this->runClock)
+			this->runClock = new Clock;
 
 		file.read(reinterpret_cast<char*>(&gameTime), sizeof(float));
 		file.read(reinterpret_cast<char*>(&remainingTime), sizeof(float));
@@ -252,14 +262,17 @@ public:
 		cout << "Reading zombie factory\n";
 		ZF.readEverything(file);
 
+
 		cout << "Reading scores\n";
 		score.readEverything(file);
 
 		cout << "Reading inventory\n";
-		Inv.readEverything(file);
+		//Inv.readEverything(file);
 
 		cout << "Reading lawnmowers\n";
 		for (int i = 0; i < 5; i++) lawnmowers[i]->readEverything(file);
+
+
 
 		cout << "Reading lives\n";
 		lives.readEverything(file);
@@ -267,8 +280,51 @@ public:
 		cout << "Reading suns\n";
 		sun.readEverything(file);
 		// 
-		cout << "Reading levels\n";
+		cout << "Reading levels " << levelIndex << "\n";
+
+
+		if (levels[levelIndex] == nullptr && levelIndex == 0) {
+
+			/*Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
+			Inv.addCard(this->TM.getTexture("card-peashooter_dim"), this->TM.getTexture("card-peashooter"), "peashooter", 100);*/
+			levels[levelIndex] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}
+		else if (levels[levelIndex] == nullptr && levelIndex == 1) {
+			//Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
+			//Inv.addCard(this->TM.getTexture("card-peashooter_dim"), this->TM.getTexture("card-peashooter"), "peashooter", 100);
+			//Inv.addCard(this->TM.getTexture("card-repeater_dim"), this->TM.getTexture("card-repeater"), "repeater", 200);
+			//Inv.addCard(this->TM.getTexture("card-wallnut_dim"), this->TM.getTexture("card-wallnut"), "wallnut", 50);
+			cout << "Level was full garden\n";
+			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}
+		else if (levels[levelIndex] == nullptr && levelIndex == 2) {
+			// Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
+			// Inv.addCard(this->TM.getTexture("card-peashooter_dim"), this->TM.getTexture("card-peashooter"), "peashooter", 100);
+			// Inv.addCard(this->TM.getTexture("card-repeater_dim"), this->TM.getTexture("card-repeater"), "repeater", 200);
+			// Inv.addCard(this->TM.getTexture("card-wallnut_dim"), this->TM.getTexture("card-wallnut"), "wallnut", 50);
+			// Inv.addCard(this->TM.getTexture("card-snowpea_dim"), this->TM.getTexture("card-snowpea"), "snowpea", 175);
+			// Inv.addCard(this->TM.getTexture("card-cherrybomb_dim"), this->TM.getTexture("card-cherrybomb"), "cherrybomb", 150);
+			// Inv.addCard(this->TM.getTexture("shovel"), this->TM.getTexture("shovel"), "shovel", 0);
+			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[1] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}
+		else if (levels[levelIndex] == nullptr && levelIndex == 3) {
+			// Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
+			// Inv.addCard(this->TM.getTexture("card-peashooter_dim"), this->TM.getTexture("card-peashooter"), "peashooter", 100);
+			// Inv.addCard(this->TM.getTexture("card-repeater_dim"), this->TM.getTexture("card-repeater"), "repeater", 200);
+			// Inv.addCard(this->TM.getTexture("card-wallnut_dim"), this->TM.getTexture("card-wallnut"), "wallnut", 50);
+			// Inv.addCard(this->TM.getTexture("card-snowpea_dim"), this->TM.getTexture("card-snowpea"), "snowpea", 175);
+			// Inv.addCard(this->TM.getTexture("card-cherrybomb_dim"), this->TM.getTexture("card-cherrybomb"), "cherrybomb", 150);
+			// Inv.addCard(this->TM.getTexture("shovel"), this->TM.getTexture("shovel"), "shovel", 0);
+			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[1] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[2] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}
 		levels[levelIndex]->readEverything(file);
+
 
 		file.close();
 		cout << "Finished reading\n";
@@ -577,7 +633,7 @@ public:
 					}
 					else if (event.key.code == Keyboard::Return) {
 						if (this->showMenu) {
-							this->menu.handleEnter(this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
+							this->menu.handleEnter(this->saveGame, this->loadGame, this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
 							if (!this->showMenu && !this->restarted) { // resume or start mode
 								this->runClock = new Clock();
 							}
@@ -589,6 +645,14 @@ public:
 							}
 							else if (this->showInstructions) {
 								initInstructions();
+							}
+							else if (this->saveGame) {
+								this->saveEverything();
+								saveGame = false;
+							}
+							else if (this->loadGame) {
+								this->readEverything();
+								loadGame = false;
 							}
 							else if (this->quit) {
 								this->window.close();
