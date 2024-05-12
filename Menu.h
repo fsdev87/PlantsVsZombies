@@ -7,11 +7,11 @@ class Menu {
 	// resume
 	// highscores
 	// exit
-	Color selectedColor{ 5, 227, 96 };
-	Color restColor{ 0, 34, 23 };
+	Color selectedColor{ 134, 252, 58 };
+	Color restColor{ 34, 48, 25 };
 
-	Text menu[4];
-	Text shadow[4];
+	Text menu[5];
+	Text shadow[5];
 	Sprite backgroundSprite;
 	TextureManager* TMptr;
 	FontManager* FMptr;
@@ -28,46 +28,56 @@ public:
 		menu[0].setString("PLAY");
 		menu[1].setString("RESTART");
 		menu[2].setString("HIGHSCORES");
-		menu[3].setString("EXIT");
+		menu[3].setString("INSTRUCTIONS");
+		menu[4].setString("EXIT");
 
 		shadow[0].setString("PLAY");
 		shadow[1].setString("RESTART");
 		shadow[2].setString("HIGHSCORES");
-		shadow[3].setString("EXIT");
+		shadow[3].setString("INSTRUCTIONS");
+		shadow[4].setString("EXIT");
 
 		this->highScoreSprite.setTexture(this->TMptr->getTexture("highscorebg"));
 		this->highScoreSprite.setScale(0.73, 0.73);
 		this->highScoreSprite.setPosition(0, 0);
 		this->highScoreSprite.setColor(Color(0, 0, 0, 255 * 0.4));
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			float xFactor = 580;
 
-			menu[i].setFillColor(Color::Black);
+			//menu[i].setFillColor(Color::Black);
 			menu[i].setFont(this->FMptr->get(3));
-			menu[i].setCharacterSize(92);
+			menu[i].setCharacterSize(70);
+
 			if (i == 1) {
-				xFactor -= 20;
+				xFactor -= 25;
 			}
 			else if (i == 2) {
-				xFactor -= 125;
+				xFactor -= 105;
+			}
+			else if (i == 3) {
+				xFactor -= 155;
 			}
 
-			menu[i].setPosition(xFactor, 200 + i * 85);
+			menu[i].setPosition(xFactor, 200 + i * 75);
 
 			xFactor = 580;
 			float shadowYOffset = 6;
-			shadow[i].setFillColor(Color::Black);
+			shadow[i].setFillColor(Color(41, 39, 39));
 			shadow[i].setFont(this->FMptr->get(3));
-			shadow[i].setCharacterSize(92);
+			shadow[i].setCharacterSize(70);
 			if (i == 1) {
-				xFactor -= 20;
+				xFactor -= 25;
 			}
 			else if (i == 2) {
-				xFactor -= 125;
+				xFactor -= 105;
 			}
+			else if (i == 3) {
+				xFactor -= 155;
+			}
+			shadow[i].setPosition(xFactor, 200 + i * 75 + shadowYOffset);
 
-			shadow[i].setPosition(xFactor, 200 + i * 85 + shadowYOffset);
+
 		}
 
 	};
@@ -79,16 +89,16 @@ public:
 	void handleUp() {
 		this->menu[this->menuIndex].setFillColor(this->restColor);
 		this->menuIndex--;
-		if (this->menuIndex < 0) this->menuIndex = 3;
+		if (this->menuIndex < 0) this->menuIndex = 4;
 	}
 
 	void handleDown() {
 		this->menu[this->menuIndex].setFillColor(this->restColor);
 		this->menuIndex++;
-		if (this->menuIndex > 3) this->menuIndex = 0;
+		if (this->menuIndex > 4) this->menuIndex = 0;
 	}
 
-	void handleEnter(bool& showMenu, bool& showHighScores, bool& quit, bool& hasStarted, bool& restarted, ZombieFactory* ZF, FallingSun* sun) {
+	void handleEnter(bool& showInstructions, bool& showMenu, bool& showHighScores, bool& quit, bool& hasStarted, bool& restarted, ZombieFactory* ZF, FallingSun* sun) {
 		switch (this->menuIndex) {
 		case 0:
 			showMenu = false;
@@ -110,6 +120,9 @@ public:
 			showHighScores = true;
 			return;
 		case 3:
+			showInstructions = true;
+			return;
+		case 4:
 			quit = true;
 			return;
 		}
@@ -123,7 +136,7 @@ public:
 
 		window.draw(backgroundSprite);
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			if (this->menuIndex == i) {
 				this->menu[i].setFillColor(selectedColor);
 			}
