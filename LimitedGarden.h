@@ -16,9 +16,10 @@ class LimitedGarden : public Level {
 public:
 
 
-	LimitedGarden(Background& background, PlantFactory* PF, ZombieFactory* ZF, Inventory* Inv, TextureManager* TM, FontManager* FM, SoundManager* SM, Clock* runClock, Text* sunCountText, int& sunCount, LawnMower** lawnmowers, float* lawnMowerPos, Scoreboard* scoreboard) :Level(TM, FM, SM, scoreboard) {
-
-		this->resetEverything(PF, ZF);
+	LimitedGarden(Background& background, PlantFactory* PF, ZombieFactory* ZF, Inventory* Inv, TextureManager* TM, FontManager* FM, SoundManager* SM, Clock* runClock, Text* sunCountText, int& sunCount, LawnMower** lawnmowers, float* lawnMowerPos, Scoreboard* scoreboard, int x = -1) :Level(TM, FM, SM, scoreboard) {
+		if (x == -1) {
+			this->resetEverything(PF, ZF);
+		}
 
 		this->round = 4;
 

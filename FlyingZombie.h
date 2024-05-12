@@ -78,6 +78,19 @@ public:
 		file.read(reinterpret_cast<char*>(&headFall), sizeof(bool));
 		file.read(reinterpret_cast<char*>(&headOnceFell), sizeof(bool));
 
+		if (this->exists) {
+			this->sprite = Sprite(this->TMptr->getTexture("flying-zombie"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 88, 0, 88, 140));
+		}
+
+		if (this->dead) {
+			this->sprite = Sprite(this->TMptr->getTexture("spritesheet-headLessDeath"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+		}
+		if (this->ashes) {
+			this->sprite = Sprite(this->TMptr->getTexture("spritesheet-zombieAshes"));
+			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+		}
 	}
 
 	virtual bool isFlying() { return true; }

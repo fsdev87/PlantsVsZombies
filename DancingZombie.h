@@ -107,6 +107,29 @@ public:
 
 		file.read(reinterpret_cast<char*>(&danceDelay), sizeof(float));
 
+
+		if (this->blocked) {
+			if (this->health <= this->limit) {
+				this->sprite = Sprite(this->TMptr->getTexture("dancing-eat-2"));
+				this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+			}
+			else {
+				this->sprite = Sprite(this->TMptr->getTexture("dancing-eat-1"));
+				this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+			}
+		}
+		if (!this->blocked) {
+			if (this->health <= this->limit) {
+				this->sprite = Sprite(this->TMptr->getTexture("dancing-walk-2"));
+				this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+			}
+			else {
+				this->sprite = Sprite(this->TMptr->getTexture("dancing-2"));
+				this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
+			}
+		}
+
+
 		if (this->dead) {
 			this->sprite = Sprite(this->TMptr->getTexture("dancing-die"));
 			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
@@ -280,7 +303,7 @@ public:
 	}
 
 
-	void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies) {
+	void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies, string* types) {
 		if (this->exists == false) return;
 		if (this->spawnClock.getElapsedTime().asSeconds() < 8) return;
 
@@ -295,6 +318,7 @@ public:
 		if (zombiesArrayIndex + 1 < maxZombies) {
 			float pos[2] = { this->position[0] + 1, this->position[1] };
 			spawnIndex[0] = zombiesArrayIndex;
+			types[zombiesArrayIndex] = "normal";
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
 		}
 
@@ -302,6 +326,7 @@ public:
 		if (zombiesArrayIndex + 1 < maxZombies && this->position[0] - 1 >= 0) {
 			float pos[2] = { this->position[0] - 1, this->position[1] };
 			spawnIndex[1] = zombiesArrayIndex;
+			types[zombiesArrayIndex] = "normal";
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
 		}
 
@@ -309,6 +334,7 @@ public:
 		if (zombiesArrayIndex + 1 < maxZombies && this->position[1] - 1 >= 0) {
 			float pos[2] = { this->position[0], this->position[1] - 1 };
 			spawnIndex[2] = zombiesArrayIndex;
+			types[zombiesArrayIndex] = "normal";
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
 		}
 
@@ -316,6 +342,7 @@ public:
 		if (zombiesArrayIndex + 1 < maxZombies && this->position[1] + 1 <= 4) {
 			float pos[2] = { this->position[0], this->position[1] + 1 };
 			spawnIndex[3] = zombiesArrayIndex;
+			types[zombiesArrayIndex] = "normal";
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
 		}
 

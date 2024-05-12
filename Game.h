@@ -100,8 +100,8 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	//float remainingTime = 120;
-	float remainingTime = 5; // for testing
+	float remainingTime = 120;
+	//float remainingTime = 5; // for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -307,8 +307,8 @@ public:
 			// Inv.addCard(this->TM.getTexture("card-cherrybomb_dim"), this->TM.getTexture("card-cherrybomb"), "cherrybomb", 150);
 			// Inv.addCard(this->TM.getTexture("shovel"), this->TM.getTexture("shovel"), "shovel", 0);
 			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
-			levels[1] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
-			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[1] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score , 1 };
+			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score, 1 };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 3) {
 			// Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
@@ -319,9 +319,9 @@ public:
 			// Inv.addCard(this->TM.getTexture("card-cherrybomb_dim"), this->TM.getTexture("card-cherrybomb"), "cherrybomb", 150);
 			// Inv.addCard(this->TM.getTexture("shovel"), this->TM.getTexture("shovel"), "shovel", 0);
 			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
-			levels[1] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
-			levels[2] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
-			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+			levels[1] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score , 1 };
+			levels[2] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score , 1 };
+			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score, 1 };
 		}
 		levels[levelIndex]->readEverything(file);
 
@@ -400,7 +400,6 @@ public:
 		this->TimeText.setString("TIME: " + this->timeString);
 
 		if (this->lives.livesGone()) {
-			//this->gameover.restartClock();
 			this->gameOver = true;
 		}
 
@@ -622,15 +621,7 @@ public:
 							}
 						}
 					}
-					else if (event.key.code == Keyboard::C) {
-						system("cls");
-					}
-					else if (event.key.code == Keyboard::W) {
-						saveEverything();
-					}
-					else if (event.key.code == Keyboard::S) {
-						readEverything();
-					}
+
 					else if (event.key.code == Keyboard::Return) {
 						if (this->showMenu) {
 							this->menu.handleEnter(this->saveGame, this->loadGame, this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
@@ -758,7 +749,7 @@ public:
 			}
 
 
-			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel) {
+			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel && !this->saveGame && !this->loadGame) {
 				this->window.clear();
 				this->menu.display(this->window);
 				if (this->showHighScores) {
@@ -786,7 +777,7 @@ public:
 				}
 				this->window.display();
 			}
-			else if (this->gameOver || this->hasWon) {
+			else if ((this->gameOver || this->hasWon) && (!this->saveGame && !this->loadGame)) {
 				this->window.clear();
 				if (this->gameOver) {
 					this->gameover.draw(this->window);

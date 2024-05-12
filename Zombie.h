@@ -101,7 +101,7 @@ public:
 		return this->headOnceFell;
 	}
 
-	virtual void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies) {}
+	virtual void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies, string* types) {}
 
 	// changes sprite texture to ashes
 	// restarts ashes clock

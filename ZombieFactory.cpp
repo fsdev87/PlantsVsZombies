@@ -115,7 +115,7 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 		this->zombies[i]->animate();
 		this->zombies[i]->move(plants, plantsArrayIndex);
 
-		this->zombies[i]->spawnZombie(this->zombies, this->zombiesArrayIndex, maxZombies);
+		this->zombies[i]->spawnZombie(this->zombies, this->zombiesArrayIndex, maxZombies, this->types);
 
 		float* position = this->zombies[i]->getPosition();
 		float first = -0.5, last = -1;
