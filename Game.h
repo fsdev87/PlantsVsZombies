@@ -64,7 +64,7 @@ class Game {
 	float gameTime;
 	Clock* runClock = nullptr;
 	float remainingTime = 120;
-	//float remainingTime = 12; for testing
+	//float remainingTime = 12; // for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -140,7 +140,7 @@ public:
 		this->runClock->restart();
 		this->levelIndex++;
 		this->remainingTime = 120;
-		//this->remainingTime = 60; for testing
+		//this->remainingTime = 60; //for testing
 		this->TimeText.setFillColor(Color::Black);
 		this->sun.reset();
 		this->sunCount = 100;
