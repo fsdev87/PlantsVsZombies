@@ -82,6 +82,8 @@ public:
 	}
 	virtual bool isFlying() { return false; }
 	void setFlicker(bool value) {
+		this->SMptr->getSound("hit")->setPlayingOffset(sf::Time(sf::seconds(0.7)));
+		this->SMptr->playSound("hit");
 		this->flicker = value, this->flickerClock.restart();
 	}
 

@@ -54,6 +54,8 @@ public:
 						zombies[i]->setFlicker(true);
 						zombies[i]->getSprite().setColor(Color(255, 255, 255, 255 * 0.5));
 
+
+
 						zombies[i]->reduceHealth(this->damage);
 						zombies[i]->checkHealth();
 

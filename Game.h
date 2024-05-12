@@ -101,7 +101,8 @@ class Game {
 	Scoreboard score;
 
 public:
-	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM), score(&FM) {
+	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM) {
+
 
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		levels[1] = nullptr;
@@ -446,6 +447,7 @@ public:
 				}
 				if (event.type == Event::KeyPressed) {
 					if (event.key.code == Keyboard::Escape) {
+						this->SM.playSound("enter");
 						if (this->showHighScores) {
 							this->showHighScores = false;
 						}
@@ -525,11 +527,13 @@ public:
 						}
 					}
 					else if (event.key.code == Keyboard::Right) {
+						this->SM.playSound("enter");
 						if (this->showInstructions) {
 							updateInstructions();
 						}
 					}
 					else if (event.key.code == Keyboard::Left) {
+						this->SM.playSound("enter");
 						if (this->showInstructions) {
 							updateInstructions(-1);
 						}

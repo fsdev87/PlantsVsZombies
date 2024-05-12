@@ -30,8 +30,15 @@ class SoundManager {
 		this->loadSound("assets/sounds/zombie/zombieattack.mp3", "zombieattack");
 		this->loadSound("assets/sounds/zombie/zombieroar.mp3", "zombieroar");
 		this->loadSound("assets/sounds/zombie/hit.mp3", "hit");
+		this->loadSound("assets/sounds/menu/enter.mp3", "enter");
+		this->loadSound("assets/sounds/menu/change.mp3", "change");
 
+
+
+		this->getSound("enter")->setVolume(40);
+		this->getSound("change")->setVolume(40);
 		this->getSound("hit")->setVolume(70);
+		this->getSound("sunclick")->setVolume(50);
 		this->getSound("round1")->setVolume(10.0f);
 		this->getSound("round1")->setPlayingOffset(sf::Time(sf::seconds(1.05)));
 	}

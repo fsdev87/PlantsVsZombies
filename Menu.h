@@ -15,12 +15,13 @@ class Menu {
 	Sprite backgroundSprite;
 	TextureManager* TMptr;
 	FontManager* FMptr;
+	SoundManager* SMptr;
 	Sprite highScoreSprite;
 	int menuIndex = 0;
 
 
 public:
-	Menu(TextureManager* TM, FontManager* FM) :TMptr(TM), FMptr(FM) {
+	Menu(TextureManager* TM, FontManager* FM, SoundManager* SM) :TMptr(TM), FMptr(FM), SMptr(SM) {
 
 		backgroundSprite.setTexture(this->TMptr->getTexture("mainmenu"));
 		backgroundSprite.setScale(0.73, 0.73);
@@ -87,18 +88,21 @@ public:
 	}
 
 	void handleUp() {
+		this->SMptr->playSound("change");
 		this->menu[this->menuIndex].setFillColor(this->restColor);
 		this->menuIndex--;
 		if (this->menuIndex < 0) this->menuIndex = 4;
 	}
 
 	void handleDown() {
+		this->SMptr->playSound("change");
 		this->menu[this->menuIndex].setFillColor(this->restColor);
 		this->menuIndex++;
 		if (this->menuIndex > 4) this->menuIndex = 0;
 	}
 
 	void handleEnter(bool& showInstructions, bool& showMenu, bool& showHighScores, bool& quit, bool& hasStarted, bool& restarted, ZombieFactory* ZF, FallingSun* sun) {
+		this->SMptr->playSound("enter");
 		switch (this->menuIndex) {
 		case 0:
 			showMenu = false;
