@@ -2,9 +2,15 @@
 #include "Zombie.h"
 #include "TextureManager.h"
 
+// 22 for dancing 1
+// 27 for dancing 2
+// 21 for dancing walk
+
 class DancingZombie : public Zombie {
 	Clock spawnClock;
 	int spawnIndex[4];
+	Clock danceClock;
+	float danceDelay = 1 + rand() % 3; // 1 to 3 seconds random
 
 public:
 	DancingZombie(Texture& tex, int columns, float pos[2], TextureManager* tm, SoundManager* sm) {
@@ -18,7 +24,7 @@ public:
 		this->limit = 20;
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->anim = Animation(166, 144, columns);
-		this->moveClock.restart(), this->spawnClock.restart();
+		this->moveClock.restart(), this->spawnClock.restart(), this->danceClock.restart();
 		this->moveDelay = 180;
 		this->anim.setDelay(70);
 		this->xFactor += 45;
@@ -42,6 +48,30 @@ public:
 		}
 	}
 
+	void dance() {
+		if (this->danceClock.getElapsedTime().asSeconds() < this->danceDelay) return;
+		if (this->health <= this->limit) return; // don't dance if head is off
+		if (this->blocked) return; // don't dance if blocked;
+
+		this->danceClock.restart();
+		this->danceDelay = 1 + rand() % 3; // now dance after some another interval
+
+		int dancePos = rand() % 3;
+		switch (dancePos) {
+		case 0:
+			changeTexture(this->TMptr->getTexture("dancing-walk-1"), 0, 21);
+			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+			break;
+		case 1:
+			changeTexture(this->TMptr->getTexture("dancing-1"), 0, 22);
+			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+			break;
+		case 2:
+			changeTexture(this->TMptr->getTexture("dancing-2"), 0, 27);
+			this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+			break;
+		}
+	}
 
 	void checkHealth() {
 		if (this->exists) {
@@ -86,6 +116,7 @@ public:
 
 		if (this->moveClock.getElapsedTime().asMilliseconds() < this->moveDelay) return;
 		handleFlicker();
+		dance();
 
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
@@ -95,7 +126,8 @@ public:
 			return;
 		}
 
-		if (rand() % 75 == 1) {
+
+		if (rand() % 100 == 1) {
 			//this->position[0] += (10 * this->speed);
 			if (rand() % 2) {
 				this->position[1] += 1;

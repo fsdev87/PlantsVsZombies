@@ -36,7 +36,7 @@ public:
 	}
 	bool getExist() { return this->exists; }
 	void setExist(bool val) { this->exists = val; }
-	void beEaten() {
+	virtual void beEaten() {
 		this->health -= 20;
 		if (this->health <= 0) this->exists = false;
 	}
@@ -45,6 +45,8 @@ public:
 	virtual void animate() {
 		this->anim.animate(this->sprite);
 	}
+
+	virtual bool getDead() { return false; }
 
 	int getPrice() { return this->cost; }
 

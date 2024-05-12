@@ -64,6 +64,7 @@ class Game {
 	float gameTime;
 	Clock* runClock = nullptr;
 	float remainingTime = 120;
+	//float remainingTime = 12; for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -107,6 +108,23 @@ public:
 
 	void restartGame() {
 		this->restarted = false, this->showMenu = false, this->showHighScores = false; // maybe redundant work
+
+		this->menu.setMenuIndex(0);
+		this->remainingTime = 120;
+		this->runClock = new Clock;
+		this->TimeText.setFillColor(Color::Black);
+		this->sunCount = 100;
+		this->PF.reset();
+		this->ZF.reset();
+		this->lives.reset();
+		this->sun.reset();
+		this->Inv.reset();
+
+		for (int i = 0; i < 5; i++) {
+			this->lawnMowerPos[1] = i;
+			this->lawnmowers[i] = new LawnMower(&TM, this->lawnMowerPos);
+		}
+
 		if (this->levels[0] != nullptr) delete this->levels[0];
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos };
 		if (this->levels[1] != nullptr) delete this->levels[1];
@@ -116,28 +134,16 @@ public:
 		if (this->levels[3] != nullptr) delete this->levels[3];
 		levels[3] = nullptr;
 		this->levelIndex = 0;
-
-		this->remainingTime = 120;
-		this->TimeText.setFillColor(Color::Black);
-		this->sunCount = 100;
-		this->PF.reset();
-		this->ZF.reset();
-		this->lives = Life();
-		this->sun = FallingSun();
-
-		for (int i = 0; i < 5; i++) {
-			this->lawnMowerPos[1] = i;
-			this->lawnmowers[i] = new LawnMower(&TM, this->lawnMowerPos);
-
-		}
 	}
 
 	void updateRound() {
 		this->runClock->restart();
 		this->levelIndex++;
 		this->remainingTime = 120;
+		//this->remainingTime = 60; for testing
 		this->TimeText.setFillColor(Color::Black);
 		this->sun.reset();
+		this->sunCount = 100;
 
 		if (this->levelIndex > 3) this->window.close();
 
@@ -252,7 +258,7 @@ public:
 							if (!this->showMenu) {
 								this->showMenu = true;
 								this->remainingTime = this->remainingTime - this->runClock->getElapsedTime().asSeconds();
-								delete this->runClock;
+								if (this->runClock) delete this->runClock;
 								this->runClock = nullptr;
 							}
 						}

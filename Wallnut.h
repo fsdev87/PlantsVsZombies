@@ -7,6 +7,10 @@ private:
 	bool active;
 	Clock moveClock;
 	float speed = 0.03125;
+	bool dead = false;
+	bool half = false;
+	Texture halfTexture;
+	Texture deadTexture;
 
 public:
 	Wallnut(Texture& tex, int columns, float pos[2]) {
@@ -20,6 +24,8 @@ public:
 		this->moveClock.restart();
 		this->anim = Animation(71, 71, columns);
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
+		this->halfTexture.loadFromFile("assets/Spritesheets/wallnut-half.png");
+		this->deadTexture.loadFromFile("assets/Spritesheets/wallnut-dead.png");
 	}
 
 	void activate(Texture& tex) {
@@ -31,6 +37,18 @@ public:
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->moveClock.restart();
 	}
+
+	virtual bool getDead() { return this->dead; }
+
+	virtual void animate() {
+		this->anim.animate(this->sprite);
+		if (this->dead) {
+			if (this->anim.getFrame() == 2) {
+				this->dead = false;
+			}
+		}
+	}
+
 
 	void move(Zombie** zombies, int zombiesArrayIndex) {
 		if (!this->active) return;
@@ -61,4 +79,35 @@ public:
 		this->moveClock.restart();
 	}
 
+	void beEaten() {
+		this->health -= 20;
+
+		if (this->health == 20 && !this->half) {
+			this->sprite = Sprite(this->halfTexture);
+			this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
+			this->anim = Animation(71, 71, 4);
+			this->anim.setFrame(0);
+			this->half = true;
+		}
+
+		if (this->health <= 0 && !this->dead) {
+			this->exists = false;
+			this->dead = true;
+			this->sprite = Sprite(this->deadTexture);
+			this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
+			this->anim = Animation(71, 71, 3);
+			this->anim.setFrame(0);
+		}
+	}
+
+	virtual void draw(RenderWindow& window) {
+		if (this->exists) {
+			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			window.draw(this->sprite);
+		}
+		else if (this->dead) {
+			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
+			window.draw(this->sprite);
+		}
+	}
 };

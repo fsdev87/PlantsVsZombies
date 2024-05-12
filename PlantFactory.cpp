@@ -71,7 +71,7 @@ void PlantFactory::handleWallnutClick(int gx, int gy) {
 
 void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex) {
 	for (int i = 0; i < this->plantsArrayIndex && this->plants[i] != nullptr; i++) {
-		if (this->plants[i]->getExist()) {
+		if (this->plants[i]->getExist() || plants[i]->getDead()) {
 			this->plants[i]->animate();
 			this->plants[i]->generateSun();
 

@@ -72,6 +72,9 @@ public:
 
 	};
 
+	void setMenuIndex(int val) {
+		this->menuIndex = val;
+	}
 
 	void handleUp() {
 		this->menu[this->menuIndex].setFillColor(this->restColor);
@@ -110,31 +113,7 @@ public:
 			quit = true;
 			return;
 		}
-		/*if (j != -1) {
-			play = 0;
-			showHighScores = 0;
-			resume = 0;
-			quit = 0;
-			return;
-		}
 
-		play = (this->menuIndex == 0) && (hasStarted == false);
-		if (play) {
-			hasStarted = true;
-			menu[0].setString("Restart");
-			shadow[0].setString("Restart");
-			menu[0].setPosition(555, 200);
-			shadow[0].setPosition(555, 206);
-		}
-		resume = this->menuIndex == 1;
-		if (resume || play) this->inmenu = false;
-		showHighScores = this->menuIndex == 2;
-		quit = this->menuIndex == 3;
-
-		cout << endl << "Play: " << play << endl;
-		cout << "showHighScores: " << showHighScores << endl;
-		cout << "resume: " << resume << endl;
-		cout << "quit: " << quit << endl;*/
 	}
 
 	Sprite& getHSSprite() {

@@ -85,6 +85,8 @@ private:
 		this->addTexture("assets/Spritesheets/threepeater.png", "spritesheet-threepeater");
 		this->addTexture("assets/Spritesheets/lawnmower.png", "spritesheet-lawnmower");
 		this->addTexture("assets/Spritesheets/lawnmowerIdle.png", "image-lawnmowerIdle");
+		this->addTexture("assets/Spritesheets/wallnut-half.png", "wallnut-half");
+		this->addTexture("assets/Spritesheets/wallnut-dead.png", "wallnut-dead");
 		// All are for normal zombie
 		this->addTexture("assets/Spritesheets/nZombEat.png", "spritesheet-nZombEat");
 		this->addTexture("assets/Spritesheets/nZombWalk.png", "spritesheet-nZombWalk");
@@ -130,7 +132,8 @@ private:
 		this->addTexture("assets/Spritesheets/dancingdie.png", "dancing-die");
 		this->addTexture("assets/Spritesheets/dancingwalk2.png", "dancing-walk-2");
 		this->addTexture("assets/Spritesheets/dancingeat2.png", "dancing-eat-2");
-
+		this->addTexture("assets/Spritesheets/dancing-1.png", "dancing-1");
+		this->addTexture("assets/Spritesheets/dancing-2.png", "dancing-2");
 		this->addTexture("assets/Spritesheets/flyingzombie.png", "flying-zombie");
 
 		this->addTexture("assets/Spritesheets/shovel.png", "shovel");

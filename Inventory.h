@@ -82,9 +82,13 @@ public:
 		this->index++;
 	}
 
+	void reset() {
+		this->index = 2;
+	}
+
 	void drawInventory(RenderWindow& window, int& sunCount) {
-		window.draw(inventorySprite);
-		for (int i = 0; i < index; i++) {
+		window.draw(this->inventorySprite);
+		for (int i = 0; i < this->index; i++) {
 			if (this->cards[i].getCost() > sunCount) {
 				this->cards[i].setTexture("dim");
 			}

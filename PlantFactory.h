@@ -33,7 +33,7 @@ public:
 
 	void updateEverything(Zombie** zombies, int zombiesArrayIndex);
 
-	void draw(sf::RenderWindow& window);
+	void draw(RenderWindow& window);
 
 };
 #endif

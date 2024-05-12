@@ -33,4 +33,8 @@ public:
 			window.draw(this->sprites[i]);
 		}
 	}
+
+	void reset() {
+		this->lifeIndex = 3;
+	}
 };
