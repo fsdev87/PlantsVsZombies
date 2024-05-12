@@ -97,11 +97,11 @@ class Game {
 	int levelIndex = 0;
 
 
+
 	Scoreboard score;
 
 public:
 	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM), score(&FM) {
-
 
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		levels[1] = nullptr;
@@ -238,7 +238,6 @@ public:
 		this->score.draw(this->window);
 	}
 
-
 	void updateEverything() {
 		if (this->hasWon || this->levelIndex > 3) return;
 		levels[levelIndex]->updateEverything(&PF, &ZF, lawnmowers, lives, sun);
@@ -256,7 +255,6 @@ public:
 
 	}
 
-
 	void sortScores() {
 		bool swapped;
 		for (int i = 0; i < 9; i++) {
@@ -273,7 +271,6 @@ public:
 				break;
 		}
 	}
-
 
 	void initHighScores() {
 
@@ -305,7 +302,7 @@ public:
 		int pos = 110;
 		for (int i = 0; i < 10; i++) {
 			if (i == 0 || i == 1 || i == 2) {
-				medals[i].setPosition(420, pos + i * 4);
+				medals[i].setPosition(40, pos + i * 4);
 				HighScores[i].setCharacterSize(48);
 			}
 			else {
@@ -313,10 +310,10 @@ public:
 			}
 
 			HighScores[i].setFont(FM[0]);
-			if (i < 9) HighScores[i].setString(to_string(0) + to_string(i + 1) + ". " + this->names[i] + " ----------- " + to_string(this->highScores[i]));
-			else HighScores[i].setString(to_string(i + 1) + ". " + this->names[i] + " ----------- " + to_string(this->highScores[i]));
+			if (i < 9) HighScores[i].setString(to_string(0) + to_string(i + 1) + ". " + this->names[i] + " ---------------- " + to_string(this->highScores[i]));
+			else HighScores[i].setString(to_string(i + 1) + ". " + this->names[i] + " ---------------- " + to_string(this->highScores[i]));
 			HighScores[i].setFillColor(Color{ 255,240, (Uint8)(230 - (Uint8)(20 * i)) });
-			HighScores[i].setPosition(40, pos);
+			HighScores[i].setPosition(90, pos);
 			if (i == 0) {
 				pos += 65;
 			}

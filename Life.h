@@ -25,7 +25,13 @@ public:
 		this->lifeText.setFillColor(Color::Black);
 	}
 
-	void decrementLives() { if (this->lifeIndex == 0) return; this->lifeIndex--; }
+	void decrementLives() {
+		if (this->lifeIndex == 0) return;
+		this->lifeIndex--;
+		if (this->lifeIndex == 1) {
+			this->lifeText.setFillColor(Color::Red);
+		}
+	}
 
 	void drawLives(RenderWindow& window) {
 		window.draw(this->lifeText);
@@ -36,6 +42,7 @@ public:
 
 	void reset() {
 		this->lifeIndex = 3;
+		this->lifeText.setFillColor(Color::Black);
 	}
 
 	bool livesGone() {
