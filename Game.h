@@ -33,6 +33,11 @@ class Game {
 	GameOver gameover;
 	string playerName = "";
 	Text nameText;
+
+	Text enterName;
+	Text enterNameS;
+	Text pressEnter;
+	Text pressEnterS;
 	//
 
 	int sunCount = 100;
@@ -56,8 +61,7 @@ class Game {
 	Menu menu;
 
 
-	//bool showMenu = true;
-	bool showMenu = false;
+	bool showMenu = true;
 	bool showHighScores = false;
 	bool quit = false;
 	bool restarted = false;
@@ -119,11 +123,35 @@ public:
 		}
 
 		// name text
-		this->nameText.setFont(this->FM[0]);
-		this->nameText.setCharacterSize(50);
-		this->nameText.setPosition(600, 500);
+		this->nameText.setFont(this->FM[3]);
+		this->nameText.setCharacterSize(65);
+		this->nameText.setPosition(580, 485);
 		this->nameText.setString(this->playerName);
 		this->nameText.setFillColor(Color::White);
+
+		this->enterName.setFont(this->FM[3]);
+		this->enterName.setCharacterSize(50);
+		this->enterName.setPosition(100, 500);
+		this->enterName.setString("Enter your name: ");
+		this->enterName.setFillColor(Color::White);
+
+		this->enterNameS.setFont(this->FM[3]);
+		this->enterNameS.setCharacterSize(50);
+		this->enterNameS.setPosition(100, 503);
+		this->enterNameS.setString("Enter your name: ");
+		this->enterNameS.setFillColor(Color::Green);
+
+		this->pressEnter.setFont(this->FM[3]);
+		this->pressEnter.setCharacterSize(25);
+		this->pressEnter.setPosition(550, 560);
+		this->pressEnter.setString("Press enter to continue.");
+		this->pressEnter.setFillColor(Color::White);
+
+		this->pressEnterS.setFont(this->FM[3]);
+		this->pressEnterS.setCharacterSize(25);
+		this->pressEnterS.setPosition(550, 563);
+		this->pressEnterS.setString("Press enter to continue.");
+		this->pressEnterS.setFillColor(Color::Green);
 
 	}
 
@@ -424,7 +452,6 @@ public:
 							}
 						}
 						else if (this->gameOver) {
-							// store name
 							this->gameOver = false;
 							restartGame();
 							this->showMenu = true;
@@ -454,7 +481,7 @@ public:
 				}
 				else if (event.type == Event::TextEntered) {
 					if (this->gameOver) {
-						if (event.text.unicode < 128 && event.text.unicode != 8) { // shouldn't be backspace
+						if (event.text.unicode < 128 && event.text.unicode != 8 && event.text.unicode != 27 && this->playerName.length() < 15) { // shouldn't be backspace
 							this->playerName += static_cast<char>(event.text.unicode);
 							this->nameText.setString(this->playerName);
 						}
@@ -530,6 +557,12 @@ public:
 				this->window.clear();
 				this->gameover.draw(this->window);
 				this->window.draw(this->nameText);
+				this->window.draw(this->enterNameS);
+				this->window.draw(this->pressEnterS);
+
+				this->window.draw(this->enterName);
+				this->window.draw(this->pressEnter);
+
 				this->window.display();
 			}
 			else {
