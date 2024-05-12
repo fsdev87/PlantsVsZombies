@@ -20,6 +20,7 @@
 #include "NightGarden.h"
 #include "LimitedGarden.h"
 #include "GameOver.h"
+#include "NextLevel.h"
 
 class Game {
 	// window
@@ -43,8 +44,13 @@ class Game {
 
 	// win things
 	Sprite winSprite;
-
 	//
+
+	// level delay things
+	NextLevel NL;
+	float levelDelay = 5;
+	Clock levelDelayClock;
+	bool nextLevel = false;
 
 
 	int sunCount = 100;
@@ -91,8 +97,8 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	float remainingTime = 120;
-	//float remainingTime = 12; // for testing
+	//float remainingTime = 120;
+	float remainingTime = 5; // for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -101,7 +107,7 @@ class Game {
 	Scoreboard score;
 
 public:
-	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM), score(&FM) {
+	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM), score(&FM), NL(&TM) {
 
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		levels[1] = nullptr;
@@ -209,16 +215,12 @@ public:
 	void updateRound() {
 		this->runClock->restart();
 		this->levelIndex++;
-		this->remainingTime = 120;
-		//this->remainingTime = 10; //for testing
+		//this->remainingTime = 120;
+		this->remainingTime = 5; //for testing
 		this->TimeText.setFillColor(Color::Black);
 		this->sun.reset();
 		this->sunCount = 100;
 
-		/*if (this->levelIndex > 3) {
-			this->hasWon = true;
-			return;
-		}*/
 
 		if (levels[levelIndex] == nullptr && levelIndex == 1) {
 			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
@@ -250,6 +252,9 @@ public:
 		}
 
 		if (this->gameTime <= 0) {
+			this->nextLevel = true;
+			this->levelDelayClock.restart();
+
 			this->updateRound();
 		}
 
@@ -453,7 +458,7 @@ public:
 							this->showInstructions = false;
 						}
 						else {
-							if (!this->showMenu) {
+							if (!this->showMenu && !this->nextLevel) {
 								this->showMenu = true;
 								this->remainingTime = this->remainingTime - this->runClock->getElapsedTime().asSeconds();
 								if (this->runClock) delete this->runClock;
@@ -581,7 +586,7 @@ public:
 			}
 
 
-			if (this->showMenu && !this->gameOver && !this->hasWon) {
+			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel) {
 				this->window.clear();
 				this->menu.display(this->window);
 				if (this->showHighScores) {
@@ -625,6 +630,25 @@ public:
 				this->window.draw(this->pressEnter);
 
 				this->window.display();
+			}
+			else if (this->nextLevel) {
+				if (this->levelIndex > 3) {
+					this->nextLevel = false;
+				}
+				else {
+					if (this->levelDelayClock.getElapsedTime().asSeconds() < this->levelDelay) {
+						this->window.clear();
+						this->NL.drawLevel(this->window, this->levelIndex);
+						this->window.display();
+						this->PF.reset();
+						this->ZF.reset();
+						this->sun.reset();
+						this->runClock->restart();
+					}
+					else {
+						this->nextLevel = false;
+					}
+				}
 			}
 			else {
 				this->window.clear();
