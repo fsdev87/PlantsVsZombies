@@ -13,6 +13,7 @@ class PlantFactory {
 	const int maxPlants = 45;
 	SoundManager* SMptr;
 	TextureManager* TMptr;
+
 public:
 	PlantFactory(SoundManager* SM, TextureManager* TMptr);
 	Plant** getPlants();

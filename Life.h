@@ -39,6 +39,6 @@ public:
 	}
 
 	bool livesGone() {
-		return (this->lifeIndex < 0);
+		return (this->lifeIndex <= 0);
 	}
 };

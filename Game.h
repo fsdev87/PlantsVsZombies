@@ -177,7 +177,7 @@ public:
 		}
 
 		if (this->lives.livesGone()) {
-			this->gameover.restartClock();
+			//this->gameover.restartClock();
 			this->gameOver = true;
 		}
 	}
@@ -262,11 +262,6 @@ public:
 						if (this->showHighScores) {
 							this->showHighScores = false;
 						}
-						else if (this->gameOver) {
-							this->gameOver = false;
-							this->showMenu = true;
-							this->menu.reset();
-						}
 						else {
 							if (!this->showMenu) {
 								this->showMenu = true;
@@ -294,6 +289,13 @@ public:
 							else if (this->quit) {
 								this->window.close();
 							}
+						}
+						else if (this->gameOver) {
+							// store name
+							this->gameOver = false;
+							restartGame();
+							this->showMenu = true;
+							this->menu.reset();
 						}
 					}
 					else if (event.key.code == Keyboard::Up) {
