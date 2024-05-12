@@ -18,6 +18,7 @@
 #include "FullGarden.h"
 #include "NightGarden.h"
 #include "LimitedGarden.h"
+#include "GameOver.h"
 
 class Game {
 	// window
@@ -27,6 +28,8 @@ class Game {
 	FontManager FM;
 	Background background;
 	Inventory Inv;
+
+	GameOver gameover;
 
 	int sunCount = 100;
 	Text sunCountText;
@@ -54,7 +57,7 @@ class Game {
 	bool quit = false;
 	bool restarted = false;
 	bool hasStarted = false;
-
+	bool gameOver = false;
 
 	int highScores[10] = {};
 	Text HighScores[10], heading;
@@ -172,6 +175,11 @@ public:
 		if (this->gameTime <= 0) {
 			this->updateRound();
 		}
+
+		if (this->lives.livesGone()) {
+			this->gameover.restartClock();
+			this->gameOver = true;
+		}
 	}
 
 
@@ -254,6 +262,11 @@ public:
 						if (this->showHighScores) {
 							this->showHighScores = false;
 						}
+						else if (this->gameOver) {
+							this->gameOver = false;
+							this->showMenu = true;
+							this->menu.reset();
+						}
 						else {
 							if (!this->showMenu) {
 								this->showMenu = true;
@@ -322,7 +335,7 @@ public:
 			}
 
 
-			if (this->showMenu) {
+			if (this->showMenu && !this->gameOver) {
 				this->window.clear();
 				this->menu.display(this->window);
 				if (this->showHighScores) {
@@ -335,6 +348,11 @@ public:
 						this->window.draw(this->HighScores[i]);
 					}
 				}
+				this->window.display();
+			}
+			else if (this->gameOver) {
+				this->window.clear();
+				this->gameover.draw(this->window);
 				this->window.display();
 			}
 			else {

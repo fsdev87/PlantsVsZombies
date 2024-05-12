@@ -138,6 +138,9 @@ public:
 	}
 
 
-
+	void reset() {
+		this->menu[0].setString("PLAY");
+		this->shadow[0].setString("PLAY");
+	}
 
 };

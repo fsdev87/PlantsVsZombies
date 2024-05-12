@@ -37,4 +37,8 @@ public:
 	void reset() {
 		this->lifeIndex = 3;
 	}
+
+	bool livesGone() {
+		return (this->lifeIndex < 0);
+	}
 };
