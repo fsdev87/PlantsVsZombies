@@ -5,7 +5,7 @@ using namespace sf;
 using namespace std;
 
 class FontManager {
-	Font fonts[4];
+	Font fonts[5];
 
 public:
 	FontManager() {
@@ -21,6 +21,7 @@ public:
 		if (!fonts[3].loadFromFile("assets/fonts/serio.TTF")) {
 			cout << "serio.TTF NOT FOUND\n";
 		}
+		if (!fonts[4].loadFromFile("assets/fonts/pvz.ttf"));
 	}
 	Font& get(int n) { return fonts[n]; }
 	Font& operator[] (int n) { return fonts[n]; }

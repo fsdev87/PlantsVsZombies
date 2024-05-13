@@ -7,8 +7,8 @@ private:
 	Sprite sprites[3];
 	Texture texture;
 	int lifeIndex = 3;
-	Font lifeFont;
-	Text lifeText;
+	//Font lifeFont;
+	//Text lifeText;
 
 public:
 	Life() {
@@ -16,13 +16,14 @@ public:
 		float posX = 12.75;
 		for (int i = 0; i < 3; i++) {
 			this->sprites[i].setTexture(this->texture);
-			this->sprites[i].setPosition(posX * 80 + 140, 8);
+			this->sprites[i].setPosition(posX * 80 + 145, 8);
+			this->sprites[i].setScale(1.1, 1.1);
 			posX += 0.5;
 		}
-		this->lifeFont.loadFromFile("assets/fonts/lives.ttf");
+		/*this->lifeFont.loadFromFile("assets/fonts/Panic.ttf");
 		this->lifeText = Text("LIVES: ", this->lifeFont, 50);
 		this->lifeText.setPosition(1000, 0);
-		this->lifeText.setFillColor(Color::Black);
+		this->lifeText.setFillColor(Color::Black);*/
 	}
 
 	void saveEverything(ofstream& file) {
@@ -36,13 +37,13 @@ public:
 	void decrementLives() {
 		if (this->lifeIndex == 0) return;
 		this->lifeIndex--;
-		if (this->lifeIndex == 1) {
+		/*if (this->lifeIndex == 1) {
 			this->lifeText.setFillColor(Color::Red);
-		}
+		}*/
 	}
 
 	void drawLives(RenderWindow& window) {
-		window.draw(this->lifeText);
+		//window.draw(this->lifeText);
 		for (int i = 0; i < this->lifeIndex; i++) {
 			window.draw(this->sprites[i]);
 		}
@@ -50,7 +51,7 @@ public:
 
 	void reset() {
 		this->lifeIndex = 3;
-		this->lifeText.setFillColor(Color::Black);
+		//this->lifeText.setFillColor(Color::Black);
 	}
 
 	bool livesGone() {

@@ -70,6 +70,7 @@ class Game {
 
 	string timeString;
 	Text TimeText;
+	Text TimeTextS;
 
 	Menu menu;
 
@@ -113,13 +114,24 @@ class Game {
 	int savedFileIndex = 0;
 	int currentFileIndex = 0;
 
-	Color selectedColor{ 134, 252, 58 };
-	Color restColor{ 132, 153, 129 };
+	Color selectedColor{ 40, 255, 42 };
+	Color restColor{ 46, 74, 39 };
 	Color shadowColor{ 33, 38, 32 };
 
 public:
 	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM), NL(&TM) {
 
+		savedFileNames[0] = "saved1";
+		savedFileNames[1] = "saved2";
+		savedFileNames[2] = "saved3";
+		savedFileNames[3] = "saved4";
+		savedFileNames[4] = "saved5";
+		savedFileNames[5] = "saved6";
+		savedFileNames[6] = "saved7";
+		savedFileNames[7] = "saved8";
+		savedFileNames[8] = "saved9";
+		savedFileNames[9] = "saved10";
+		this->savedFileIndex = 10;
 
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		levels[1] = nullptr;
@@ -136,10 +148,15 @@ public:
 
 		srand((unsigned)time(0));
 		//this->runClock.restart();
-		this->TimeText.setPosition(1230, 550);
-		this->TimeText.setFont(FM[0]);
-		this->TimeText.setFillColor(Color::Black);
+		this->TimeText.setPosition(1180, 550);
+		this->TimeText.setFont(FM[3]);
+		this->TimeText.setFillColor(Color::White);
 		this->TimeText.setCharacterSize(36);
+
+		this->TimeTextS.setPosition(1180, 554);
+		this->TimeTextS.setFont(FM[3]);
+		this->TimeTextS.setFillColor(Color(89, 46, 12));
+		this->TimeTextS.setCharacterSize(36);
 
 		this->sunCountText.setFont(FM[0]);
 		this->sunCountText.setString(to_string(this->sunCount));
@@ -347,7 +364,7 @@ private:
 		this->menu.setMenuIndex(0);
 		this->remainingTime = 15;
 		this->runClock = new Clock;
-		this->TimeText.setFillColor(Color::Black);
+		this->TimeText.setFillColor(Color::White);
 		this->sunCount = 100;
 		this->PF.reset();
 		this->ZF.reset();
@@ -397,7 +414,7 @@ private:
 			this->remainingTime = 10;
 		}
 		//this->remainingTime = 5; //for testing
-		this->TimeText.setFillColor(Color::Black);
+		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
 		this->sunCount = 100;
 
@@ -416,6 +433,7 @@ private:
 	void drawEverything() {
 		if (this->hasWon || this->levelIndex > 3) return;
 		levels[levelIndex]->drawEverything(this->window, this->background, &Inv, sunCount, &PF, &ZF, lawnmowers, lives, &sun, sunCountText);
+		this->window.draw(this->TimeTextS);
 		this->window.draw(this->TimeText);
 		this->score.draw(this->window);
 	}
@@ -425,6 +443,7 @@ private:
 		levels[levelIndex]->updateEverything(&PF, &ZF, lawnmowers, lives, sun);
 		calculateTime();
 		this->TimeText.setString("TIME: " + this->timeString);
+		this->TimeTextS.setString("TIME: " + this->timeString);
 
 		if (this->lives.livesGone()) {
 			this->gameOver = true;
@@ -622,17 +641,7 @@ private:
 
 
 	void initFiles() {
-		savedFileNames[0] = "saved1";
-		savedFileNames[1] = "saved2";
-		savedFileNames[2] = "saved3";
-		savedFileNames[3] = "saved4";
-		savedFileNames[4] = "saved5";
-		savedFileNames[5] = "saved6";
-		savedFileNames[6] = "saved7";
-		savedFileNames[7] = "saved8";
-		savedFileNames[8] = "saved9";
-		savedFileNames[9] = "saved10";
-		this->savedFileIndex = 10;
+
 
 		this->menu.getHSSprite().setColor(Color(0, 0, 0, 255 * 0.8));
 		this->filesHeading.setFont(FM[1]);

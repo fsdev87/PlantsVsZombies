@@ -7,8 +7,8 @@ class Menu {
 	// resume
 	// highscores
 	// exit
-	Color selectedColor{ 134, 252, 58 };
-	Color restColor{ 34, 48, 25 };
+	Color selectedColor{ 40, 255, 42 };
+	Color restColor{ 46, 74, 39 };
 
 	Text menu[7];
 	Text shadow[7];
@@ -24,6 +24,10 @@ public:
 	Menu(TextureManager* TM, FontManager* FM, SoundManager* SM) :TMptr(TM), FMptr(FM), SMptr(SM) {
 
 		backgroundSprite.setTexture(this->TMptr->getTexture("mainmenu"));
+
+
+
+
 		backgroundSprite.setScale(0.73, 0.73);
 		backgroundSprite.setPosition(0, 0);
 		menu[0].setString("PLAY");
@@ -58,7 +62,7 @@ public:
 				xFactor -= 25;
 			}
 			else if (i == 2) {
-				xFactor -= 315;
+				xFactor -= 320;
 			}
 			else if (i == 3) {
 				yFactor -= 1;
@@ -88,7 +92,7 @@ public:
 				xFactor -= 25;
 			}
 			else if (i == 2) {
-				xFactor -= 315;
+				xFactor -= 320;
 			}
 			else if (i == 3) {
 				yFactor -= 1;
@@ -119,6 +123,7 @@ public:
 	void handleUp() {
 		this->SMptr->playSound("change");
 		this->menu[this->menuIndex].setFillColor(this->restColor);
+		this->menu[this->menuIndex].setCharacterSize(70);
 		this->menuIndex--;
 		if (this->menuIndex < 0) this->menuIndex = 6;
 	}
@@ -126,6 +131,7 @@ public:
 	void handleDown() {
 		this->SMptr->playSound("change");
 		this->menu[this->menuIndex].setFillColor(this->restColor);
+		this->menu[this->menuIndex].setCharacterSize(70);
 		this->menuIndex++;
 		if (this->menuIndex > 6) this->menuIndex = 0;
 	}
@@ -177,9 +183,13 @@ public:
 
 		for (int i = 0; i < 7; i++) {
 			if (this->menuIndex == i) {
+				this->menu[this->menuIndex].setCharacterSize(78);
+				this->shadow[this->menuIndex].setCharacterSize(78);
 				this->menu[i].setFillColor(selectedColor);
 			}
 			else {
+				this->menu[this->menuIndex].setCharacterSize(70);
+				this->shadow[this->menuIndex].setCharacterSize(70);
 				this->menu[i].setFillColor(restColor);
 			}
 			window.draw(this->shadow[i]);
