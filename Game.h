@@ -70,6 +70,7 @@ class Game {
 
 	string timeString;
 	Text TimeText;
+	Text TimeTextS;
 
 	Menu menu;
 
@@ -100,19 +101,37 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	//float remainingTime = 120;
-	float remainingTime = 11; // for testing
+	float remainingTime = 120;  // original
+	//float remainingTime = 11; // for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
 
-
 	Scoreboard score;
 
+	Text filesHeading, filesHeadingShadow, fileNamesText[10], fileNamesTextS[10];
+	string savedFileNames[10];
+	int savedFileIndex = 0;
+	int currentFileIndex = 0;
+
+	Color selectedColor{ 40, 255, 42 };
+	Color restColor{ 46, 74, 39 };
+	Color shadowColor{ 33, 38, 32 };
 
 public:
 	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM), NL(&TM) {
 
+		savedFileNames[0] = "saved1";
+		savedFileNames[1] = "saved2";
+		savedFileNames[2] = "saved3";
+		savedFileNames[3] = "saved4";
+		savedFileNames[4] = "saved5";
+		savedFileNames[5] = "saved6";
+		savedFileNames[6] = "saved7";
+		savedFileNames[7] = "saved8";
+		savedFileNames[8] = "saved9";
+		savedFileNames[9] = "saved10";
+		this->savedFileIndex = 10;
 
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		levels[1] = nullptr;
@@ -129,10 +148,15 @@ public:
 
 		srand((unsigned)time(0));
 		//this->runClock.restart();
-		this->TimeText.setPosition(1230, 550);
-		this->TimeText.setFont(FM[0]);
-		this->TimeText.setFillColor(Color::Black);
+		this->TimeText.setPosition(1150, 550);
+		this->TimeText.setFont(FM[3]);
+		this->TimeText.setFillColor(Color::White);
 		this->TimeText.setCharacterSize(36);
+
+		this->TimeTextS.setPosition(1150, 554);
+		this->TimeTextS.setFont(FM[3]);
+		this->TimeTextS.setFillColor(Color(89, 46, 12));
+		this->TimeTextS.setCharacterSize(36);
 
 		this->sunCountText.setFont(FM[0]);
 		this->sunCountText.setString(to_string(this->sunCount));
@@ -190,10 +214,17 @@ public:
 private:
 
 	void saveEverything() {
-
 		cout << "Opened file to write\n";
 		ofstream file;
-		file.open("saved.dat", ios::out | ios::binary);
+		cout << "Saving to file: " << "saved/" + this->savedFileNames[currentFileIndex] + ".dat" << endl;
+		file.open("saved/" + this->savedFileNames[currentFileIndex] + ".dat", ios::out | ios::binary);
+
+
+		file.write(reinterpret_cast<char*>(&currentFileIndex), sizeof(int));
+
+		for (int i = 0; i < this->savedFileIndex; i++) {
+			file.write(reinterpret_cast<char*>(&savedFileNames[i]), sizeof(string));
+		}
 
 		file.write(reinterpret_cast<char*>(&levelIndex), sizeof(int));
 
@@ -233,7 +264,14 @@ private:
 	void readEverything() {
 		cout << "Opening to read\n";
 		ifstream file;
-		file.open("saved.dat", ios::in | ios::binary);
+		cout << "Reading from file: " << "saved/" + this->savedFileNames[currentFileIndex] + ".dat" << endl;
+		file.open("saved/" + this->savedFileNames[currentFileIndex] + ".dat", ios::in | ios::binary);
+
+		file.read(reinterpret_cast<char*>(&currentFileIndex), sizeof(int));
+
+		for (int i = 0; i < this->savedFileIndex; i++) {
+			file.read(reinterpret_cast<char*>(&savedFileNames[i]), sizeof(string));
+		}
 
 		cout << "Reading game.h primitive data types\n";
 		file.read(reinterpret_cast<char*>(&levelIndex), sizeof(int));
@@ -290,39 +328,22 @@ private:
 
 		if (levels[levelIndex] == nullptr && levelIndex == 0) {
 
-			/*Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
-			Inv.addCard(this->TM.getTexture("card-peashooter_dim"), this->TM.getTexture("card-peashooter"), "peashooter", 100);*/
 			levels[levelIndex] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 1) {
-			//Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
-			//Inv.addCard(this->TM.getTexture("card-peashooter_dim"), this->TM.getTexture("card-peashooter"), "peashooter", 100);
-			//Inv.addCard(this->TM.getTexture("card-repeater_dim"), this->TM.getTexture("card-repeater"), "repeater", 200);
-			//Inv.addCard(this->TM.getTexture("card-wallnut_dim"), this->TM.getTexture("card-wallnut"), "wallnut", 50);
+
 			cout << "Level was full garden\n";
 			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score, 1 };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 2) {
-			// Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
-			// Inv.addCard(this->TM.getTexture("card-peashooter_dim"), this->TM.getTexture("card-peashooter"), "peashooter", 100);
-			// Inv.addCard(this->TM.getTexture("card-repeater_dim"), this->TM.getTexture("card-repeater"), "repeater", 200);
-			// Inv.addCard(this->TM.getTexture("card-wallnut_dim"), this->TM.getTexture("card-wallnut"), "wallnut", 50);
-			// Inv.addCard(this->TM.getTexture("card-snowpea_dim"), this->TM.getTexture("card-snowpea"), "snowpea", 175);
-			// Inv.addCard(this->TM.getTexture("card-cherrybomb_dim"), this->TM.getTexture("card-cherrybomb"), "cherrybomb", 150);
-			// Inv.addCard(this->TM.getTexture("shovel"), this->TM.getTexture("shovel"), "shovel", 0);
+
 			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 			levels[1] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score , 1 };
 			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score, 1 };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 3) {
-			// Inv.addCard(this->TM.getTexture("card-sunflower_dim"), this->TM.getTexture("card-sunflower"), "sunflower", 50);
-			// Inv.addCard(this->TM.getTexture("card-peashooter_dim"), this->TM.getTexture("card-peashooter"), "peashooter", 100);
-			// Inv.addCard(this->TM.getTexture("card-repeater_dim"), this->TM.getTexture("card-repeater"), "repeater", 200);
-			// Inv.addCard(this->TM.getTexture("card-wallnut_dim"), this->TM.getTexture("card-wallnut"), "wallnut", 50);
-			// Inv.addCard(this->TM.getTexture("card-snowpea_dim"), this->TM.getTexture("card-snowpea"), "snowpea", 175);
-			// Inv.addCard(this->TM.getTexture("card-cherrybomb_dim"), this->TM.getTexture("card-cherrybomb"), "cherrybomb", 150);
-			// Inv.addCard(this->TM.getTexture("shovel"), this->TM.getTexture("shovel"), "shovel", 0);
+
 			levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 			levels[1] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score , 1 };
 			levels[2] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score , 1 };
@@ -341,9 +362,10 @@ private:
 		this->hasWon = false;
 
 		this->menu.setMenuIndex(0);
-		this->remainingTime = 120;
+		this->remainingTime = 120; // original
+		//this->remainingTime = 14; // for testing
 		this->runClock = new Clock;
-		this->TimeText.setFillColor(Color::Black);
+		this->TimeText.setFillColor(Color::White);
 		this->sunCount = 100;
 		this->PF.reset();
 		this->ZF.reset();
@@ -367,16 +389,35 @@ private:
 		levels[2] = nullptr;
 		if (this->levels[3] != nullptr) delete this->levels[3];
 		levels[3] = nullptr;
-		this->levelIndex = 0;
+		this->levelIndex;
+		if (levels[levelIndex] == nullptr && levelIndex == 0) {
+			levels[levelIndex] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}
+		else if (levels[levelIndex] == nullptr && levelIndex == 1) {
+			levels[levelIndex] = new FullGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}
+		else if (levels[levelIndex] == nullptr && levelIndex == 2) {
+			levels[levelIndex] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}
+		else if (levels[levelIndex] == nullptr && levelIndex == 3) {
+			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}
+		//this->levelIndex = 0;
 	}
 
 	void updateRound() {
 		this->runClock->restart();
 		this->levelIndex++;
-		//this->remainingTime = 120;
-		this->remainingTime = 5; //for testing
-		if (this->levelIndex >= 2) this->remainingTime = 120;
-		this->TimeText.setFillColor(Color::Black);
+		/*if (this->levelIndex == 3) {
+
+			this->remainingTime = 120;
+		}
+		else {
+			this->remainingTime = 10;
+		}*/
+		this->remainingTime = 120; // original
+		//this->remainingTime = 5; //for testing
+		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
 		this->sunCount = 100;
 
@@ -395,6 +436,7 @@ private:
 	void drawEverything() {
 		if (this->hasWon || this->levelIndex > 3) return;
 		levels[levelIndex]->drawEverything(this->window, this->background, &Inv, sunCount, &PF, &ZF, lawnmowers, lives, &sun, sunCountText);
+		this->window.draw(this->TimeTextS);
 		this->window.draw(this->TimeText);
 		this->score.draw(this->window);
 	}
@@ -404,6 +446,7 @@ private:
 		levels[levelIndex]->updateEverything(&PF, &ZF, lawnmowers, lives, sun);
 		calculateTime();
 		this->TimeText.setString("TIME: " + this->timeString);
+		this->TimeTextS.setString("TIME: " + this->timeString);
 
 		if (this->lives.livesGone()) {
 			this->gameOver = true;
@@ -599,6 +642,64 @@ private:
 
 	}
 
+
+	void initFiles() {
+
+
+		this->menu.getHSSprite().setColor(Color(0, 0, 0, 255 * 0.8));
+		this->filesHeading.setFont(FM[1]);
+		this->filesHeading.setCharacterSize(110);
+		this->filesHeading.setFillColor(Color::White);
+		this->filesHeading.setString("CHOOSE FILE TO LOAD FROM");
+		this->filesHeading.setPosition(170, -10);
+
+		this->filesHeadingShadow.setFont(FM[1]);
+		this->filesHeadingShadow.setCharacterSize(111);
+		this->filesHeadingShadow.setFillColor(Color(0, 0, 0, 150));
+		this->filesHeadingShadow.setString("CHOOSE FILE TO LOAD FROM");
+		this->filesHeadingShadow.setPosition(170, -5);
+
+
+		for (int i = 0; i < this->savedFileIndex; i++) {
+			this->fileNamesText[i].setFont(FM[3]);
+			this->fileNamesText[i].setCharacterSize(60);
+			this->fileNamesText[i].setString(to_string(i + 1) + ". " + this->savedFileNames[i]);
+
+			this->fileNamesTextS[i].setFont(FM[3]);
+			this->fileNamesTextS[i].setCharacterSize(60);
+			this->fileNamesTextS[i].setFillColor(shadowColor);
+			this->fileNamesTextS[i].setString(to_string(i + 1) + ". " + this->savedFileNames[i]);
+		}
+
+		int numRows = 5;
+		int itemsPerRow = 2;
+		int leftPadding = 250;
+		int horizontalGap = 350;
+		int verticalGap = 20;
+
+		for (int row = 0; row < numRows; ++row) {
+			for (int col = 0; col < itemsPerRow; ++col) {
+				int index = row * itemsPerRow + col;
+				if (index < this->savedFileIndex) {
+					int x = leftPadding + (col * (2 * 70 + horizontalGap)); // Horizontal spacing of 2 * 70 + gap, with left padding
+					int y = 110 + row * (70 + verticalGap); // Vertical spacing of 70 + gap, starting from y = 250
+
+					// Position regular text
+					this->fileNamesText[index].setPosition(x, y);
+
+					// Position shadow text
+					this->fileNamesTextS[index].setPosition(x, y + 4); // Offset shadow text by 4 pixels vertically
+				}
+			}
+		}
+
+
+
+
+
+
+	}
+
 public:
 	void run() {
 
@@ -618,6 +719,12 @@ public:
 						else if (this->showInstructions) {
 							this->showInstructions = false;
 						}
+						else if (this->showMenu && this->loadGame) {
+							this->loadGame = false;
+						}
+						else if (this->showMenu && this->saveGame) {
+							this->saveGame = false;
+						}
 						else {
 							if (!this->showMenu && !this->nextLevel) {
 								this->showMenu = true;
@@ -631,7 +738,7 @@ public:
 					}
 
 					else if (event.key.code == Keyboard::Return) {
-						if (this->showMenu) {
+						if (this->showMenu && !this->loadGame && !this->saveGame) {
 							this->menu.handleEnter(this->saveGame, this->loadGame, this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
 							if (!this->showMenu && !this->restarted) { // resume or start mode
 								this->runClock = new Clock();
@@ -646,16 +753,28 @@ public:
 								initInstructions();
 							}
 							else if (this->saveGame) {
-								this->saveEverything();
-								saveGame = false;
+								//this->saveEverything();
+								//saveGame = false;
+								this->initFiles();
 							}
 							else if (this->loadGame) {
-								this->readEverything();
-								loadGame = false;
+								/*this->readEverything();*/
+								//loadGame = false;
+								this->initFiles();
 							}
 							else if (this->quit) {
 								this->window.close();
 							}
+						}
+						else if (this->showMenu && this->loadGame) {
+							this->readEverything();
+							this->loadGame = false;
+							this->showMenu = false;
+						}
+						else if (this->showMenu && this->saveGame) {
+							this->saveEverything();
+							this->saveGame = false;
+							//this->showMenu = false;
 						}
 						else if (this->gameOver || this->hasWon) {
 							if (this->gameOver) this->gameOver = false;
@@ -691,26 +810,61 @@ public:
 						}
 					}
 					else if (event.key.code == Keyboard::Up) {
-						if (this->showMenu && !this->showHighScores && !this->showInstructions) {
+						if (this->showMenu && !this->saveGame && !this->loadGame && !this->showHighScores && !this->showInstructions) {
 							this->menu.handleUp();
 						}
+
+
+						if (this->loadGame || this->saveGame) {
+							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
+							this->currentFileIndex -= 2;
+							if (this->currentFileIndex < 0) {
+								this->currentFileIndex = (this->savedFileIndex - 1);
+							}
+						}
+
 					}
 					else if (event.key.code == Keyboard::Down) {
-						if (this->showMenu && !this->showHighScores && !this->showInstructions) {
+						if (this->showMenu && !this->saveGame && !this->loadGame && !this->showHighScores && !this->showInstructions) {
 							this->menu.handleDown();
 						}
+						if (this->loadGame || this->saveGame) {
+							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
+							this->currentFileIndex += 2;
+							if (this->currentFileIndex > (this->savedFileIndex - 1)) {
+								this->currentFileIndex = 0;
+							}
+						}
+
+
 					}
 					else if (event.key.code == Keyboard::Right) {
 						this->SM.playSound("enter");
 						if (this->showInstructions) {
 							updateInstructions();
 						}
+						if (this->loadGame || this->saveGame) {
+							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
+							this->currentFileIndex += 1;
+							if (this->currentFileIndex > (this->savedFileIndex - 1)) {
+								this->currentFileIndex = 0;
+							}
+						}
+
 					}
 					else if (event.key.code == Keyboard::Left) {
 						this->SM.playSound("enter");
 						if (this->showInstructions) {
 							updateInstructions(-1);
 						}
+						if (this->loadGame || this->saveGame) {
+							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
+							this->currentFileIndex -= 1;
+							if (this->currentFileIndex < 0) {
+								this->currentFileIndex = this->savedFileIndex - 1;
+							}
+						}
+
 					}
 				}
 				else if (event.type == Event::TextEntered) {
@@ -759,7 +913,7 @@ public:
 			}
 
 
-			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel && !this->saveGame && !this->loadGame) {
+			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel) {
 				this->window.clear();
 				this->menu.display(this->window);
 				if (this->showHighScores) {
@@ -784,6 +938,24 @@ public:
 
 					this->window.draw(this->pageNumber);
 
+				}
+				else if (this->loadGame || this->saveGame) {
+					this->window.draw(this->menu.getHSSprite());
+					this->window.draw(this->filesHeadingShadow);
+					this->window.draw(this->filesHeading);
+
+					for (int i = 0; i < this->savedFileIndex; i++) {
+						if (this->currentFileIndex == i) {
+							this->fileNamesText[i].setFillColor(selectedColor);
+						}
+						else {
+							this->fileNamesText[i].setFillColor(restColor);
+						}
+						this->window.draw(this->fileNamesTextS[i]);
+						this->window.draw(this->fileNamesText[i]);
+					}
+
+					this->window.draw(this->pageNumber);
 				}
 				this->window.display();
 			}

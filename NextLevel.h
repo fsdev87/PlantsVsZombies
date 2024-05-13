@@ -14,11 +14,11 @@ private:
 
 public:
 	NextLevel(TextureManager* TMptr) {
-		this->textFont.loadFromFile("assets/fonts/next-level.ttf");
-		this->texts[0] = Text("LEVEL PASSED ! ! !", this->textFont, 200); this->texts[0].setFillColor(Color::White);
+		this->textFont.loadFromFile("assets/fonts/roman.otf");
+		this->texts[0] = Text("LEVEL CLEARED", this->textFont, 180); this->texts[0].setFillColor(Color::White);
+
 		this->texts[1] = Text("UNLOCKED: ", this->textFont, 85); this->texts[1].setFillColor(Color::Green);
 		this->texts[2] = Text("BEWARE OF: ", this->textFont, 85); this->texts[2].setFillColor(Color::Red);
-		this->texts[3] = Text("GET READY ! ! !", this->textFont, 150); this->texts[3].setFillColor(Color::White);
 
 		this->plantSprites[0] = Sprite(TMptr->getTexture("spritesheet-wallnut"));
 		this->plantSprites[0].setTextureRect(IntRect(0, 0, 71, 71));
@@ -40,20 +40,19 @@ public:
 		this->backGroundSprite.setPosition(0, 0);
 		this->backGroundSprite.setColor(Color(255, 255, 255, 180));
 
-		this->texts[0].setPosition(95, -20);
+		this->texts[0].setPosition(190, 20);
 
-		this->texts[1].setPosition(460, 215);
+		this->texts[1].setPosition(385, 228);
 		this->plantSprites[0].setPosition(800, 235);
 		this->plantSprites[1].setPosition(900, 235);
 		this->plantSprites[2].setPosition(800, 235);
 		this->plantSprites[3].setPosition(900, 235);
 
-		this->texts[2].setPosition(460, 340);
+		this->texts[2].setPosition(375, 340);
 		this->zombieSprites[0].setPosition(770, 320);
 		this->zombieSprites[1].setPosition(780, 300);
 		this->zombieSprites[2].setPosition(800, 305);
 
-		this->texts[3].setPosition(350, 430);
 	}
 
 	void level2(RenderWindow& window) {
@@ -80,7 +79,6 @@ public:
 		window.draw(this->texts[0]);
 
 		window.draw(this->texts[2]); window.draw(this->zombieSprites[2]);
-		window.draw(this->texts[3]);
 	}
 
 	void drawLevel(RenderWindow& window, int levelIndex) {
@@ -103,6 +101,5 @@ public:
 		this->zombieSprites[1].setPosition(700, 300);
 		this->zombieSprites[2].setPosition(700, 300);
 
-		this->texts[3].setPosition(650, 450);
 	}
 };

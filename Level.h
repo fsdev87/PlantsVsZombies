@@ -17,6 +17,7 @@ using namespace sf;
 class Level {
 protected:
 	Text levelText;
+	Text levelTextS;
 	float levelPosition[2];
 	const float middle1 = 450, middle2 = 620;
 	float speed;
@@ -36,12 +37,18 @@ public:
 		this->TMptr = TM;
 		this->SBptr = scoreboard;
 
-		this->levelText.setFont(FM->operator[](2));
-		this->levelText.setCharacterSize(120);
+		this->levelText.setFont(FM->get(2));
+		this->levelText.setCharacterSize(150);
 		this->levelText.setString("LEVEL 1");
-		this->levelText.setFillColor(Color(16, 12, 12));
+		this->levelText.setFillColor(Color::White);
 		this->levelPosition[0] = -250, levelPosition[1] = 250;
 		this->levelText.setPosition(levelPosition[0], levelPosition[1]);
+
+		this->levelTextS.setFont(FM->get(2));
+		this->levelTextS.setCharacterSize(151);
+		this->levelTextS.setString("LEVEL 1");
+		this->levelTextS.setFillColor(Color(89, 46, 12));
+		this->levelTextS.setPosition(levelPosition[0], levelPosition[1] + 8);
 		this->speed = 50;
 		this->midWay = false;
 		this->exists = true;
@@ -74,12 +81,14 @@ public:
 	void reset() {
 		this->levelPosition[0] = -250, levelPosition[1] = 250;
 		this->levelText.setPosition(levelPosition[0], levelPosition[1]);
+		this->levelTextS.setPosition(levelPosition[0], levelPosition[1]);
 		this->levelClock.restart();
 		this->midWay = false;
 		this->exists = true;
 	}
 	void increaseLevel() {
 		this->levelText.setString("LEVEL " + to_string(round));
+		this->levelTextS.setString("LEVEL " + to_string(round));
 	}
 
 	virtual void drawEverything(RenderWindow& window, Background& background,
@@ -125,8 +134,10 @@ public:
 
 				this->levelClock.restart();
 			}
+			this->levelTextS.setPosition(levelPosition[0], levelPosition[1] + 8);
 			this->levelText.setPosition(levelPosition[0], levelPosition[1]);
 			if (this->levelPosition[0] >= 1400) exists = false;
+			window.draw(levelTextS);
 			window.draw(levelText);
 		}
 	}

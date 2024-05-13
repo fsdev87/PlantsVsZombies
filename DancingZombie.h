@@ -246,7 +246,7 @@ public:
 			if (abs(this->position[1] - (int)this->position[1]) == 0) this->deflecting = false;
 		}
 
-		if (rand() % 100 == 1) {
+		if (rand() % 100 == 1 && !this->deflecting) { // intitially on a whole position
 			//this->position[0] += (10 * this->speed);
 			if (rand() % 2) { // if 1 then go down
 				if (this->position[1] + 1 <= 4) { // can go down
