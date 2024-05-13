@@ -11,6 +11,8 @@ class DancingZombie : public Zombie {
 	int spawnIndex[4];
 	Clock danceClock;
 	float danceDelay = 1 + rand() % 3; // 1 to 3 seconds random
+	bool deflecting = false;
+	float deflectFactor;
 
 public:
 	DancingZombie(Texture& tex, int columns, float pos[2], TextureManager* tm, SoundManager* sm) {
@@ -69,6 +71,9 @@ public:
 
 		file.write(reinterpret_cast<char*>(&danceDelay), sizeof(float));
 
+		file.write(reinterpret_cast<char*>(&deflecting), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&deflectFactor), sizeof(float));
+
 	}
 
 	void readEverything(ifstream& file) {
@@ -106,6 +111,9 @@ public:
 		file.read(reinterpret_cast<char*>(&spawnIndex[3]), sizeof(int));
 
 		file.read(reinterpret_cast<char*>(&danceDelay), sizeof(float));
+
+		file.read(reinterpret_cast<char*>(&deflecting), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&deflectFactor), sizeof(float));
 
 
 		if (this->blocked) {
@@ -233,17 +241,30 @@ public:
 			return;
 		}
 
+		if (this->deflecting) {
+			this->position[1] += this->deflectFactor;
+			if (abs(this->position[1] - (int)this->position[1]) == 0) this->deflecting = false;
+		}
 
 		if (rand() % 100 == 1) {
 			//this->position[0] += (10 * this->speed);
-			if (rand() % 2) {
-				this->position[1] += 1;
-				if (this->position[1] > 4) this->position[1] = 4;
+			if (rand() % 2) { // if 1 then go down
+				if (this->position[1] + 1 <= 4) { // can go down
+					this->deflectFactor = 0.0625;
+				}
+				else { // cannot go down, go up
+					this->deflectFactor = -0.0625;
+				}
 			}
-			else {
-				this->position[1] -= 1;
-				if (this->position[1] < 0) this->position[1] = 0;
+			else { // if 0 then go up
+				if (this->position[1] - 1 >= 0) { // can go up
+					this->deflectFactor = -0.0625;
+				}
+				else { // cannot go up, go down
+					this->deflectFactor = 0.0625;
+				}
 			}
+			this->deflecting = true;
 		}
 
 
@@ -279,7 +300,13 @@ public:
 	}
 
 	void eat(Plant* plant) {
-		if (plant->getExist()) {
+		float* plantPos = plant->getPosition();
+		float dt = this->position[0] - plantPos[0];
+		bool keepEating = false;
+		if (dt >= 0 && dt <= 0.6875) { // plant in range
+			keepEating = true;
+		}
+		if (plant->getExist() && keepEating) {
 			if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
 				plant->beEaten();
 				this->SMptr->getSound("eating")->play();

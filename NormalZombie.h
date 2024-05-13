@@ -178,7 +178,14 @@ public:
 	}
 
 	void eat(Plant* plant) {
-		if (plant->getExist()) {
+		float* plantPos = plant->getPosition();
+		float dt = this->position[0] - plantPos[0];
+		bool keepEating = false;
+		if (dt >= 0 && dt <= 0.6875) { // plant in range
+			keepEating = true;
+		}
+
+		if (plant->getExist() && keepEating) {
 			if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
 				plant->beEaten();
 				this->SMptr->getSound("eating")->play();

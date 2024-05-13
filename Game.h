@@ -373,8 +373,9 @@ private:
 	void updateRound() {
 		this->runClock->restart();
 		this->levelIndex++;
-		this->remainingTime = 120;
-		//this->remainingTime = 5; //for testing
+		//this->remainingTime = 120;
+		this->remainingTime = 5; //for testing
+		if (this->levelIndex >= 2) this->remainingTime = 120;
 		this->TimeText.setFillColor(Color::Black);
 		this->sun.reset();
 		this->sunCount = 100;
