@@ -23,14 +23,14 @@ public:
 	void saveEverything(ofstream& file) {
 
 		file.write(reinterpret_cast<char*>(&score), sizeof(int));
-		this->scoreText.setString("Score: " + to_string(this->score));
+
 
 	}
 
 	void readEverything(ifstream& file) {
 
 		file.read(reinterpret_cast<char*>(&score), sizeof(int));
-
+		this->scoreText.setString("Score: " + to_string(this->score));
 	}
 	void addScore(int n) {
 		this->score += n;
