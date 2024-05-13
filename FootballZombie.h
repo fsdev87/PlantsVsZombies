@@ -249,10 +249,12 @@ public:
 		if (plant->getExist() && keepEating) {
 			if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
 				plant->beEaten();
+				this->SMptr->getSound("eating")->play();
 				plant->getEatClock().restart();
 			}
 		}
 		else {
+			this->SMptr->getSound("eating")->stop();
 			this->blocked = false;
 			this->state = "walk";
 
@@ -351,6 +353,7 @@ public:
 					this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
 				}
 				else if (this->health == 0) {
+					this->SMptr->getSound("eating")->stop();
 					this->exists = false;
 					this->makeDead();
 				}

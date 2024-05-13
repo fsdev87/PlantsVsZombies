@@ -7,9 +7,10 @@ class Repeater : public Shooter {
 	Bullet bullet[2];
 
 public:
-	Repeater(Texture& tex, int columns, float pos[2]) {
+	Repeater(Texture& tex, int columns, float pos[2], SoundManager* sm) {
 		srand(time(0));
 		this->sprite.setTexture(tex);
+		this->SMptr = sm;
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->health = 150;
@@ -22,6 +23,8 @@ public:
 		this->bullet[1].setPosition(this->position[0] - 0.5, this->position[1]);
 		this->bulletDelay = 1.75 + rand() % 2;
 		this->anim.setDelay(80.f);
+		this->bullet[0].setHitSound(*(this->SMptr->getSound("hit")));
+		this->bullet[1].setHitSound(*(this->SMptr->getSound("hit")));
 		//this->startClock.restart();
 	}
 

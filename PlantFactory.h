@@ -55,10 +55,10 @@ public:
 				plants[i] = new Sunflower(TMptr->getTexture("spritesheet-sunflower"), TMptr->getTexture("icon-sun"), 18, pos);
 			}
 			else if (this->types[i] == "peashooer") {
-				plants[i] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
+				plants[i] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos, this->SMptr);
 			}
 			else if (this->types[i] == "repeater") {
-				plants[i] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
+				plants[i] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos, this->SMptr);
 			}
 			else if (this->types[i] == "wallnut") {
 				plants[i] = new Wallnut(TMptr->getTexture("spritesheet-wallnut"), 16, pos, this->TMptr);
@@ -68,7 +68,7 @@ public:
 
 			}
 			else if (this->types[i] == "snowpea") {
-				plants[i] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
+				plants[i] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos, this->SMptr);
 			}
 
 			plants[i]->readEverything(file);

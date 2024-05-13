@@ -7,9 +7,10 @@ class Snowpea : public Shooter {
 	Bullet bullet;
 
 public:
-	Snowpea(Texture& tex, Texture& itex, int columns, float pos[2]) : bullet(pos[0] - 0.15, pos[1]) {
+	Snowpea(Texture& tex, Texture& itex, int columns, float pos[2], SoundManager* sm) : bullet(pos[0] - 0.15, pos[1]) {
 		srand(time(0));
 		this->sprite.setTexture(tex);
+		this->SMptr = sm;
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
 		this->health = 100;
@@ -21,6 +22,7 @@ public:
 		this->bulletDelayClock.restart();
 		this->bulletDelay = 1.75 + rand() % 2;
 		this->anim.setDelay(80.f);
+		this->bullet.setHitSound(*(this->SMptr->getSound("hit")));
 		//this->startClock.restart();
 	}
 

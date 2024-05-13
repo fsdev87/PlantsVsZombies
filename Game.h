@@ -186,6 +186,7 @@ public:
 		this->SM.getMainMusic()->setLoop(true);
 	}
 
+private:
 
 	void saveEverything() {
 
@@ -404,6 +405,8 @@ public:
 
 		if (this->lives.livesGone()) {
 			this->gameOver = true;
+			this->SM.getSound("gameover")->play();
+			this->SM.getMainMusic()->stop();
 		}
 
 		if (this->gameTime <= 0) {
@@ -594,7 +597,7 @@ public:
 
 	}
 
-
+public:
 	void run() {
 
 
@@ -655,7 +658,8 @@ public:
 						else if (this->gameOver || this->hasWon) {
 							if (this->gameOver) this->gameOver = false;
 							else if (this->hasWon) this->hasWon = false;
-
+							this->SM.getMainMusic()->play();
+							this->SM.getMainMusic()->setLoop(true);
 							// highscores updating
 							this->highScores[9] = this->score.getScore();
 							this->names[9] = this->playerName;
@@ -831,7 +835,7 @@ public:
 		}
 
 	}
-
+private:
 	void calculateTime() {
 		if (this->runClock == nullptr) return;
 		this->gameTime = this->remainingTime - this->runClock->getElapsedTime().asSeconds();

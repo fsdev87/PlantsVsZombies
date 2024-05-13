@@ -205,11 +205,11 @@ public:
 			types[tempIndex] = "sunflower";
 		}
 		else if (indexInInventory == 1 && sunCount >= 100) {
-			plants[tempIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos);
+			plants[tempIndex] = new Peashooter(TMptr->getTexture("spritesheet-peashooter"), 13, pos, this->SMptr);
 			types[tempIndex] = "peashooer";
 		}
 		else if (indexInInventory == 2 && sunCount >= 200) {
-			plants[tempIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos);
+			plants[tempIndex] = new Repeater(TMptr->getTexture("spritesheet-repeater"), 15, pos, this->SMptr);
 			types[tempIndex] = "repeater";
 		}
 		else if (indexInInventory == 3 && sunCount >= 50) {
@@ -217,7 +217,7 @@ public:
 			types[tempIndex] = "wallnut";
 		}
 		else if (indexInInventory == 4 && sunCount >= 175) {
-			plants[tempIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos);
+			plants[tempIndex] = new Snowpea(TMptr->getTexture("spritesheet-snowpea"), TMptr->getTexture("bulletIce"), 15, pos, this->SMptr);
 			types[tempIndex] = "snowpea";
 		}
 		else if (indexInInventory == 5 && sunCount >= 150) {

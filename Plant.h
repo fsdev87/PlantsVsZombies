@@ -24,6 +24,7 @@ protected:
 	Clock eatClock;
 	Animation anim;
 	TextureManager* TMptr;
+	SoundManager* SMptr;
 
 public:
 	Plant() {

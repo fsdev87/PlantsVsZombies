@@ -15,6 +15,7 @@ protected:
 	Clock bulletClock;
 	bool exists;
 	float speed;
+	Sound hitSound;
 
 public:
 	Bullet(int x = 0, int y = 0) {
@@ -27,6 +28,10 @@ public:
 		this->speed = 0.0625;
 	}
 
+	void setHitSound(Sound sound) {
+		this->hitSound = sound;
+		this->hitSound.setPlayingOffset(Time(seconds(0.5)));
+	}
 
 	void saveEverything(ofstream& file) {
 		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
@@ -67,6 +72,7 @@ public:
 					float* zombiePos = zombies[i]->getPosition();
 					if ((this->position[1] == zombiePos[1]) && (this->position[0] == zombiePos[0] || this->position[0] == zombiePos[0] - 0.03125 || this->position[0] == zombiePos[0] - 0.0625 || this->position[0] == zombiePos[0] - 0.09375 || this->position[0] == zombiePos[0] - 0.125 || this->position[0] == zombiePos[0] - 0.15625 || this->position[0] == zombiePos[0] - 0.1875 || this->position[0] == zombiePos[0] - 0.21875 || this->position[0] == zombiePos[0] - 0.25 || this->position[0] == zombiePos[0] - 0.28125 || this->position[0] == zombiePos[0] - 0.3125 || this->position[0] == zombiePos[0] - 0.34375 || this->position[0] == zombiePos[0] - 0.375 || this->position[0] == zombiePos[0] - 0.40625 || this->position[0] == zombiePos[0] - 0.4375 || this->position[0] == zombiePos[0] - 0.46875 || this->position[0] == zombiePos[0] - 0.5 || this->position[0] == zombiePos[0] - 0.53125 || this->position[0] == zombiePos[0] - 0.5625)) {
 						this->exists = false;
+						this->hitSound.play();
 						zombies[i]->setFlicker(true);
 						zombies[i]->getSprite().setColor(Color(255, 255, 255, 255 * 0.5));
 
@@ -93,6 +99,7 @@ public:
 						if (isSnow) {
 							zombies[i]->setMoveDelay(500);
 						}
+						this->hitSound.stop();
 						return;
 					}
 				}

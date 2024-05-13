@@ -193,6 +193,7 @@ public:
 			}
 			else if (this->health == 0) {
 				this->exists = false;
+				this->SMptr->getSound("eating")->stop();
 				makeDead();
 			}
 		}
@@ -281,11 +282,13 @@ public:
 		if (plant->getExist()) {
 			if (plant->getEatClock().getElapsedTime().asMilliseconds() > 500) {
 				plant->beEaten();
+				this->SMptr->getSound("eating")->play();
 				plant->getEatClock().restart();
 
 			}
 		}
 		else {
+			this->SMptr->getSound("eating")->stop();
 			this->blocked = false;
 
 			this->state = "walk";
