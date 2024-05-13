@@ -5,6 +5,12 @@
 #include <fstream>
 #include "SoundManager.h"
 #include "Scoreboard.h"
+#include "PlantFactory.h"
+#include "ZombieFactory.h"
+#include "Background.h"
+#include "Inventory.h"
+
+
 using namespace std;
 using namespace sf;
 

@@ -184,6 +184,7 @@ public:
 
 		this->SM.getMainMusic()->play();
 		this->SM.getMainMusic()->setLoop(true);
+		this->SM.getMainMusic()->setVolume(40);
 	}
 
 private:
@@ -660,6 +661,7 @@ public:
 							else if (this->hasWon) this->hasWon = false;
 							this->SM.getMainMusic()->play();
 							this->SM.getMainMusic()->setLoop(true);
+							this->SM.getMainMusic()->setVolume(40);
 							// highscores updating
 							this->highScores[9] = this->score.getScore();
 							this->names[9] = this->playerName;
