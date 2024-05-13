@@ -54,5 +54,5 @@ public:
 		window.draw(this->scoreText);
 	}
 
-	void resetScore() { this->score = 0; }
+	void resetScore() { this->score = 0; this->scoreText.setString("Score: " + to_string(this->score)); }
 };
