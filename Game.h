@@ -100,8 +100,8 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	float remainingTime = 120;
-	//float remainingTime = 5; // for testing
+	//float remainingTime = 120;
+	float remainingTime = 11; // for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 

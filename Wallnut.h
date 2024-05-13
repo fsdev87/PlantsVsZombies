@@ -11,9 +11,12 @@ private:
 	bool half = false;
 	Texture halfTexture;
 	Texture deadTexture;
+	bool deflecting = false;
+	float deflectFactor;
 
 public:
 	Wallnut(Texture& tex, int columns, float pos[2], TextureManager* tm) {
+		srand(time(0));
 		this->sprite.setTexture(tex);
 		this->sprite.setTextureRect(IntRect(0, 0, 71, 71));
 		this->position[0] = pos[0], this->position[1] = pos[1];
@@ -38,6 +41,9 @@ public:
 		file.write(reinterpret_cast<char*>(&active), sizeof(bool));
 		file.write(reinterpret_cast<char*>(&dead), sizeof(bool));
 		file.write(reinterpret_cast<char*>(&half), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&deflecting), sizeof(bool));
+		file.write(reinterpret_cast<char*>(&deflectFactor), sizeof(float));
+
 		this->anim.saveEverything(file);
 	}
 
@@ -53,8 +59,10 @@ public:
 		file.read(reinterpret_cast<char*>(&active), sizeof(bool));
 
 		file.read(reinterpret_cast<char*>(&dead), sizeof(bool));
-
 		file.read(reinterpret_cast<char*>(&half), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&deflecting), sizeof(bool));
+		file.read(reinterpret_cast<char*>(&deflectFactor), sizeof(float));
+
 		this->anim.readEverything(file);
 
 		if (this->active) {
@@ -100,6 +108,10 @@ public:
 		if (this->moveClock.getElapsedTime().asMilliseconds() <= 20) {
 			return;
 		}
+		if (this->deflecting) {
+			this->position[1] += this->deflectFactor;
+			if (abs(this->position[1] - (int)this->position[1]) == 0) this->deflecting = false;
+		}
 
 		if (this->exists) {
 			for (int i = 0; i < zombiesArrayIndex; i++) {
@@ -108,6 +120,23 @@ public:
 					zombies[i]->setExist(false);
 					zombies[i]->makeDead();
 					scoreboard->addScore(20);
+					if (rand() % 2) { // if 1 then go down
+						if (this->position[1] + 1 <= 4) { // can go down
+							this->deflectFactor = 0.0625;
+						}
+						else { // cannot go down, go up
+							this->deflectFactor = -0.0625;
+						}
+					}
+					else { // if 0 then go up
+						if (this->position[1] - 1 >= 0) { // can go up
+							this->deflectFactor = -0.0625;
+						}
+						else { // cannot go up, go down
+							this->deflectFactor = 0.0625;
+						}
+					}
+					this->deflecting = true;
 					this->moveClock.restart();
 
 					return;
