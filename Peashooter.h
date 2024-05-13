@@ -19,7 +19,7 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 		this->bulletDelayClock.restart();
 		this->startClock.restart();
-		this->bulletDelay = 1.5 + rand() % 2;
+		this->bulletDelay = 1.75 + rand() % 2;
 		this->anim.setDelay(80.f);
 	}
 

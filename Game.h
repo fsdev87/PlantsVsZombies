@@ -181,6 +181,9 @@ public:
 		// win screen
 		this->winSprite = Sprite(this->TM.getTexture("win"));
 		this->winSprite.setPosition(0, 0);
+
+		this->SM.getMainMusic()->play();
+		this->SM.getMainMusic()->setLoop(true);
 	}
 
 
@@ -818,8 +821,10 @@ public:
 				if (this->levelIndex > 3) {
 					this->hasWon = true;
 				}
-				this->updateEverything();
-				this->drawEverything();
+				if (!this->nextLevel) {
+					this->updateEverything();
+					this->drawEverything();
+				}
 				this->window.display();
 			}
 

@@ -20,7 +20,7 @@ public:
 		this->bulletDelayClock.restart();
 		this->bullet[0].setPosition(this->position[0], this->position[1]);
 		this->bullet[1].setPosition(this->position[0] - 0.5, this->position[1]);
-		this->bulletDelay = 1 + rand() % 2;
+		this->bulletDelay = 1.75 + rand() % 2;
 		this->anim.setDelay(80.f);
 		//this->startClock.restart();
 	}
