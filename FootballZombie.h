@@ -35,23 +35,21 @@ public:
 		switch (d) {
 		case 1:
 		case 2:
-		case 3:
-			this->growlBuffer.loadFromFile("assets/sounds/zombie/growl3.mp3");
-			break;
-		case 4:
-		case 5:
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/mczombie.mp3");
 			break;
+		case 3:
+		case 4:
+		case 5:
 		case 6:
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/scream.mp3");
+			break;
 		case 7:
+		case 8:
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan.ogg");
 			break;
-		case 8:
 		case 9:
-			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan2.ogg");
-			break;
 		case 10:
-			this->growlBuffer.loadFromFile("assets/sounds/zombie/scream.mp3");
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan2.ogg");
 			break;
 		}
 		this->growlSound.setBuffer(this->growlBuffer);
@@ -202,7 +200,7 @@ public:
 		int plantsInRow = 0;
 		for (int i = 0; i < plantsArrayIndex; i++) {
 			if (plants[i]->getExist()) {
-				if (plants[i]->getPosition()[1] == this->position[1]) {
+				if (plants[i]->getPosition()[1] == this->position[1] && this->position[0] <= plants[i]->getPosition()[0]) {
 					plantsInRow++;
 				}
 			}

@@ -29,21 +29,21 @@ public:
 		switch (d) {
 		case 1:
 		case 2:
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/mczombie.mp3");
+			break;
 		case 3:
 		case 4:
 		case 5:
-			this->growlBuffer.loadFromFile("assets/sounds/zombie/mczombie.mp3");
-			break;
 		case 6:
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/scream.mp3");
+			break;
 		case 7:
+		case 8:
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan.ogg");
 			break;
-		case 8:
 		case 9:
-			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan2.ogg");
-			break;
 		case 10:
-			this->growlBuffer.loadFromFile("assets/sounds/zombie/scream.mp3");
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan2.ogg");
 			break;
 		}
 		this->growlSound.setBuffer(this->growlBuffer);
