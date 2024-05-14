@@ -106,7 +106,7 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	float remainingTime = 120;  // original
+	float remainingTime = 60;  // original
 	//float remainingTime = 10; // for testing
 	Clock timeClock;
 	Level** levels = new Level * [4];
@@ -434,6 +434,7 @@ private:
 
 		file.read(reinterpret_cast<char*>(&gameTime), sizeof(float));
 		file.read(reinterpret_cast<char*>(&remainingTime), sizeof(float));
+		calculateTime();
 
 
 		cout << "Reading plant factory\n";
@@ -590,7 +591,12 @@ private:
 		if (this->levelIndex == 2) {
 			this->SM.getSound("last")->pause();
 		}
-		this->remainingTime = 120; // original
+		if (this->levelIndex == 1 || this->levelIndex == 2)
+		{
+			this->remainingTime = 60;
+		}
+		else
+			this->remainingTime = 120; // original
 		//this->remainingTime = 10; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
