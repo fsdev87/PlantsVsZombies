@@ -4,3 +4,7 @@ x64/
 *.vcxproj.filters
 
 useful.txt
+
+*.aps
+*.rc
+resource.h
