@@ -197,12 +197,19 @@ public:
 
 	void move(Plant** plants, int plantsArrayIndex) {
 		if (this->exists == false) return;
-
-
 		if (this->moveClock.getElapsedTime().asMilliseconds() < this->moveDelay) return;
 
+		int plantsInRow = 0;
+		for (int i = 0; i < plantsArrayIndex; i++) {
+			if (plants[i]->getExist()) {
+				if (plants[i]->getPosition()[1] == this->position[1]) {
+					plantsInRow++;
+				}
+			}
+		}
+
 		handleFlicker();
-		reverseDirection();
+		reverseDirection(plantsInRow);
 
 		if (this->blocked) {
 			if (this->eatIndex != -1) {
@@ -405,10 +412,13 @@ public:
 		}
 	}
 
-	void reverseDirection() {
+	void reverseDirection(int plantsInRow) {
 		if (!this->exists) return;
 		if (this->blocked) {
 			this->reverseClock.restart();
+			return;
+		}
+		if (plantsInRow == 0 && this->direction == "left") {
 			return;
 		}
 

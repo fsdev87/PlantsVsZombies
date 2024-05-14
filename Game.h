@@ -252,6 +252,9 @@ public:
 		this->SM.getMainMusic()->play();
 		this->SM.getMainMusic()->setLoop(true);
 
+		this->SM.getSound("last")->setLoop(true);
+		this->SM.getSound("28dayslater")->setLoop(true);
+
 		if (!this->icon.loadFromFile("assets/Screens/icon.jpg")) cout << "Icon didn't load" << endl;
 
 		this->window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
@@ -524,7 +527,8 @@ private:
 		this->menu.setMenuIndex(0);
 		this->remainingTime = 120; // original
 		this->SM.getSound("last")->play();
-		this->SM.getSound("last")->setPlayingOffset(sf::seconds(0));
+		this->SM.getSound("last")->setLoop(true);
+		this->SM.getSound("last")->setPlayingOffset(sf::seconds(8));
 		//this->remainingTime = 14; // for testing
 		this->runClock = new Clock;
 		this->timeClock.restart();
@@ -823,7 +827,6 @@ private:
 
 	void initFiles() {
 
-
 		this->menu.getHSSprite().setColor(Color(0, 0, 0, 255 * 0.8));
 		this->filesHeading.setFont(FM[1]);
 		this->filesHeading.setCharacterSize(110);
@@ -836,6 +839,11 @@ private:
 		this->filesHeadingShadow.setFillColor(Color(0, 0, 0, 150));
 		this->filesHeadingShadow.setString("CHOOSE FILE TO LOAD FROM");
 		this->filesHeadingShadow.setPosition(170, -5);
+
+		if (this->saveGame) {
+			this->filesHeading.setString("CHOOSE FILE TO SAVE IN");
+			this->filesHeadingShadow.setString("CHOOSE FILE SAVE IN");
+		}
 
 		cout << "setting properties of filenamestext\n";
 		for (int i = 0; i < 10; i++) {

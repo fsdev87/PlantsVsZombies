@@ -225,6 +225,7 @@ public:
 			this->growlSound.play();
 			this->growlDelay = 4 + rand() % 7;
 			this->growlClock.restart();
+			this->loadBuffer();
 		}
 	}
 

@@ -106,6 +106,7 @@ void PlantFactory::restartSunClocks() {
 	}
 }
 
+
 void PlantFactory::draw(RenderWindow& window) {
 	for (int i = 0; i < plantsArrayIndex; i++) {
 		plants[i]->draw(window);
