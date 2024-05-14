@@ -763,15 +763,15 @@ private:
 		}
 
 		this->Instructions[0].setPosition(30, 100);
-		this->Instructions[0].setString("1. Place defensive plants strategically to \nfend off zombies.");
+		this->Instructions[0].setString("1. Place wallnuts and click on them\nto roll them.");
 		this->instructionDecoration[0].setPosition(800, 20);
 
 		this->Instructions[1].setPosition(30, 240);
-		this->Instructions[1].setString("2. Utilize offensive plants like Peashooter\n to launch counterattacks\n against enemy forces.");
+		this->Instructions[1].setString("2. Flying Zombie can only be\n killed by exploding it with \n a cherrybomb.");
 		this->instructionDecoration[1].setPosition(1000, 280);
 
-		this->Instructions[2].setPosition(30, 435);
-		this->Instructions[2].setString("3. Collect resources to unlock \nmore plants and abilities.");
+		this->Instructions[2].setPosition(30, 422);
+		this->Instructions[2].setString("3. In fourth level, plants can\nonly be placed in first three columns.");
 		this->instructionDecoration[2].setPosition(950, 470);
 
 		this->Instructions[3].setPosition(30, 100);
@@ -1002,6 +1002,9 @@ public:
 							// highscores updating
 							this->highScores[9] = this->score.getScore();
 							this->names[9] = this->playerName;
+							this->playerName = "";
+							this->enterName.setString(this->playerName);
+							this->enterNameS.setString(this->playerName);
 							sortScores();
 							ofstream scores("highscores.txt");
 							ofstream playerNames("names.txt");

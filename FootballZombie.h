@@ -40,7 +40,7 @@ public:
 			break;
 		case 4:
 		case 5:
-			this->growlBuffer.loadFromFile("assets/sounds/zombie/mczmobie.mp3");
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/mczombie.mp3");
 			break;
 		case 6:
 		case 7:
@@ -54,6 +54,7 @@ public:
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/scream.mp3");
 			break;
 		}
+		this->growlSound.setBuffer(this->growlBuffer);
 
 	}
 

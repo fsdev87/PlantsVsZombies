@@ -44,24 +44,26 @@ public:
 		case 1:
 		case 2:
 		case 3:
+		case 4:
+		case 6:
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/scream.mp3");
 			break;
-		case 4:
 		case 5:
-			this->growlBuffer.loadFromFile("assets/sounds/zombie/mczmobie.mp3");
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/mczombie.mp3");
 			break;
-		case 6:
 		case 7:
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan.ogg");
 			break;
-		case 8:
 		case 9:
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan2.ogg");
 			break;
+		case 8:
 		case 10:
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/growl3.mp3");
 			break;
 		}
+		this->growlSound.setBuffer(this->growlBuffer);
+
 	}
 
 	void saveEverything(ofstream& file) {

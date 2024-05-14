@@ -61,8 +61,7 @@ public:
 
 		this->painBuffer.loadFromFile("assets/sounds/zombie/bullethitzombie.mp3");
 		this->painSound.setBuffer(this->painBuffer);
-
-		this->growlSound.setBuffer(this->growlBuffer);
+		this->loadBuffer();
 	}
 
 	virtual void loadBuffer() {
@@ -72,6 +71,8 @@ public:
 		else {
 			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan2.ogg");
 		}
+		this->growlSound.setBuffer(this->growlBuffer);
+
 	}
 
 	virtual Sound& getSpawnSound() {
