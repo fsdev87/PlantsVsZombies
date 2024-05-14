@@ -335,6 +335,7 @@ public:
 
 	void spawnZombie(Zombie** zombies, int& zombiesArrayIndex, const int maxZombies, string* types) {
 		if (this->exists == false) return;
+		if (this->deflecting) return;
 		if (this->spawnClock.getElapsedTime().asSeconds() < 8) return;
 
 		for (int i = 0; i < 4; i++) {

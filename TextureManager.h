@@ -150,6 +150,8 @@ private:
 
 		this->addTexture("assets/Screens/win.png", "win");
 
+		this->addTexture("assets/Screens/loadhelp.png", "loadhelp");
+
 	}
 
 public:

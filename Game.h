@@ -101,8 +101,8 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	float remainingTime = 120;  // original
-	//float remainingTime = 11; // for testing
+	//float remainingTime = 120;  // original
+	float remainingTime = 11; // for testing
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -110,18 +110,25 @@ class Game {
 	Scoreboard score;
 
 	Text filesHeading, filesHeadingShadow, fileNamesText[10], fileNamesTextS[10];
+	Sprite loadHelp;
 	string savedFileNames[10];
+	int savedFileNamesSize[10];
 	int savedFileIndex = 0;
 	int currentFileIndex = 0;
+	string renamedFileName;
+	bool renamingFile = false;
+
+	float musicPosition;
 
 	Color selectedColor{ 40, 255, 42 };
 	Color restColor{ 46, 74, 39 };
 	Color shadowColor{ 33, 38, 32 };
 
+
 public:
 	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM), NL(&TM) {
 
-		savedFileNames[0] = "saved1";
+		/*savedFileNames[0] = "saved1";
 		savedFileNames[1] = "saved2";
 		savedFileNames[2] = "saved3";
 		savedFileNames[3] = "saved4";
@@ -131,7 +138,24 @@ public:
 		savedFileNames[7] = "saved8";
 		savedFileNames[8] = "saved9";
 		savedFileNames[9] = "saved10";
-		this->savedFileIndex = 10;
+
+		savedFileNamesSize[0] = 7;
+		savedFileNamesSize[1] = 7;
+		savedFileNamesSize[2] = 7;
+		savedFileNamesSize[3] = 7;
+		savedFileNamesSize[4] = 7;
+		savedFileNamesSize[5] = 7;
+		savedFileNamesSize[6] = 7;
+		savedFileNamesSize[7] = 7;
+		savedFileNamesSize[8] = 7;
+		savedFileNamesSize[9] = 8;
+
+		10 = 10;*/
+
+		this->readFileNames();
+
+
+
 
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		levels[1] = nullptr;
@@ -200,6 +224,9 @@ public:
 		this->pressEnterS.setString("Press enter to continue.");
 		this->pressEnterS.setFillColor(Color::Green);
 
+		this->loadHelp.setTexture(this->TM.getTexture("loadhelp"));
+		this->loadHelp.setPosition(1050, 250);
+
 		initHighScores();
 
 		// win screen
@@ -213,6 +240,89 @@ public:
 
 private:
 
+	void readFileNames() {
+		cout << "Reading from filenames\n";
+		ifstream file;
+		file.open("saved/fileNames.dat", ios::in | ios::binary);
+		if (!file.is_open()) {
+			cout << "Error: Unable to open file for reading.\n";
+			return;
+		}
+
+		file.read(reinterpret_cast<char*>(&currentFileIndex), sizeof(int));
+
+		for (int i = 0; i < 10; i++) {
+			file.read(reinterpret_cast<char*>(&savedFileNamesSize[i]), sizeof(int));
+
+			cout << "Read: ";
+			for (int j = 0; j < savedFileNamesSize[i]; j++) {
+				int c = 0;
+				file.read(reinterpret_cast<char*>(&c), sizeof(int));
+				savedFileNames[i] += (char)(c);
+				cout << c << " " << (char)c;
+			}
+			cout << "-" << savedFileNames[i] << " " << savedFileNamesSize[i] << endl;
+
+		}
+		file.close();
+
+		for (int i = 0; i < 10; i++) {
+			this->fileNamesText[i].setFont(FM[3]);
+			this->fileNamesText[i].setCharacterSize(60);
+			this->fileNamesText[i].setString(to_string(i + 1) + ". " + this->savedFileNames[i]);
+
+			this->fileNamesTextS[i].setFont(FM[3]);
+			this->fileNamesTextS[i].setCharacterSize(60);
+			this->fileNamesTextS[i].setFillColor(shadowColor);
+			this->fileNamesTextS[i].setString(to_string(i + 1) + ". " + this->savedFileNames[i]);
+		}
+
+		int numRows = 5;
+		int itemsPerRow = 2;
+		int leftPadding = 250;
+		int horizontalGap = 350;
+		int verticalGap = 20;
+
+		for (int row = 0; row < numRows; ++row) {
+			for (int col = 0; col < itemsPerRow; ++col) {
+				int index = row * itemsPerRow + col;
+				if (index < 10) {
+					int x = leftPadding + (col * (2 * 70 + horizontalGap)); // Horizontal spacing of 2 * 70 + gap, with left padding
+					int y = 110 + row * (70 + verticalGap); // Vertical spacing of 70 + gap, starting from y = 250
+
+					// Position regular text
+					this->fileNamesText[index].setPosition(x, y);
+
+					// Position shadow text
+					this->fileNamesTextS[index].setPosition(x, y + 4); // Offset shadow text by 4 pixels vertically
+				}
+			}
+		}
+
+	}
+
+	void saveFileNames() {
+		cout << "Saving to filenames to fileNames.dat\n";
+		ofstream file;
+		file.open("saved/fileNames.dat", ios::out | ios::binary);
+		file.write(reinterpret_cast<char*>(&currentFileIndex), sizeof(int));
+
+		for (int i = 0; i < 10; i++) {
+			file.write(reinterpret_cast<char*>(&savedFileNamesSize[i]), sizeof(int));
+			cout << "Saving: ";
+			for (int j = 0; j < savedFileNamesSize[i]; j++) {
+				int c = (int)savedFileNames[i][j];
+				file.write(reinterpret_cast<char*>(&c), sizeof(int));
+				cout << c << " ";
+				cout << savedFileNames[i][j];
+			}
+			cout << "-" << savedFileNamesSize[i] << endl;
+		}
+
+		file.close();
+	}
+
+
 	void saveEverything() {
 		cout << "Opened file to write\n";
 		ofstream file;
@@ -220,11 +330,7 @@ private:
 		file.open("saved/" + this->savedFileNames[currentFileIndex] + ".dat", ios::out | ios::binary);
 
 
-		file.write(reinterpret_cast<char*>(&currentFileIndex), sizeof(int));
-
-		for (int i = 0; i < this->savedFileIndex; i++) {
-			file.write(reinterpret_cast<char*>(&savedFileNames[i]), sizeof(string));
-		}
+		this->saveFileNames();
 
 		file.write(reinterpret_cast<char*>(&levelIndex), sizeof(int));
 
@@ -255,6 +361,11 @@ private:
 
 		levels[levelIndex]->saveEverything(file);
 
+		if (this->levelIndex >= 2) {
+			this->musicPosition = this->SM.getSound("28dayslater")->getPlayingOffset().asSeconds();
+			file.write(reinterpret_cast<char*>(&musicPosition), sizeof(float));
+		}
+
 		file.close();
 
 		cout << "Finished writing\n";
@@ -267,11 +378,7 @@ private:
 		cout << "Reading from file: " << "saved/" + this->savedFileNames[currentFileIndex] + ".dat" << endl;
 		file.open("saved/" + this->savedFileNames[currentFileIndex] + ".dat", ios::in | ios::binary);
 
-		file.read(reinterpret_cast<char*>(&currentFileIndex), sizeof(int));
-
-		for (int i = 0; i < this->savedFileIndex; i++) {
-			file.read(reinterpret_cast<char*>(&savedFileNames[i]), sizeof(string));
-		}
+		this->readFileNames();
 
 		cout << "Reading game.h primitive data types\n";
 		file.read(reinterpret_cast<char*>(&levelIndex), sizeof(int));
@@ -351,6 +458,14 @@ private:
 		}
 		levels[levelIndex]->readEverything(file);
 
+		if (this->levelIndex >= 2) {
+			this->musicPosition = this->SM.getSound("28dayslater")->getPlayingOffset().asSeconds();
+			file.read(reinterpret_cast<char*>(&musicPosition), sizeof(float));
+
+			this->SM.getSound("28dayslater")->setPlayingOffset(sf::seconds(this->musicPosition));
+			this->SM.getMainMusic()->pause();
+			this->SM.getSound("28dayslater")->play();
+		}
 
 		file.close();
 		cout << "Finished reading\n";
@@ -408,14 +523,17 @@ private:
 	void updateRound() {
 		this->runClock->restart();
 		this->levelIndex++;
-		/*if (this->levelIndex == 3) {
-
-			this->remainingTime = 120;
+		if (this->levelIndex == 2) {
+			this->SM.getMainMusic()->pause();
+			//this->SM.getSound("28dayslater")->setPlayingOffset(sf::seconds(92));
+			this->SM.getSound("28dayslater")->play();
+			this->SM.getSound("28dayslater")->setVolume(80.0f);
 		}
-		else {
-			this->remainingTime = 10;
-		}*/
-		this->remainingTime = 120; // original
+
+		if (this->levelIndex == 0 || this->levelIndex == 1) {
+			remainingTime = 5;
+		}
+		else this->remainingTime = 120; // original
 		//this->remainingTime = 5; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
@@ -450,6 +568,7 @@ private:
 
 		if (this->lives.livesGone()) {
 			this->gameOver = true;
+			this->SM.getSound("28dayslater")->pause();
 			this->SM.getSound("gameover")->play();
 			this->SM.getMainMusic()->stop();
 		}
@@ -659,10 +778,11 @@ private:
 		this->filesHeadingShadow.setString("CHOOSE FILE TO LOAD FROM");
 		this->filesHeadingShadow.setPosition(170, -5);
 
-
-		for (int i = 0; i < this->savedFileIndex; i++) {
+		cout << "setting properties of filenamestext\n";
+		for (int i = 0; i < 10; i++) {
 			this->fileNamesText[i].setFont(FM[3]);
 			this->fileNamesText[i].setCharacterSize(60);
+			cout << "FileNames[i]: " << savedFileNames[i] << endl;
 			this->fileNamesText[i].setString(to_string(i + 1) + ". " + this->savedFileNames[i]);
 
 			this->fileNamesTextS[i].setFont(FM[3]);
@@ -680,7 +800,7 @@ private:
 		for (int row = 0; row < numRows; ++row) {
 			for (int col = 0; col < itemsPerRow; ++col) {
 				int index = row * itemsPerRow + col;
-				if (index < this->savedFileIndex) {
+				if (index < 10) {
 					int x = leftPadding + (col * (2 * 70 + horizontalGap)); // Horizontal spacing of 2 * 70 + gap, with left padding
 					int y = 110 + row * (70 + verticalGap); // Vertical spacing of 70 + gap, starting from y = 250
 
@@ -692,12 +812,6 @@ private:
 				}
 			}
 		}
-
-
-
-
-
-
 	}
 
 public:
@@ -713,6 +827,10 @@ public:
 				if (event.type == Event::KeyPressed) {
 					if (event.key.code == Keyboard::Escape) {
 						this->SM.playSound("enter");
+						if (this->SM.getSound("28dayslater")->getStatus() == Sound::Playing) {
+							this->SM.getMainMusic()->play();
+							this->SM.getSound("28dayslater")->pause();
+						}
 						if (this->showHighScores) {
 							this->showHighScores = false;
 						}
@@ -736,11 +854,23 @@ public:
 							}
 						}
 					}
+					else if (event.key.code == Keyboard::Tab && this->loadGame && !this->renamingFile) {
+						cout << "Enabling rename\n";
+						this->renamingFile = true;
+						//this->renamedFileName = savedFileNames[currentFileIndex];
+						this->renamedFileName = "";
+						this->fileNamesText[currentFileIndex].setString(to_string(currentFileIndex + 1) + ". " + this->renamedFileName);
+						this->fileNamesTextS[currentFileIndex].setString(to_string(currentFileIndex + 1) + ". " + this->renamedFileName);
 
+					}
 					else if (event.key.code == Keyboard::Return) {
 						if (this->showMenu && !this->loadGame && !this->saveGame) {
 							this->menu.handleEnter(this->saveGame, this->loadGame, this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
 							if (!this->showMenu && !this->restarted) { // resume or start mode
+								if (this->levelIndex >= 2) {
+									this->SM.getMainMusic()->pause();
+									this->SM.getSound("28dayslater")->play();
+								}
 								this->runClock = new Clock();
 							}
 							else if (this->restarted) {
@@ -760,6 +890,7 @@ public:
 							else if (this->loadGame) {
 								/*this->readEverything();*/
 								//loadGame = false;
+								//this->readFileNames();
 								this->initFiles();
 							}
 							else if (this->quit) {
@@ -767,9 +898,16 @@ public:
 							}
 						}
 						else if (this->showMenu && this->loadGame) {
-							this->readEverything();
-							this->loadGame = false;
-							this->showMenu = false;
+							if (this->renamingFile) {
+								this->renamingFile = false;
+								this->saveFileNames();
+								cout << "Disabling rename\n";
+							}
+							else {
+								this->readEverything();
+								this->loadGame = false;
+								this->showMenu = false;
+							}
 						}
 						else if (this->showMenu && this->saveGame) {
 							this->saveEverything();
@@ -819,7 +957,7 @@ public:
 							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
 							this->currentFileIndex -= 2;
 							if (this->currentFileIndex < 0) {
-								this->currentFileIndex = (this->savedFileIndex - 1);
+								this->currentFileIndex = (10 - 1);
 							}
 						}
 
@@ -831,7 +969,7 @@ public:
 						if (this->loadGame || this->saveGame) {
 							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
 							this->currentFileIndex += 2;
-							if (this->currentFileIndex > (this->savedFileIndex - 1)) {
+							if (this->currentFileIndex > (10 - 1)) {
 								this->currentFileIndex = 0;
 							}
 						}
@@ -846,7 +984,7 @@ public:
 						if (this->loadGame || this->saveGame) {
 							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
 							this->currentFileIndex += 1;
-							if (this->currentFileIndex > (this->savedFileIndex - 1)) {
+							if (this->currentFileIndex > (10 - 1)) {
 								this->currentFileIndex = 0;
 							}
 						}
@@ -861,7 +999,7 @@ public:
 							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
 							this->currentFileIndex -= 1;
 							if (this->currentFileIndex < 0) {
-								this->currentFileIndex = this->savedFileIndex - 1;
+								this->currentFileIndex = 10 - 1;
 							}
 						}
 
@@ -884,6 +1022,29 @@ public:
 							}
 						}
 					}
+					if (!this->gameOver && !this->hasWon && this->loadGame && this->renamingFile) {
+						if (event.text.unicode < 128 && event.text.unicode != 9 && event.text.unicode != 8 && event.text.unicode != 27 && this->renamedFileName.length() < 15) { // shouldn't be backspace
+							this->renamedFileName += static_cast<char>(event.text.unicode);
+							this->fileNamesText[currentFileIndex].setString(to_string(currentFileIndex + 1) + ". " + this->renamedFileName);
+							this->fileNamesTextS[currentFileIndex].setString(to_string(currentFileIndex + 1) + ". " + this->renamedFileName);
+							this->savedFileNames[currentFileIndex] = this->renamedFileName;
+							this->savedFileNamesSize[currentFileIndex] = this->renamedFileName.length();
+						}
+						else if (event.text.unicode == 8) { // backspace pressed
+							if (this->renamedFileName.length() > 0) {
+								string temp = this->renamedFileName;
+								this->renamedFileName = "";
+								for (int i = 0; i < temp.length() - 1; i++) {
+									this->renamedFileName += temp[i];
+								}
+								this->fileNamesText[currentFileIndex].setString(to_string(currentFileIndex + 1) + ". " + this->renamedFileName);
+								this->fileNamesTextS[currentFileIndex].setString(to_string(currentFileIndex + 1) + ". " + this->renamedFileName);
+								this->savedFileNames[currentFileIndex] = this->renamedFileName;
+								this->savedFileNamesSize[currentFileIndex] = this->renamedFileName.length();
+							}
+						}
+					}
+
 				}
 				else if (event.type == Event::MouseButtonPressed) {
 					if (!this->showMenu && !this->showHighScores) {
@@ -944,7 +1105,7 @@ public:
 					this->window.draw(this->filesHeadingShadow);
 					this->window.draw(this->filesHeading);
 
-					for (int i = 0; i < this->savedFileIndex; i++) {
+					for (int i = 0; i < 10; i++) {
 						if (this->currentFileIndex == i) {
 							this->fileNamesText[i].setFillColor(selectedColor);
 						}
@@ -953,6 +1114,7 @@ public:
 						}
 						this->window.draw(this->fileNamesTextS[i]);
 						this->window.draw(this->fileNamesText[i]);
+						this->window.draw(this->loadHelp);
 					}
 
 					this->window.draw(this->pageNumber);
@@ -998,6 +1160,7 @@ public:
 			else {
 				this->window.clear();
 				if (this->levelIndex > 3) {
+					this->SM.getSound("28dayslater")->pause();
 					this->hasWon = true;
 				}
 				if (!this->nextLevel) {
