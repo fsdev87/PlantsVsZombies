@@ -44,7 +44,6 @@ public:
 		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
 
 		file.read(reinterpret_cast<char*>(&active), sizeof(bool));
-		this->exists = this->exists && !this->active;
 		this->anim.readEverything(file);
 	}
 

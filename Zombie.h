@@ -143,7 +143,7 @@ public:
 
 	virtual void handleDeath(RenderWindow& window) {
 		if (!this->exists && this->dead) {
-			if (this->deadClock.getElapsedTime().asSeconds() > 1.05) {
+			if (this->deadClock.getElapsedTime().asSeconds() > 1.05 || this->anim.getFrame() == this->anim.getColumns() - 1) {
 				this->dead = false;
 			}
 			this->sprite.setPosition(this->xFactor + this->position[0] * 80, this->yFactor + this->position[1] * 96);
