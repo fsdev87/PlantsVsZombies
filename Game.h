@@ -241,6 +241,10 @@ public:
 private:
 
 	void readFileNames() {
+		for (int i = 0; i < 10; i++) {
+			savedFileNames[i] = "";
+			savedFileNamesSize[i] = 0;
+		}
 		cout << "Reading from filenames\n";
 		ifstream file;
 		file.open("saved/fileNames.dat", ios::in | ios::binary);
@@ -504,7 +508,7 @@ private:
 		levels[2] = nullptr;
 		if (this->levels[3] != nullptr) delete this->levels[3];
 		levels[3] = nullptr;
-		this->levelIndex;
+
 		if (levels[levelIndex] == nullptr && levelIndex == 0) {
 			levels[levelIndex] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
@@ -518,6 +522,7 @@ private:
 			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 		//this->levelIndex = 0;
+		//levels[levelIndex] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 	}
 
 	void updateRound() {
@@ -828,6 +833,7 @@ public:
 					if (event.key.code == Keyboard::Escape) {
 						this->SM.playSound("enter");
 						if (this->SM.getSound("28dayslater")->getStatus() == Sound::Playing) {
+							this->SM.getMainMusic()->setPlayingOffset(sf::seconds(0));
 							this->SM.getMainMusic()->play();
 							this->SM.getSound("28dayslater")->pause();
 						}
@@ -854,7 +860,7 @@ public:
 							}
 						}
 					}
-					else if (event.key.code == Keyboard::Tab && this->loadGame && !this->renamingFile) {
+					else if (event.key.code == Keyboard::Tab && (this->loadGame || this->saveGame) && !this->renamingFile) {
 						cout << "Enabling rename\n";
 						this->renamingFile = true;
 						//this->renamedFileName = savedFileNames[currentFileIndex];
@@ -910,8 +916,15 @@ public:
 							}
 						}
 						else if (this->showMenu && this->saveGame) {
-							this->saveEverything();
-							this->saveGame = false;
+							if (this->renamingFile) {
+								this->renamingFile = false;
+								this->saveFileNames();
+								cout << "Disabling rename\n";
+							}
+							else {
+								this->saveEverything();
+								this->saveGame = false;
+							}
 							//this->showMenu = false;
 						}
 						else if (this->gameOver || this->hasWon) {
@@ -1022,7 +1035,7 @@ public:
 							}
 						}
 					}
-					if (!this->gameOver && !this->hasWon && this->loadGame && this->renamingFile) {
+					if (!this->gameOver && !this->hasWon && (this->loadGame || this->saveGame) && this->renamingFile) {
 						if (event.text.unicode < 128 && event.text.unicode != 9 && event.text.unicode != 8 && event.text.unicode != 27 && this->renamedFileName.length() < 15) { // shouldn't be backspace
 							this->renamedFileName += static_cast<char>(event.text.unicode);
 							this->fileNamesText[currentFileIndex].setString(to_string(currentFileIndex + 1) + ". " + this->renamedFileName);

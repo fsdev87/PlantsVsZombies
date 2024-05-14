@@ -124,6 +124,7 @@ public:
 		this->SMptr->playSound("change");
 		this->menu[this->menuIndex].setFillColor(this->restColor);
 		this->menu[this->menuIndex].setCharacterSize(70);
+		this->shadow[this->menuIndex].setCharacterSize(70);
 		this->menuIndex--;
 		if (this->menuIndex < 0) this->menuIndex = 6;
 	}
@@ -132,6 +133,7 @@ public:
 		this->SMptr->playSound("change");
 		this->menu[this->menuIndex].setFillColor(this->restColor);
 		this->menu[this->menuIndex].setCharacterSize(70);
+		this->shadow[this->menuIndex].setCharacterSize(70);
 		this->menuIndex++;
 		if (this->menuIndex > 6) this->menuIndex = 0;
 	}

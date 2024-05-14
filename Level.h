@@ -41,7 +41,7 @@ public:
 		this->levelText.setCharacterSize(150);
 		this->levelText.setString("LEVEL 1");
 		this->levelText.setFillColor(Color::White);
-		this->levelPosition[0] = -250, levelPosition[1] = 250;
+		this->levelPosition[0] = -250, levelPosition[1] = 210;
 		this->levelText.setPosition(levelPosition[0], levelPosition[1]);
 
 		this->levelTextS.setFont(FM->get(2));

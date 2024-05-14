@@ -51,7 +51,7 @@ public:
 		this->texts[2].setPosition(375, 340);
 		this->zombieSprites[0].setPosition(770, 320);
 		this->zombieSprites[1].setPosition(780, 300);
-		this->zombieSprites[2].setPosition(800, 305);
+		this->zombieSprites[2].setPosition(825, 305);
 
 	}
 
