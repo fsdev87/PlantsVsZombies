@@ -365,8 +365,11 @@ private:
 
 
 		levels[levelIndex]->saveEverything(file);
-
-		if (this->levelIndex >= 2) {
+		if (this->levelIndex == 0 || this->levelIndex == 1) {
+			this->musicPosition = this->SM.getSound("last")->getPlayingOffset().asSeconds();
+			file.write(reinterpret_cast<char*>(&musicPosition), sizeof(float));
+		}
+		else if (this->levelIndex >= 2) {
 			this->musicPosition = this->SM.getSound("28dayslater")->getPlayingOffset().asSeconds();
 			file.write(reinterpret_cast<char*>(&musicPosition), sizeof(float));
 		}
@@ -463,7 +466,15 @@ private:
 		}
 		levels[levelIndex]->readEverything(file);
 
-		if (this->levelIndex >= 2) {
+		if (this->levelIndex == 0 || this->levelIndex == 1) {
+			this->musicPosition = this->SM.getSound("last")->getPlayingOffset().asSeconds();
+			file.read(reinterpret_cast<char*>(&musicPosition), sizeof(float));
+
+			this->SM.getSound("last")->setPlayingOffset(sf::seconds(this->musicPosition));
+			this->SM.getMainMusic()->pause();
+			this->SM.getSound("last")->play();
+		}
+		else if (this->levelIndex == 2 || this->levelIndex == 3) {
 			this->musicPosition = this->SM.getSound("28dayslater")->getPlayingOffset().asSeconds();
 			file.read(reinterpret_cast<char*>(&musicPosition), sizeof(float));
 
@@ -483,6 +494,7 @@ private:
 
 		this->menu.setMenuIndex(0);
 		this->remainingTime = 120; // original
+		this->SM.getSound("last")->play();
 		//this->remainingTime = 14; // for testing
 		this->runClock = new Clock;
 		this->TimeText.setFillColor(Color::White);
@@ -531,16 +543,15 @@ private:
 		this->levelIndex++;
 		if (this->levelIndex == 2) {
 			this->SM.getMainMusic()->pause();
-			//this->SM.getSound("28dayslater")->setPlayingOffset(sf::seconds(92));
+			this->SM.getSound("last")->pause();
+
+			this->SM.getSound("28dayslater")->setPlayingOffset(sf::seconds(20));
 			this->SM.getSound("28dayslater")->play();
-			this->SM.getSound("28dayslater")->setVolume(80.0f);
+			//this->SM.getSound("28dayslater")->setVolume(1-.0f);
 		}
 
-		if (this->levelIndex == 0 || this->levelIndex == 1) {
-			remainingTime = 5;
-		}
-		else this->remainingTime = 120; // original
-		//this->remainingTime = 5; //for testing
+		//this->remainingTime = 120; // original
+		this->remainingTime = 5; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
 		this->sunCount = 100;
@@ -833,10 +844,15 @@ public:
 				if (event.type == Event::KeyPressed) {
 					if (event.key.code == Keyboard::Escape) {
 						this->SM.playSound("enter");
-						if (this->SM.getSound("28dayslater")->getStatus() == Sound::Playing) {
+						if (this->SM.getSound("28dayslater")->getStatus() == Sound::Playing || this->SM.getSound("last")->getStatus() == Sound::Playing) {
 							this->SM.getMainMusic()->setPlayingOffset(sf::seconds(0));
 							this->SM.getMainMusic()->play();
-							this->SM.getSound("28dayslater")->pause();
+							if (this->levelIndex == 2 || this->levelIndex == 3) {
+								this->SM.getSound("28dayslater")->pause();
+							}
+							else if (this->levelIndex == 0 || this->levelIndex == 1) {
+								this->SM.getSound("last")->pause();
+							}
 						}
 						if (this->showHighScores) {
 							this->showHighScores = false;
@@ -874,7 +890,11 @@ public:
 						if (this->showMenu && !this->loadGame && !this->saveGame) {
 							this->menu.handleEnter(this->saveGame, this->loadGame, this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
 							if (!this->showMenu && !this->restarted) { // resume or start mode
-								if (this->levelIndex >= 2) {
+								if (this->levelIndex == 0 || this->levelIndex == 1) {
+									this->SM.getMainMusic()->pause();
+									this->SM.getSound("last")->play();
+								}
+								if (this->levelIndex == 2 || this->levelIndex == 3) {
 									this->SM.getMainMusic()->pause();
 									this->SM.getSound("28dayslater")->play();
 								}
@@ -1183,6 +1203,7 @@ public:
 				this->window.clear();
 				if (this->levelIndex > 3) {
 					this->SM.getSound("28dayslater")->pause();
+					this->SM.getSound("won")->play();
 					this->hasWon = true;
 				}
 				if (!this->nextLevel) {
