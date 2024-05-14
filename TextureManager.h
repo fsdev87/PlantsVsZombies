@@ -153,6 +153,8 @@ private:
 
 		this->addTexture("assets/Screens/loadhelp.png", "loadhelp");
 
+
+		this->addTexture("assets/Spritesheets/cutscene.png", "cutscene");
 	}
 
 public:

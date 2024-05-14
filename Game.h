@@ -86,6 +86,12 @@ class Game {
 	bool saveGame = false;
 	bool loadGame = false;
 
+	// cut scene
+	bool cutScene = true;
+	Texture cutSceneTex;
+	Sprite CutScene;
+	Clock cutSceneClock;
+	int frameX = 0, frameY = 0;
 
 	int highScores[10] = {};
 	string names[10] = {};
@@ -101,8 +107,8 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	//float remainingTime = 120;  // original
-	float remainingTime = 10; // for testing
+	float remainingTime = 120;  // original
+	//float remainingTime = 10; // for testing
 	Clock timeClock;
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
@@ -132,7 +138,6 @@ class Game {
 public:
 	Game() : window(VideoMode(1400, 600), "Plants Vs Zombies"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM), NL(&TM) {
 
-
 		/*savedFileNames[0] = "saved1";
 		savedFileNames[1] = "saved2";
 		savedFileNames[2] = "saved3";
@@ -158,8 +163,6 @@ public:
 		//10 = 10;
 
 		this->readFileNames();
-
-
 
 
 		levels[0] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
@@ -246,6 +249,12 @@ public:
 
 		this->window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
+		// cut scene
+		this->cutSceneTex.loadFromFile("assets/Spritesheets/cutscene.png");
+		this->CutScene = Sprite(this->cutSceneTex);
+		this->CutScene.setTextureRect(IntRect(frameX * 819, frameY * 600, 819, 600));
+		this->CutScene.setPosition(290, 0);
+		this->cutSceneClock.restart();
 	}
 
 private:
@@ -438,8 +447,6 @@ private:
 		cout << "Reading lawnmowers\n";
 		for (int i = 0; i < 5; i++) lawnmowers[i]->readEverything(file);
 
-
-
 		cout << "Reading lives\n";
 		lives.readEverything(file);
 		// 
@@ -564,9 +571,8 @@ private:
 		if (this->levelIndex == 2) {
 			this->SM.getSound("last")->pause();
 		}
-
-		if (levelIndex == 1) remainingTime = 120;//this->remainingTime = 120; // original
-		else this->remainingTime = 10; //for testing
+		this->remainingTime = 120; // original
+		//this->remainingTime = 10; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
 		this->sunCount = 1000;
@@ -922,6 +928,7 @@ public:
 								}
 								this->runClock = new Clock();
 								this->timeClock.restart();
+								this->PF.restartSunClocks();
 							}
 							else if (this->restarted) {
 								this->SM.getMainMusic()->pause();
@@ -1143,7 +1150,7 @@ public:
 				}
 			}
 
-			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel) {
+			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel && !this->cutScene) {
 				this->window.clear();
 				this->menu.display(this->window);
 				if (this->showHighScores) {
@@ -1194,6 +1201,15 @@ public:
 					}
 
 					this->window.draw(this->pageNumber);
+				}
+				this->window.display();
+			}
+			else if (this->cutScene) {
+				this->window.clear();
+				this->animateCutScene(this->CutScene, this->frameX, this->frameY, this->cutSceneClock);
+				this->window.draw(this->CutScene);
+				if (this->frameY == 7 && this->frameX >= 9) {
+					this->cutScene = false;
 				}
 				this->window.display();
 			}
@@ -1253,6 +1269,19 @@ public:
 
 	}
 private:
+	void animateCutScene(Sprite& sprite, int& x, int& y, Clock& clock) {
+		if (clock.getElapsedTime().asMilliseconds() < 35) return;
+
+		sprite.setTextureRect(IntRect(x * 819, y * 600, 819, 600));
+		x++;
+
+		if (y < 7 && x >= 10) {
+			x = 0; y++;
+		}
+
+		clock.restart();
+	}
+
 	void calculateTime() {
 		if (this->runClock == nullptr) return;
 		this->gameTime = this->remainingTime - this->runClock->getElapsedTime().asSeconds();

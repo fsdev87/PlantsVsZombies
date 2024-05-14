@@ -100,6 +100,12 @@ void PlantFactory::updateEverything(Zombie** zombies, int zombiesArrayIndex, Sco
 	}
 }
 
+void PlantFactory::restartSunClocks() {
+	for (int i = 0; i < this->plantsArrayIndex; i++) {
+		this->plants[i]->restartSunClock();
+	}
+}
+
 void PlantFactory::draw(RenderWindow& window) {
 	for (int i = 0; i < plantsArrayIndex; i++) {
 		plants[i]->draw(window);

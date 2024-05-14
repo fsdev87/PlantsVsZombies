@@ -74,7 +74,7 @@ public:
 			plants[i]->readEverything(file);
 		}
 	}
-
+	void restartSunClocks();
 	void draw(RenderWindow& window);
 
 };

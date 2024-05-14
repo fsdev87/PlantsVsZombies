@@ -85,4 +85,6 @@ public:
 		}
 		if (this->exists && this->showSun) window.draw(this->sunSprite);
 	}
+
+	virtual void restartSunClock() { this->showSunClock.restart(); }
 };
