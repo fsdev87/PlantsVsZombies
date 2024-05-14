@@ -126,9 +126,12 @@ class Game {
 	Color shadowColor{ 33, 38, 32 };
 	Color renameColor{ 179, 252, 134 };
 
+	Image icon;
+
 
 public:
-	Game() : window(VideoMode(1400, 600), "game"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM), NL(&TM) {
+	Game() : window(VideoMode(1400, 600), "Plants Vs Zombies"), background(&TM), Inv(&TM, &SM), PF(&SM, &TM), ZF(&TM, &SM), menu(&TM, &FM, &SM), score(&FM), NL(&TM) {
+
 
 		/*savedFileNames[0] = "saved1";
 		savedFileNames[1] = "saved2";
@@ -238,6 +241,11 @@ public:
 
 		this->SM.getMainMusic()->play();
 		this->SM.getMainMusic()->setLoop(true);
+
+		if (!this->icon.loadFromFile("assets/Screens/icon.jpg")) cout << "Icon didn't load" << endl;
+
+		this->window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
 	}
 
 private:
