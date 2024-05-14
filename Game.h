@@ -259,7 +259,6 @@ public:
 
 		this->window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
-
 	}
 
 private:
@@ -638,7 +637,9 @@ private:
 		if (this->gameTime <= 0) {
 			this->nextLevel = true;
 			this->SM.getSound("28dayslater")->pause();
-			this->SM.playSound("nextlevel");
+			if (this->levelIndex != 3) {
+				this->SM.playSound("nextlevel");
+			}
 			this->levelDelayClock.restart();
 
 			this->updateRound();
