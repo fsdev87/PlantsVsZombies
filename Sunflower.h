@@ -45,14 +45,13 @@ public:
 		this->sunSprite.setPosition(xFactor + 30 + position[0] * 80, yFactor + position[1] * 96 - 10);
 
 		file.read(reinterpret_cast<char*>(&health), sizeof(int));
-		this->health = health;
 
 		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
-		this->exists = exists;
 
 		this->anim.readEverything(file);
 
 		file.read(reinterpret_cast<char*>(&showSun), sizeof(bool));
+		this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 71, 0, 71, 71));
 	}
 
 	void generateSun() {

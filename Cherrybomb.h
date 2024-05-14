@@ -38,17 +38,14 @@ public:
 		this->sprite.setPosition(xFactor + position[0] * 80, yFactor + position[1] * 96);
 
 		file.read(reinterpret_cast<char*>(&health), sizeof(int));
-		this->health = health;
 
 		file.read(reinterpret_cast<char*>(&exists), sizeof(bool));
-		this->exists = exists;
 
 		this->anim.readEverything(file);
 
 		file.read(reinterpret_cast<char*>(&columns), sizeof(int));
-		this->columns = columns;
 
-
+		this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 71, 0, 71, 71));
 
 	}
 

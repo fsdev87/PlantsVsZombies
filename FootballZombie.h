@@ -155,7 +155,12 @@ public:
 			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
 		}
 		if (this->ashes) {
-			this->sprite = Sprite(this->TMptr->getTexture("spritesheet-zombieAshes"));
+			if (this->direction == "left") {
+				this->sprite = Sprite(this->TMptr->getTexture("spritesheet-zombieAshes"));
+			}
+			else {
+				this->sprite = Sprite(this->TMptr->getTexture("spritesheet-zombieAshesRight"));
+			}
 			this->sprite.setTextureRect(IntRect(this->anim.getFrame() * 166, 0, 166, 144));
 		}
 
@@ -293,6 +298,17 @@ public:
 			this->dead = true, this->deadClock.restart();
 			this->SMptr->playSound("zombie-fall");
 		}
+	}
+
+	virtual void setAshes(bool value) {
+		if (this->direction == "left") {
+			this->changeTexture(this->TMptr->getTexture("spritesheet-zombieAshes"), 0, 20);
+		}
+		else {
+			this->changeTexture(this->TMptr->getTexture("spritesheet-zombieAshesRight"), 0, 20);
+		}
+		this->sprite.setTextureRect(IntRect(0, 0, 166, 144));
+		this->ashes = value, this->ashesClock.restart();
 	}
 
 	void handleDeath(RenderWindow& window) {

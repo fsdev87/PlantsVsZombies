@@ -163,7 +163,7 @@ public:
 	virtual void handleAshes(RenderWindow& window) {
 		// show ashes only when this->exists = false i.e zombie is dead
 		if (!this->exists && this->ashes) {
-			if (this->ashesClock.getElapsedTime().asSeconds() > 2.05) {
+			if (this->ashesClock.getElapsedTime().asSeconds() > 2.05 || this->anim.getFrame() == this->anim.getColumns() - 1) {
 				// there are 20 frames, each frame takes 100ms delay, added 0.05 as padding
 				// set ashes to false after 2 seconds so nothing is drawn afterwards
 				this->ashes = false;

@@ -112,6 +112,7 @@ private:
 		this->addTexture("assets/Spritesheets/wallnutrolling.png", "spritesheet-wallnut-rolling");
 		// For all explosion
 		this->addTexture("assets/Spritesheets/zombash.png", "spritesheet-zombieAshes");
+		this->addTexture("assets/Spritesheets/zombashright.png", "spritesheet-zombieAshesRight");
 
 		// Bullets
 		this->addTexture("assets/Bullets/peabullet.png", "bullet");
