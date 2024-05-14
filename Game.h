@@ -52,7 +52,6 @@ class Game {
 	Clock levelDelayClock;
 	bool nextLevel = false;
 
-
 	int sunCount = 100;
 	Text sunCountText;
 
@@ -162,6 +161,14 @@ public:
 
 		//10 = 10;
 
+		// cut scene
+		this->cutSceneTex.loadFromFile("assets/Spritesheets/cutscene.png");
+		this->CutScene = Sprite(this->cutSceneTex);
+		this->CutScene.setTextureRect(IntRect(frameX * 819, frameY * 600, 819, 600));
+		this->CutScene.setPosition(290, 0);
+		this->cutSceneClock.restart();
+
+
 		this->readFileNames();
 
 
@@ -249,12 +256,7 @@ public:
 
 		this->window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
-		// cut scene
-		this->cutSceneTex.loadFromFile("assets/Spritesheets/cutscene.png");
-		this->CutScene = Sprite(this->cutSceneTex);
-		this->CutScene.setTextureRect(IntRect(frameX * 819, frameY * 600, 819, 600));
-		this->CutScene.setPosition(290, 0);
-		this->cutSceneClock.restart();
+
 	}
 
 private:
@@ -479,6 +481,18 @@ private:
 			levels[2] = new NightGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score , 1 };
 			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score, 1 };
 		}
+		if (levelIndex == 0) {
+			background.getSprite().setTexture(this->TM.getTexture("bgfirst"));
+		}
+		else if (levelIndex == 1) {
+			background.getSprite().setTexture(this->TM.getTexture("bgday"));
+		}
+		else if (levelIndex == 2) {
+			background.getSprite().setTexture(this->TM.getTexture("bgnight"));
+		}
+		else if (levelIndex == 3) {
+			background.getSprite().setTexture(this->TM.getTexture("limitedbg"));
+		}
 		levels[levelIndex]->readEverything(file);
 
 		if (this->levelIndex == 0 || this->levelIndex == 1) {
@@ -510,6 +524,7 @@ private:
 		this->menu.setMenuIndex(0);
 		this->remainingTime = 120; // original
 		this->SM.getSound("last")->play();
+		this->SM.getSound("last")->setPlayingOffset(sf::seconds(0));
 		//this->remainingTime = 14; // for testing
 		this->runClock = new Clock;
 		this->timeClock.restart();
@@ -575,7 +590,7 @@ private:
 		//this->remainingTime = 10; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
-		this->sunCount = 1000;
+		this->sunCount = 100;
 
 
 		if (levels[levelIndex] == nullptr && levelIndex == 1) {
@@ -1020,9 +1035,9 @@ public:
 							this->menu.reset();
 						}
 					}
-					else if (event.key.code == Keyboard::M && this->showMenu) {
+					/*else if (event.key.code == Keyboard::M && this->showMenu) {
 						this->SM.getMainMusic()->setVolume(this->SM.getMainMusic()->getVolume() == 0 ? 40 : 0);
-					}
+					}*/
 					else if (event.key.code == Keyboard::Up) {
 						if (this->showMenu && !this->saveGame && !this->loadGame && !this->showHighScores && !this->showInstructions) {
 							this->menu.handleUp();
