@@ -123,6 +123,7 @@ class Game {
 	Color selectedColor{ 40, 255, 42 };
 	Color restColor{ 46, 74, 39 };
 	Color shadowColor{ 33, 38, 32 };
+	Color renameColor{ 179, 252, 134 };
 
 
 public:
@@ -148,9 +149,9 @@ public:
 		savedFileNamesSize[6] = 7;
 		savedFileNamesSize[7] = 7;
 		savedFileNamesSize[8] = 7;
-		savedFileNamesSize[9] = 8;
+		savedFileNamesSize[9] = 8;*/
 
-		10 = 10;*/
+		//10 = 10;
 
 		this->readFileNames();
 
@@ -330,8 +331,8 @@ private:
 	void saveEverything() {
 		cout << "Opened file to write\n";
 		ofstream file;
-		cout << "Saving to file: " << "saved/" + this->savedFileNames[currentFileIndex] + ".dat" << endl;
-		file.open("saved/" + this->savedFileNames[currentFileIndex] + ".dat", ios::out | ios::binary);
+		cout << "Saving to file: " << "saved/saved" + to_string(this->currentFileIndex) + ".dat" << endl;
+		file.open("saved/saved" + to_string(this->currentFileIndex + 1) + ".dat", ios::out | ios::binary);
 
 
 		this->saveFileNames();
@@ -379,8 +380,8 @@ private:
 	void readEverything() {
 		cout << "Opening to read\n";
 		ifstream file;
-		cout << "Reading from file: " << "saved/" + this->savedFileNames[currentFileIndex] + ".dat" << endl;
-		file.open("saved/" + this->savedFileNames[currentFileIndex] + ".dat", ios::in | ios::binary);
+		cout << "Reading from file: " << "saved/saved" + to_string(this->currentFileIndex) + ".dat" << endl;
+		file.open("saved/saved" + to_string(this->currentFileIndex + 1) + ".dat", ios::in | ios::binary);
 
 		this->readFileNames();
 
@@ -966,7 +967,7 @@ public:
 						}
 
 
-						if (this->loadGame || this->saveGame) {
+						if ((this->loadGame || this->saveGame) && !this->renamingFile) {
 							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
 							this->currentFileIndex -= 2;
 							if (this->currentFileIndex < 0) {
@@ -979,7 +980,8 @@ public:
 						if (this->showMenu && !this->saveGame && !this->loadGame && !this->showHighScores && !this->showInstructions) {
 							this->menu.handleDown();
 						}
-						if (this->loadGame || this->saveGame) {
+						if ((this->loadGame || this->saveGame) && !this->renamingFile) {
+
 							this->fileNamesText[currentFileIndex].setFillColor(Color::White);
 							this->currentFileIndex += 2;
 							if (this->currentFileIndex > (10 - 1)) {
@@ -1120,7 +1122,14 @@ public:
 
 					for (int i = 0; i < 10; i++) {
 						if (this->currentFileIndex == i) {
-							this->fileNamesText[i].setFillColor(selectedColor);
+							if (this->renamingFile) {
+
+								this->fileNamesText[i].setFillColor(selectedColor);
+							}
+							else {
+								this->fileNamesText[i].setFillColor(renameColor);
+
+							}
 						}
 						else {
 							this->fileNamesText[i].setFillColor(restColor);
