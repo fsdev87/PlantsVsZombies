@@ -40,7 +40,7 @@ class SoundManager {
 		this->getSound("last")->setPlayingOffset(sf::seconds(8));
 		this->getSound("enter")->setVolume(40);
 		this->getSound("change")->setVolume(40);
-		this->getSound("won")->setVolume(40);
+		this->getSound("won")->setVolume(20);
 		this->getSound("eating")->setVolume(40);
 		this->getSound("hit")->setVolume(70); this->getSound("hit")->setPlayingOffset(Time(seconds(0.5)));
 		this->getSound("sunclick")->setVolume(50);

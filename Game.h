@@ -522,7 +522,7 @@ private:
 		if (this->levels[3] != nullptr) delete this->levels[3];
 		levels[3] = nullptr;
 
-		if (levels[levelIndex] == nullptr && levelIndex == 0) {
+		/*if (levels[levelIndex] == nullptr && levelIndex == 0) {
 			levels[levelIndex] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 1) {
@@ -533,9 +533,9 @@ private:
 		}
 		else if (levels[levelIndex] == nullptr && levelIndex == 3) {
 			levels[levelIndex] = new LimitedGarden{ background, &PF, &ZF, &Inv, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
-		}
-		//this->levelIndex = 0;
-		//levels[levelIndex] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
+		}*/
+		this->levelIndex = 0;
+		levels[levelIndex] = new BeginnersGarden{ background, &TM, &FM, &SM, runClock, &sunCountText,  sunCount, lawnmowers, lawnMowerPos, &score };
 	}
 
 	void updateRound() {
@@ -551,7 +551,7 @@ private:
 		}
 
 		//this->remainingTime = 120; // original
-		this->remainingTime = 5; //for testing
+		this->remainingTime = 3; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
 		this->sunCount = 100;
@@ -889,7 +889,8 @@ public:
 					else if (event.key.code == Keyboard::Return) {
 						if (this->showMenu && !this->loadGame && !this->saveGame) {
 							this->menu.handleEnter(this->saveGame, this->loadGame, this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
-							if (!this->showMenu && !this->restarted) { // resume or start mode
+							if (!this->showMenu && !this->restarted && !this->hasWon && !this->gameOver) { // resume or start mode
+
 								if (this->levelIndex == 0 || this->levelIndex == 1) {
 									this->SM.getMainMusic()->pause();
 									this->SM.getSound("last")->play();
@@ -901,6 +902,8 @@ public:
 								this->runClock = new Clock();
 							}
 							else if (this->restarted) {
+								this->SM.getMainMusic()->pause();
+								this->SM.getSound("last")->setPlayingOffset(seconds(0));
 								restartGame();
 							}
 							else if (this->showHighScores) {
@@ -951,6 +954,8 @@ public:
 						else if (this->gameOver || this->hasWon) {
 							if (this->gameOver) this->gameOver = false;
 							else if (this->hasWon) this->hasWon = false;
+
+							this->SM.getSound("last")->pause();
 							this->SM.getMainMusic()->play();
 							this->SM.getMainMusic()->setLoop(true);
 							this->SM.getMainMusic()->setVolume(40);
@@ -977,7 +982,9 @@ public:
 							playerNames.close();
 
 							restartGame();
+
 							this->showMenu = true;
+							this->hasStarted = false;
 							this->menu.reset();
 						}
 					}
@@ -1202,6 +1209,7 @@ public:
 			else {
 				this->window.clear();
 				if (this->levelIndex > 3) {
+					this->SM.getSound("last")->pause();
 					this->SM.getSound("28dayslater")->pause();
 					this->SM.getSound("won")->play();
 					this->hasWon = true;
