@@ -74,7 +74,7 @@ public:
 	void level4(RenderWindow& window) {
 		window.draw(this->backGroundSprite);
 		this->texts[2].setPosition(460, 280);
-		this->zombieSprites[2].setPosition(800, 245);
+		this->zombieSprites[2].setPosition(850, 245);
 
 		window.draw(this->texts[0]);
 

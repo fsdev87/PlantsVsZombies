@@ -100,6 +100,7 @@ public:
 
 	void reset() {
 		this->index = 2;
+		this->selected = false;
 	}
 
 	void drawInventory(RenderWindow& window, int& sunCount) {
@@ -238,5 +239,6 @@ public:
 		this->selected = false;
 	}
 
+	void setSelected(bool val) { this->selected = false; }
 
 };

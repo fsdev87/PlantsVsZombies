@@ -101,8 +101,12 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	//float remainingTime = 120;  // original
-	float remainingTime = 11; // for testing
+	float remainingTime = 120;  // original
+	//float remainingTime = 15; // for testing
+
+	Clock timeCLock;
+
+
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -497,6 +501,7 @@ private:
 		this->SM.getSound("last")->play();
 		//this->remainingTime = 14; // for testing
 		this->runClock = new Clock;
+		this->timeCLock.restart();
 		this->TimeText.setFillColor(Color::White);
 		this->sunCount = 100;
 		this->PF.reset();
@@ -550,8 +555,8 @@ private:
 			//this->SM.getSound("28dayslater")->setVolume(1-.0f);
 		}
 
-		//this->remainingTime = 120; // original
-		this->remainingTime = 3; //for testing
+		this->remainingTime = 120; // original
+		//this->remainingTime = 3; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
 		this->sunCount = 100;
@@ -843,7 +848,7 @@ public:
 				if (event.type == Event::KeyPressed) {
 					if (event.key.code == Keyboard::Escape) {
 						this->SM.playSound("enter");
-						if (this->SM.getSound("28dayslater")->getStatus() == Sound::Playing || this->SM.getSound("last")->getStatus() == Sound::Playing) {
+						if ((this->SM.getSound("28dayslater")->getStatus() == Sound::Playing || this->SM.getSound("last")->getStatus() == Sound::Playing) && !this->nextLevel) {
 							this->SM.getMainMusic()->setPlayingOffset(sf::seconds(0));
 							this->SM.getMainMusic()->play();
 							if (this->levelIndex == 2 || this->levelIndex == 3) {
@@ -899,6 +904,7 @@ public:
 									this->SM.getSound("28dayslater")->play();
 								}
 								this->runClock = new Clock();
+								this->timeCLock.restart();
 							}
 							else if (this->restarted) {
 								this->SM.getMainMusic()->pause();
@@ -1239,7 +1245,17 @@ private:
 		seconds += to_string((int)(this->gameTime) % 60);
 		this->timeString = minutes + ":" + seconds;
 		if ((int)(this->gameTime) / 60 == 0 && (int)(this->gameTime) % 60 == 10) {
-			this->TimeText.setFillColor(Color::Red);
+			this->TimeText.setFillColor(Color(255, 0, 0));
+			this->timeCLock.restart();
+		}
+		if (this->gameTime <= 10 && this->gameTime >= 1) {
+			if (this->timeCLock.getElapsedTime().asSeconds() >= 0.40625) {
+				this->TimeText.setFillColor(this->TimeText.getFillColor() == Color(150, 0, 0) ? Color(255, 0, 0) : Color(150, 0, 0));
+				this->timeCLock.restart();
+			}
+		}
+		else if ((int)this->gameTime == 0) {
+			this->TimeText.setFillColor(Color(255, 0, 0));
 		}
 	}
 
