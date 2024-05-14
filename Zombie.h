@@ -85,8 +85,8 @@ public:
 	}
 	virtual bool isFlying() { return false; }
 	void setFlicker(bool value) {
-		//this->SMptr->getSound("hit")->setPlayingOffset(sf::Time(sf::seconds(0.7)));
-		//this->SMptr->playSound("hit");
+		/*this->SMptr->getSound("hit")->setPlayingOffset(sf::Time(sf::seconds(0.7)));
+		this->SMptr->playSound("hit");*/
 		this->flicker = value, this->flickerClock.restart();
 	}
 
@@ -159,7 +159,6 @@ public:
 		}
 	}
 
-	// same for each zombie
 	virtual void handleAshes(RenderWindow& window) {
 		// show ashes only when this->exists = false i.e zombie is dead
 		if (!this->exists && this->ashes) {
@@ -177,14 +176,11 @@ public:
 		this->exists = val;
 	}
 
-
-
 	int getHealth() { return this->health; }
 
 	void reduceHealth(int damage) {
 		this->health -= damage;
 	}
-
 
 
 	// should be specific for each zombie

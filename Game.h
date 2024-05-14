@@ -536,10 +536,11 @@ private:
 			this->SM.getSound("28dayslater")->setVolume(80.0f);
 		}
 
-		if (this->levelIndex == 0 || this->levelIndex == 1) {
+		/*if (this->levelIndex == 0 || this->levelIndex == 1) {
 			remainingTime = 5;
-		}
-		else this->remainingTime = 120; // original
+		}*/
+		this->remainingTime = 11;
+		//else this->remainingTime = 120; // original
 		//this->remainingTime = 5; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
@@ -558,7 +559,7 @@ private:
 	}
 
 	void drawEverything() {
-		if (this->hasWon || this->levelIndex > 3) return;
+		if (this->hasWon || this->levelIndex > 3 || this->nextLevel) return;
 		levels[levelIndex]->drawEverything(this->window, this->background, &Inv, sunCount, &PF, &ZF, lawnmowers, lives, &sun, sunCountText);
 		this->window.draw(this->TimeTextS);
 		this->window.draw(this->TimeText);
@@ -566,7 +567,7 @@ private:
 	}
 
 	void updateEverything() {
-		if (this->hasWon || this->levelIndex > 3) return;
+		if (this->hasWon || this->levelIndex > 3 || this->nextLevel) return;
 		levels[levelIndex]->updateEverything(&PF, &ZF, lawnmowers, lives, sun);
 		calculateTime();
 		this->TimeText.setString("TIME: " + this->timeString);
@@ -767,7 +768,6 @@ private:
 
 	}
 
-
 	void initFiles() {
 
 
@@ -934,6 +934,7 @@ public:
 							this->SM.getMainMusic()->play();
 							this->SM.getMainMusic()->setLoop(true);
 							this->SM.getMainMusic()->setVolume(40);
+							this->SM.getMainMusic()->setPlayingOffset(sf::seconds(0));
 							// highscores updating
 							this->highScores[9] = this->score.getScore();
 							this->names[9] = this->playerName;
@@ -1088,7 +1089,6 @@ public:
 				}
 			}
 
-
 			if (this->showMenu && !this->gameOver && !this->hasWon && !this->nextLevel) {
 				this->window.clear();
 				this->menu.display(this->window);
@@ -1176,6 +1176,7 @@ public:
 					}
 					else {
 						this->nextLevel = false;
+						//updateRound();
 					}
 				}
 			}
