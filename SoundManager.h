@@ -36,7 +36,9 @@ class SoundManager {
 		this->loadSound("assets/sounds/menu/28dayslater.mp3", "28dayslater");
 		this->loadSound("assets/sounds/menu/last.mp3", "last");
 		this->loadSound("assets/sounds/menu/won.mp3", "won");
+		this->loadSound("assets/sounds/menu/next.mp3", "nextlevel");
 
+		this->getSound("last")->setVolume(50);
 		this->getSound("last")->setPlayingOffset(sf::seconds(8));
 		this->getSound("enter")->setVolume(40);
 		this->getSound("change")->setVolume(40);

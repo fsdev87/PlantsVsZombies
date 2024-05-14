@@ -66,6 +66,8 @@ public:
 				this->bullet.setPosition(position[0], position[1]);
 				this->bullet.setExist(true);
 				this->bulletDelayClock.restart();
+				this->shootSound.play();
+
 			}
 		}
 	}

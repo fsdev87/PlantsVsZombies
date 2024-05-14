@@ -2,6 +2,7 @@
 #include "Zombie.h"
 
 class NormalZombie : public Zombie {
+
 public:
 	NormalZombie(Texture& tex, int columns, float pos[2], TextureManager* TM, SoundManager* SM) {
 		this->SMptr = SM;
@@ -17,10 +18,17 @@ public:
 		this->moveClock.restart();
 		this->limit = 20;
 		this->anim.setDelay(50);
+
+		spawnBuffer.loadFromFile("assets/sounds/zombie/spawn.mp3");
+		spawnSound.setBuffer(spawnBuffer);
 		// head
 		this->headSprite.setTexture(this->TMptr->getTexture("spritesheet-head"));
 		this->headSprite.setTextureRect(IntRect(0, 0, 150, 186));
 		this->headAnim = Animation(150, 186, 12);
+	}
+
+	Sound& getSpawnSound() {
+		return this->spawnSound;
 	}
 
 	void saveEverything(ofstream& file) {

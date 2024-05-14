@@ -119,6 +119,7 @@ public:
 					if (!zombies[i]->getHeadFall()) zombies[i]->setHeadFall(true);
 					zombies[i]->setExist(false);
 					zombies[i]->makeDead();
+					zombies[i]->getPainSound().play();
 					scoreboard->addScore(20);
 					if (rand() % 2) { // if 1 then go down
 						if (this->position[1] + 1 <= 4) { // can go down

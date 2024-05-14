@@ -117,6 +117,8 @@ void ZombieFactory::updateEverything(Plant** plants, int plantsArrayIndex, LawnM
 
 		this->zombies[i]->spawnZombie(this->zombies, this->zombiesArrayIndex, maxZombies, this->types);
 
+		this->zombies[i]->growl(i);
+
 		float* position = this->zombies[i]->getPosition();
 		float first = -0.5, last = -1;
 		if (this->zombies[i]->isFlying()) {

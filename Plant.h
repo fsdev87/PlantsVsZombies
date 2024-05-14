@@ -26,11 +26,16 @@ protected:
 	TextureManager* TMptr;
 	SoundManager* SMptr;
 
+	SoundBuffer shootBuffer;
+	Sound shootSound;
+
 public:
 	Plant() {
 		this->xFactor = 260;
 		this->yFactor = 90;
 		this->eatClock.restart();
+		shootBuffer.loadFromFile("assets/sounds/plant/shoot.mp3");
+		shootSound.setBuffer(shootBuffer);
 	}
 
 

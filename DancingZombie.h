@@ -38,6 +38,32 @@ public:
 		this->headAnim = Animation(150, 186, 9);
 	}
 
+	void loadBuffer() {
+		int d = rand() % 11;
+		switch (d) {
+		case 1:
+		case 2:
+		case 3:
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/scream.mp3");
+			break;
+		case 4:
+		case 5:
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/mczmobie.mp3");
+			break;
+		case 6:
+		case 7:
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan.ogg");
+			break;
+		case 8:
+		case 9:
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan2.ogg");
+			break;
+		case 10:
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/growl3.mp3");
+			break;
+		}
+	}
+
 	void saveEverything(ofstream& file) {
 		file.write(reinterpret_cast<char*>(&position[0]), sizeof(float));
 		file.write(reinterpret_cast<char*>(&position[1]), sizeof(float));
@@ -351,6 +377,7 @@ public:
 			spawnIndex[0] = zombiesArrayIndex;
 			types[zombiesArrayIndex] = "normal";
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
+			zombies[zombiesArrayIndex - 1]->getSpawnSound().play();
 		}
 
 		// on lefet side of zombie
@@ -359,6 +386,7 @@ public:
 			spawnIndex[1] = zombiesArrayIndex;
 			types[zombiesArrayIndex] = "normal";
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
+			zombies[zombiesArrayIndex - 1]->getSpawnSound().play();
 		}
 
 		// on above
@@ -367,6 +395,7 @@ public:
 			spawnIndex[2] = zombiesArrayIndex;
 			types[zombiesArrayIndex] = "normal";
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
+			zombies[zombiesArrayIndex - 1]->getSpawnSound().play();
 		}
 
 		// on below
@@ -375,6 +404,7 @@ public:
 			spawnIndex[3] = zombiesArrayIndex;
 			types[zombiesArrayIndex] = "normal";
 			zombies[zombiesArrayIndex++] = new NormalZombie(this->TMptr->getTexture("spritesheet-nZombWalk"), 22, pos, this->TMptr, this->SMptr);
+			zombies[zombiesArrayIndex - 1]->getSpawnSound().play();
 		}
 
 		this->spawnClock.restart();

@@ -6,6 +6,8 @@
 class Repeater : public Shooter {
 	Bullet bullet[2];
 
+	SoundBuffer shootBuffer1;
+	Sound shootSound1;
 public:
 	Repeater(Texture& tex, int columns, float pos[2], SoundManager* sm) {
 		srand(time(0));
@@ -25,6 +27,9 @@ public:
 		this->anim.setDelay(80.f);
 		this->bullet[0].setHitSound(*(this->SMptr->getSound("hit")));
 		this->bullet[1].setHitSound(*(this->SMptr->getSound("hit")));
+
+		shootBuffer1.loadFromFile("assets/sounds/plant/shoot.mp3");
+		shootSound1.setBuffer(shootBuffer);
 		//this->startClock.restart();
 	}
 
@@ -70,10 +75,15 @@ public:
 			if ((this->bullet[0].getExist() == false || this->bullet[1].getExist() == false) && this->bulletDelayClock.getElapsedTime().asSeconds() > bulletDelay) {
 				this->bullet[0].setPosition(this->position[0], this->position[1]);
 				this->bullet[0].setExist(true);
-
+				this->shootSound.play();
+				Clock* delay = new Clock;
 				this->bullet[1].setPosition(this->position[0] - 0.5, this->position[1]);
 				this->bullet[1].setExist(true);
 				this->bulletDelayClock.restart();
+				if (delay->getElapsedTime().asMilliseconds() > 5) {
+					this->shootSound1.play();
+					delete delay;
+				}
 			}
 		}
 	}

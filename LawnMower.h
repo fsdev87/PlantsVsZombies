@@ -75,6 +75,7 @@ public:
 					if (!zombies[i]->getHeadFall()) zombies[i]->setHeadFall(true);
 					zombies[i]->setExist(false);
 					zombies[i]->makeDead();
+					zombies[i]->getPainSound().play();
 					scoreboard->addScore(20);
 					this->moveClock.restart();
 

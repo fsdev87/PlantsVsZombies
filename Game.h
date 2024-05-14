@@ -101,12 +101,9 @@ class Game {
 	// time handling things
 	float gameTime;
 	Clock* runClock = nullptr;
-	float remainingTime = 120;  // original
-	//float remainingTime = 15; // for testing
-
-	Clock timeCLock;
-
-
+	//float remainingTime = 120;  // original
+	float remainingTime = 10; // for testing
+	Clock timeClock;
 	Level** levels = new Level * [4];
 	int levelIndex = 0;
 
@@ -396,7 +393,6 @@ private:
 		file.read(reinterpret_cast<char*>(&levelIndex), sizeof(int));
 
 		file.read(reinterpret_cast<char*>(&sunCount), sizeof(int));
-		this->sunCount = sunCount;
 		this->sunCountText.setString(to_string(this->sunCount));
 
 		file.read(reinterpret_cast<char*>(&showMenu), sizeof(bool));
@@ -501,7 +497,7 @@ private:
 		this->SM.getSound("last")->play();
 		//this->remainingTime = 14; // for testing
 		this->runClock = new Clock;
-		this->timeCLock.restart();
+		this->timeClock.restart();
 		this->TimeText.setFillColor(Color::White);
 		this->sunCount = 100;
 		this->PF.reset();
@@ -546,20 +542,26 @@ private:
 	void updateRound() {
 		this->runClock->restart();
 		this->levelIndex++;
-		if (this->levelIndex == 2) {
-			this->SM.getMainMusic()->pause();
-			this->SM.getSound("last")->pause();
+		this->SM.getMainMusic()->pause();
 
-			this->SM.getSound("28dayslater")->setPlayingOffset(sf::seconds(20));
+		if (this->levelIndex >= 2) {
+			if (this->levelIndex == 2)
+				this->SM.getSound("28dayslater")->setPlayingOffset(sf::seconds(20));
+
 			this->SM.getSound("28dayslater")->play();
-			//this->SM.getSound("28dayslater")->setVolume(1-.0f);
+
 		}
 
-		this->remainingTime = 120; // original
-		//this->remainingTime = 3; //for testing
+
+		if (this->levelIndex == 2) {
+			this->SM.getSound("last")->pause();
+		}
+
+		if (levelIndex == 1) remainingTime = 120;//this->remainingTime = 120; // original
+		else this->remainingTime = 10; //for testing
 		this->TimeText.setFillColor(Color::White);
 		this->sun.reset();
-		this->sunCount = 100;
+		this->sunCount = 1000;
 
 
 		if (levels[levelIndex] == nullptr && levelIndex == 1) {
@@ -590,13 +592,20 @@ private:
 
 		if (this->lives.livesGone()) {
 			this->gameOver = true;
-			this->SM.getSound("28dayslater")->pause();
+			if (levelIndex >= 2) {
+				this->SM.getSound("28dayslater")->pause();
+			}
+			else if (levelIndex < 2) {
+				this->SM.getSound("last")->pause();
+			}
 			this->SM.getSound("gameover")->play();
 			this->SM.getMainMusic()->stop();
 		}
 
 		if (this->gameTime <= 0) {
 			this->nextLevel = true;
+			this->SM.getSound("28dayslater")->pause();
+			this->SM.playSound("nextlevel");
 			this->levelDelayClock.restart();
 
 			this->updateRound();
@@ -904,7 +913,7 @@ public:
 									this->SM.getSound("28dayslater")->play();
 								}
 								this->runClock = new Clock();
-								this->timeCLock.restart();
+								this->timeClock.restart();
 							}
 							else if (this->restarted) {
 								this->SM.getMainMusic()->pause();
@@ -995,6 +1004,9 @@ public:
 							this->hasStarted = false;
 							this->menu.reset();
 						}
+					}
+					else if (event.key.code == Keyboard::M && this->showMenu) {
+						this->SM.getMainMusic()->setVolume(this->SM.getMainMusic()->getVolume() == 0 ? 40 : 0);
 					}
 					else if (event.key.code == Keyboard::Up) {
 						if (this->showMenu && !this->saveGame && !this->loadGame && !this->showHighScores && !this->showInstructions) {
@@ -1246,12 +1258,12 @@ private:
 		this->timeString = minutes + ":" + seconds;
 		if ((int)(this->gameTime) / 60 == 0 && (int)(this->gameTime) % 60 == 10) {
 			this->TimeText.setFillColor(Color(255, 0, 0));
-			this->timeCLock.restart();
+			this->timeClock.restart();
 		}
 		if (this->gameTime <= 10 && this->gameTime >= 1) {
-			if (this->timeCLock.getElapsedTime().asSeconds() >= 0.40625) {
+			if (this->timeClock.getElapsedTime().asSeconds() >= 0.40625) {
 				this->TimeText.setFillColor(this->TimeText.getFillColor() == Color(150, 0, 0) ? Color(255, 0, 0) : Color(150, 0, 0));
-				this->timeCLock.restart();
+				this->timeClock.restart();
 			}
 		}
 		else if ((int)this->gameTime == 0) {

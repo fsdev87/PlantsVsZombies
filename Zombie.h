@@ -40,12 +40,48 @@ protected:
 
 	SoundManager* SMptr;
 
+	Clock growlClock;
+	float growlDelay = 3.0f;
+	SoundBuffer growlBuffer;
+	Sound growlSound;
+
+	SoundBuffer painBuffer;
+	Sound painSound;
+
+	SoundBuffer spawnBuffer;
+	Sound spawnSound;
+
 	string type;
 public:
 	Zombie() {
 		this->xFactor = 185;
 		this->yFactor = 32;
 		this->state = "walk";
+		this->loadBuffer();
+
+		this->painBuffer.loadFromFile("assets/sounds/zombie/bullethitzombie.mp3");
+		this->painSound.setBuffer(this->painBuffer);
+
+		this->growlSound.setBuffer(this->growlBuffer);
+	}
+
+	virtual void loadBuffer() {
+		if (rand() % 2) {
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan.ogg");
+		}
+		else {
+			this->growlBuffer.loadFromFile("assets/sounds/zombie/lowgroan2.ogg");
+		}
+	}
+
+	virtual Sound& getSpawnSound() {
+		return this->spawnSound;
+	}
+
+
+	Sound& getPainSound() {
+		this->painSound.setVolume(50);
+		return this->painSound;
 	}
 	/*float getSpeed() { return this->speed; }
 	void setSpeed(float val) { this->speed = val; }*/
@@ -85,8 +121,6 @@ public:
 	}
 	virtual bool isFlying() { return false; }
 	void setFlicker(bool value) {
-		/*this->SMptr->getSound("hit")->setPlayingOffset(sf::Time(sf::seconds(0.7)));
-		this->SMptr->playSound("hit");*/
 		this->flicker = value, this->flickerClock.restart();
 	}
 
@@ -180,6 +214,17 @@ public:
 
 	void reduceHealth(int damage) {
 		this->health -= damage;
+	}
+
+	virtual void growl(int i) {
+		if (!this->exists) return;
+		if (this->growlClock.getElapsedTime().asSeconds() > this->growlDelay) {
+			cout << "Zombie[" << i << "] is growling\n";
+			this->growlSound.setVolume(60);
+			this->growlSound.play();
+			this->growlDelay = 4 + rand() % 7;
+			this->growlClock.restart();
+		}
 	}
 
 
