@@ -899,7 +899,7 @@ public:
 					this->window.close();
 				}
 				if (event.type == Event::KeyPressed) {
-					if (event.key.code == Keyboard::Escape) {
+					if (event.key.code == Keyboard::Escape && !this->cutScene) {
 						this->SM.playSound("enter");
 						if ((this->SM.getSound("28dayslater")->getStatus() == Sound::Playing || this->SM.getSound("last")->getStatus() == Sound::Playing) && !this->nextLevel) {
 							this->SM.getMainMusic()->setPlayingOffset(sf::seconds(0));
@@ -943,7 +943,7 @@ public:
 						this->fileNamesTextS[currentFileIndex].setString(to_string(currentFileIndex + 1) + ". " + this->renamedFileName);
 
 					}
-					else if (event.key.code == Keyboard::Return) {
+					else if (event.key.code == Keyboard::Return && !this->cutScene) {
 						if (this->showMenu && !this->loadGame && !this->saveGame) {
 							this->menu.handleEnter(this->saveGame, this->loadGame, this->showInstructions, this->showMenu, this->showHighScores, this->quit, this->hasStarted, restarted, &ZF, &sun);
 							if (!this->showMenu && !this->restarted && !this->hasWon && !this->gameOver) { // resume or start mode
