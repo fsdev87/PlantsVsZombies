@@ -525,7 +525,7 @@ private:
 		this->hasWon = false;
 
 		this->menu.setMenuIndex(0);
-		this->remainingTime = 120; // original
+		this->remainingTime = 60; // original
 		this->SM.getSound("last")->play();
 		this->SM.getSound("last")->setLoop(true);
 		this->SM.getSound("last")->setPlayingOffset(sf::seconds(8));
